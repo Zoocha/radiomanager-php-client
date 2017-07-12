@@ -1,14 +1,14 @@
 {
     "name": "pluxbox/radiomanager-php-client",
     "version": "1.0.0",
-    "description": "Radiomanager PHP Client",
+    "description": "Pluxbox RadioManager PHP Client",
     "keywords": [
         "swagger",
         "php",
         "sdk",
         "api"
     ],
-    "homepage": "http://swagger.io",
+    "homepage": "https://pluxbox.com",
     "license": "MIT",
     "authors": [
         {
