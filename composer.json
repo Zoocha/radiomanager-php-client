@@ -2,21 +2,20 @@
     "name": "pluxbox/radiomanager-php-client",
     "version": "1.0.0",
     "description": "Radiomanager PHP Client",
-    "authors": [
-        {
-            "name": "Pluxbox",
-            "email": "support@pluxbox.com"
-        }
-    ],
-    "minimum-stability": "dev",
     "keywords": [
         "swagger",
         "php",
         "sdk",
         "api"
     ],
-    "homepage": "https://pluxbox.com",
+    "homepage": "http://swagger.io",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Pluxbox",
+            "email": "support@pluxbox.com"
+        }
+    ],
     "require": {
         "php": ">=5.4",
         "ext-curl": "*",
