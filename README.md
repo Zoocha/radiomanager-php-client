@@ -1,0 +1,293 @@
+# RadioManager-Client
+RadioManager
+
+- API version: 2.0
+- Package version: 1.0.0
+- For more information, please visit [https://pluxbox.com](https://pluxbox.com)
+
+## Requirements
+
+PHP 5.4.0 and later
+
+## Installation & Usage
+### Composer
+
+To install the bindings via [Composer](http://getcomposer.org/), add the following to `composer.json`:
+
+```
+{
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/pluxbox/radiomanager-php-client.git"
+    }
+  ],
+  "require": {
+    "pluxbox/radiomanager-php-client": "*@dev"
+  }
+}
+```
+
+Then run `composer install`
+
+### Manual Installation
+
+Download the files and include `autoload.php`:
+
+```php
+    require_once('/path/to/RadioManager-Client/autoload.php');
+```
+
+## Tests
+
+To run the unit tests:
+
+```
+composer install
+./vendor/bin/phpunit
+```
+
+## Getting Started
+
+Please follow the [installation procedure](#installation--usage) and then run the following:
+
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: API Key
+RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+
+$api_instance = new RadioManager\RadioManagerClient\BlockApi();
+$id = 789; // int | ID of Block **(Required)**
+$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+
+try {
+    $result = $api_instance->getBlockById($id, $_station_id);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling BlockApi->getBlockById: ', $e->getMessage(), PHP_EOL;
+}
+
+?>
+```
+
+## Documentation for API Endpoints
+
+All URIs are relative to *http://radiomanager.pb/api/v2*
+
+Class | Method | HTTP request | Description
+------------ | ------------- | ------------- | -------------
+*BlockApi* | [**getBlockById**](docs/Api/BlockApi.md#getblockbyid) | **GET** /blocks/{id} | Get block by id
+*BlockApi* | [**getCurrentBlock**](docs/Api/BlockApi.md#getcurrentblock) | **GET** /blocks/current | Get current Block
+*BlockApi* | [**getNextBlock**](docs/Api/BlockApi.md#getnextblock) | **GET** /blocks/next | Get next Block
+*BlockApi* | [**listBlocks**](docs/Api/BlockApi.md#listblocks) | **GET** /blocks | Get a list of all blocks currently in your station.
+*BroadcastApi* | [**createBroadcast**](docs/Api/BroadcastApi.md#createbroadcast) | **POST** /broadcasts | Create broadcast.
+*BroadcastApi* | [**deleteBroadcastById**](docs/Api/BroadcastApi.md#deletebroadcastbyid) | **DELETE** /broadcasts/{id} | Delete broadcast by id
+*BroadcastApi* | [**getBroadcastById**](docs/Api/BroadcastApi.md#getbroadcastbyid) | **GET** /broadcasts/{id} | Get broadcast by id
+*BroadcastApi* | [**getCurrentBroadcast**](docs/Api/BroadcastApi.md#getcurrentbroadcast) | **GET** /broadcasts/current | Get current Broadcast
+*BroadcastApi* | [**getDailyEPG**](docs/Api/BroadcastApi.md#getdailyepg) | **GET** /broadcasts/epg/daily | Get daily EPG
+*BroadcastApi* | [**getEPGByDate**](docs/Api/BroadcastApi.md#getepgbydate) | **GET** /broadcasts/epg | Get EPG by date
+*BroadcastApi* | [**getNextBroadcast**](docs/Api/BroadcastApi.md#getnextbroadcast) | **GET** /broadcasts/next | Get next Broadcast
+*BroadcastApi* | [**getWeeklyEPG**](docs/Api/BroadcastApi.md#getweeklyepg) | **GET** /broadcasts/epg/weekly | Get weekly EPG
+*BroadcastApi* | [**listBroadcasts**](docs/Api/BroadcastApi.md#listbroadcasts) | **GET** /broadcasts | Get all broadcasts.
+*BroadcastApi* | [**printBroadcastById**](docs/Api/BroadcastApi.md#printbroadcastbyid) | **GET** /broadcasts/print/{id} | Print Broadcast by id
+*BroadcastApi* | [**updateBroadcastByID**](docs/Api/BroadcastApi.md#updatebroadcastbyid) | **PATCH** /broadcasts/{id} | Update broadcast by id
+*CampaignApi* | [**createCampaign**](docs/Api/CampaignApi.md#createcampaign) | **POST** /campaigns | Create campaign.
+*CampaignApi* | [**deleteCampaignById**](docs/Api/CampaignApi.md#deletecampaignbyid) | **DELETE** /campaigns/{id} | Delete campaign by id
+*CampaignApi* | [**getCampaignById**](docs/Api/CampaignApi.md#getcampaignbyid) | **GET** /campaigns/{id} | Get campaign by id
+*CampaignApi* | [**listCampaigns**](docs/Api/CampaignApi.md#listcampaigns) | **GET** /campaigns | Get all campaigns.
+*CampaignApi* | [**updateCampaignByID**](docs/Api/CampaignApi.md#updatecampaignbyid) | **PATCH** /campaigns/{id} | Update campaign by id
+*ContactApi* | [**createContact**](docs/Api/ContactApi.md#createcontact) | **POST** /contacts | Create contact.
+*ContactApi* | [**deleteContactById**](docs/Api/ContactApi.md#deletecontactbyid) | **DELETE** /contacts/{id} | Delete contact by id
+*ContactApi* | [**getContactById**](docs/Api/ContactApi.md#getcontactbyid) | **GET** /contacts/{id} | Get contact by id
+*ContactApi* | [**listContacts**](docs/Api/ContactApi.md#listcontacts) | **GET** /contacts | Get all contacts.
+*ContactApi* | [**updateContactByID**](docs/Api/ContactApi.md#updatecontactbyid) | **PATCH** /contacts/{id} | Update contact by id
+*ExternalMessageApi* | [**queueExternalMessage**](docs/Api/ExternalMessageApi.md#queueexternalmessage) | **POST** /externalmessagequeue | Queue External Message.
+*GenreApi* | [**getGenreById**](docs/Api/GenreApi.md#getgenrebyid) | **GET** /genres/{id} | Get genre by id
+*GenreApi* | [**listGenres**](docs/Api/GenreApi.md#listgenres) | **GET** /genres | List all genres.
+*ItemApi* | [**createItem**](docs/Api/ItemApi.md#createitem) | **POST** /items | Create an new item.
+*ItemApi* | [**currentItemPostStructure**](docs/Api/ItemApi.md#currentitempoststructure) | **POST** /items/current/structure | Post a current playing item, keep structure
+*ItemApi* | [**currentItemPostTiming**](docs/Api/ItemApi.md#currentitemposttiming) | **POST** /items/current/timing | Post a current playing item
+*ItemApi* | [**deleteItemById**](docs/Api/ItemApi.md#deleteitembyid) | **DELETE** /items/{id} | Delete item by ID.
+*ItemApi* | [**getItemById**](docs/Api/ItemApi.md#getitembyid) | **GET** /items/{id} | Get extended item details by ID.
+*ItemApi* | [**listItems**](docs/Api/ItemApi.md#listitems) | **GET** /items | Get a list of all the items currently in your station.
+*ItemApi* | [**playlistPostStructure**](docs/Api/ItemApi.md#playlistpoststructure) | **POST** /items/playlist/structure | Post a playlist, keep current structure
+*ItemApi* | [**playlistPostTiming**](docs/Api/ItemApi.md#playlistposttiming) | **POST** /items/playlist/timing | Post a playlist
+*ItemApi* | [**updateItemById**](docs/Api/ItemApi.md#updateitembyid) | **PATCH** /items/{id} | Update extended item details by ID.
+*ModelTypeApi* | [**getModelTypeById**](docs/Api/ModelTypeApi.md#getmodeltypebyid) | **GET** /model_types/{id} | Get modelType by id
+*ModelTypeApi* | [**listModelTypes**](docs/Api/ModelTypeApi.md#listmodeltypes) | **GET** /model_types | Get all modelTypes.
+*PresenterApi* | [**createPresenter**](docs/Api/PresenterApi.md#createpresenter) | **POST** /presenters | Create presenter.
+*PresenterApi* | [**deletePresenterById**](docs/Api/PresenterApi.md#deletepresenterbyid) | **DELETE** /presenters/{id} | Delete presenter by id
+*PresenterApi* | [**getPresenterById**](docs/Api/PresenterApi.md#getpresenterbyid) | **GET** /presenters/{id} | Get presenter by id
+*PresenterApi* | [**listPresenters**](docs/Api/PresenterApi.md#listpresenters) | **GET** /presenters | Get all presenters.
+*PresenterApi* | [**updatePresenterByID**](docs/Api/PresenterApi.md#updatepresenterbyid) | **PATCH** /presenters/{id} | Update presenter by id
+*ProgramApi* | [**createProgram**](docs/Api/ProgramApi.md#createprogram) | **POST** /programs | Create program.
+*ProgramApi* | [**deleteProgramById**](docs/Api/ProgramApi.md#deleteprogrambyid) | **DELETE** /programs/{id} | Delete program by id
+*ProgramApi* | [**getProgramById**](docs/Api/ProgramApi.md#getprogrambyid) | **GET** /programs/{id} | Get program by id
+*ProgramApi* | [**listPrograms**](docs/Api/ProgramApi.md#listprograms) | **GET** /programs | Get all programs.
+*ProgramApi* | [**updateProgramByID**](docs/Api/ProgramApi.md#updateprogrambyid) | **PATCH** /programs/{id} | Update program by id
+*StringApi* | [**getStringsByName**](docs/Api/StringApi.md#getstringsbyname) | **GET** /strings/{name} | Get Strings (formatted)
+*TagApi* | [**createTag**](docs/Api/TagApi.md#createtag) | **POST** /tags | Create tag.
+*TagApi* | [**deleteTagById**](docs/Api/TagApi.md#deletetagbyid) | **DELETE** /tags/{id} | Delete tag by id
+*TagApi* | [**getTagById**](docs/Api/TagApi.md#gettagbyid) | **GET** /tags/{id} | Get tags by id
+*TagApi* | [**listTags**](docs/Api/TagApi.md#listtags) | **GET** /tags | Get a list of all the tags currently in your station.
+*TagApi* | [**updateTagByID**](docs/Api/TagApi.md#updatetagbyid) | **PATCH** /tags/{id} | Update tag by id
+*UserApi* | [**deleteUserById**](docs/Api/UserApi.md#deleteuserbyid) | **DELETE** /users/{id} | Remove user from station by Id
+*UserApi* | [**getUserById**](docs/Api/UserApi.md#getuserbyid) | **GET** /users/{id} | Get user by id
+*UserApi* | [**inviteUserByMail**](docs/Api/UserApi.md#inviteuserbymail) | **POST** /users/invite | Invite user by mail
+*UserApi* | [**listUsers**](docs/Api/UserApi.md#listusers) | **GET** /users | Get all users.
+*VisualSlideApi* | [**downloadVisualSlide**](docs/Api/VisualSlideApi.md#downloadvisualslide) | **GET** /visual/image | Get Visual Slide Image as JPEG
+*VisualSlideApi* | [**getVisualSlide**](docs/Api/VisualSlideApi.md#getvisualslide) | **GET** /visual | Get Visual Slide Image as Base64
+
+
+## Documentation For Models
+
+ - [Block](docs/Model/Block.md)
+ - [BlockOutputOnly](docs/Model/BlockOutputOnly.md)
+ - [BlockRelations](docs/Model/BlockRelations.md)
+ - [BlockRelationsBroadcast](docs/Model/BlockRelationsBroadcast.md)
+ - [BlockRelationsBroadcastParams](docs/Model/BlockRelationsBroadcastParams.md)
+ - [BlockRelationsItems](docs/Model/BlockRelationsItems.md)
+ - [BlockRelationsItemsParams](docs/Model/BlockRelationsItemsParams.md)
+ - [BlockRelationsProgram](docs/Model/BlockRelationsProgram.md)
+ - [BlockResults](docs/Model/BlockResults.md)
+ - [Broadcast](docs/Model/Broadcast.md)
+ - [BroadcastFieldValues](docs/Model/BroadcastFieldValues.md)
+ - [BroadcastInputOnly](docs/Model/BroadcastInputOnly.md)
+ - [BroadcastOutputOnly](docs/Model/BroadcastOutputOnly.md)
+ - [BroadcastRelations](docs/Model/BroadcastRelations.md)
+ - [BroadcastRelationsBlocks](docs/Model/BroadcastRelationsBlocks.md)
+ - [BroadcastRelationsItems](docs/Model/BroadcastRelationsItems.md)
+ - [BroadcastRelationsItemsParams](docs/Model/BroadcastRelationsItemsParams.md)
+ - [BroadcastRelationsModelType](docs/Model/BroadcastRelationsModelType.md)
+ - [BroadcastRelationsPresenters](docs/Model/BroadcastRelationsPresenters.md)
+ - [BroadcastRelationsTags](docs/Model/BroadcastRelationsTags.md)
+ - [BroadcastResults](docs/Model/BroadcastResults.md)
+ - [Campaign](docs/Model/Campaign.md)
+ - [CampaignOutputOnly](docs/Model/CampaignOutputOnly.md)
+ - [CampaignRelations](docs/Model/CampaignRelations.md)
+ - [CampaignRelationsItems](docs/Model/CampaignRelationsItems.md)
+ - [CampaignRelationsItemsParams](docs/Model/CampaignRelationsItemsParams.md)
+ - [CampaignResults](docs/Model/CampaignResults.md)
+ - [Contact](docs/Model/Contact.md)
+ - [ContactFieldValues](docs/Model/ContactFieldValues.md)
+ - [ContactOutputOnly](docs/Model/ContactOutputOnly.md)
+ - [ContactRelations](docs/Model/ContactRelations.md)
+ - [ContactRelationsItems](docs/Model/ContactRelationsItems.md)
+ - [ContactRelationsTags](docs/Model/ContactRelationsTags.md)
+ - [ContactRelationsTagsParams](docs/Model/ContactRelationsTagsParams.md)
+ - [ContactResults](docs/Model/ContactResults.md)
+ - [Data](docs/Model/Data.md)
+ - [Data1](docs/Model/Data1.md)
+ - [EPGBroadcast](docs/Model/EPGBroadcast.md)
+ - [ExternalMessageQueueData](docs/Model/ExternalMessageQueueData.md)
+ - [Genre](docs/Model/Genre.md)
+ - [GenreRelations](docs/Model/GenreRelations.md)
+ - [GenreRelationsBroadcasts](docs/Model/GenreRelationsBroadcasts.md)
+ - [GenreRelationsBroadcastsParams](docs/Model/GenreRelationsBroadcastsParams.md)
+ - [GenreRelationsPrograms](docs/Model/GenreRelationsPrograms.md)
+ - [GenreResults](docs/Model/GenreResults.md)
+ - [ImportItem](docs/Model/ImportItem.md)
+ - [ImportItemFieldValues](docs/Model/ImportItemFieldValues.md)
+ - [InlineResponse202](docs/Model/InlineResponse202.md)
+ - [InternalServerError](docs/Model/InternalServerError.md)
+ - [InviteUserData](docs/Model/InviteUserData.md)
+ - [InviteUserSuccess](docs/Model/InviteUserSuccess.md)
+ - [Item](docs/Model/Item.md)
+ - [ItemInputOnly](docs/Model/ItemInputOnly.md)
+ - [ItemOutputOnly](docs/Model/ItemOutputOnly.md)
+ - [ItemRelations](docs/Model/ItemRelations.md)
+ - [ItemRelationsBlock](docs/Model/ItemRelationsBlock.md)
+ - [ItemRelationsCampaign](docs/Model/ItemRelationsCampaign.md)
+ - [ItemRelationsContacts](docs/Model/ItemRelationsContacts.md)
+ - [ItemRelationsContactsParams](docs/Model/ItemRelationsContactsParams.md)
+ - [ItemRelationsProgram](docs/Model/ItemRelationsProgram.md)
+ - [ItemRelationsTags](docs/Model/ItemRelationsTags.md)
+ - [ItemResults](docs/Model/ItemResults.md)
+ - [ModelType](docs/Model/ModelType.md)
+ - [ModelTypeOptions](docs/Model/ModelTypeOptions.md)
+ - [ModelTypeRelations](docs/Model/ModelTypeRelations.md)
+ - [ModelTypeRelationsBroadcasts](docs/Model/ModelTypeRelationsBroadcasts.md)
+ - [ModelTypeRelationsCampaigns](docs/Model/ModelTypeRelationsCampaigns.md)
+ - [ModelTypeRelationsCampaignsParams](docs/Model/ModelTypeRelationsCampaignsParams.md)
+ - [ModelTypeRelationsContacts](docs/Model/ModelTypeRelationsContacts.md)
+ - [ModelTypeRelationsItems](docs/Model/ModelTypeRelationsItems.md)
+ - [ModelTypeRelationsPresenters](docs/Model/ModelTypeRelationsPresenters.md)
+ - [ModelTypeRelationsPrograms](docs/Model/ModelTypeRelationsPrograms.md)
+ - [ModelTypeResults](docs/Model/ModelTypeResults.md)
+ - [NotFound](docs/Model/NotFound.md)
+ - [PostSuccess](docs/Model/PostSuccess.md)
+ - [Presenter](docs/Model/Presenter.md)
+ - [PresenterOutputOnly](docs/Model/PresenterOutputOnly.md)
+ - [PresenterRelations](docs/Model/PresenterRelations.md)
+ - [PresenterRelationsBroadcasts](docs/Model/PresenterRelationsBroadcasts.md)
+ - [PresenterRelationsPrograms](docs/Model/PresenterRelationsPrograms.md)
+ - [PresenterRelationsProgramsParams](docs/Model/PresenterRelationsProgramsParams.md)
+ - [PresenterResults](docs/Model/PresenterResults.md)
+ - [Program](docs/Model/Program.md)
+ - [ProgramFieldValues](docs/Model/ProgramFieldValues.md)
+ - [ProgramInputOnly](docs/Model/ProgramInputOnly.md)
+ - [ProgramOutputOnly](docs/Model/ProgramOutputOnly.md)
+ - [ProgramRelations](docs/Model/ProgramRelations.md)
+ - [ProgramRelationsBlocks](docs/Model/ProgramRelationsBlocks.md)
+ - [ProgramRelationsBroadcasts](docs/Model/ProgramRelationsBroadcasts.md)
+ - [ProgramRelationsItems](docs/Model/ProgramRelationsItems.md)
+ - [ProgramRelationsItemsParams](docs/Model/ProgramRelationsItemsParams.md)
+ - [ProgramRelationsPresenters](docs/Model/ProgramRelationsPresenters.md)
+ - [ProgramRelationsTags](docs/Model/ProgramRelationsTags.md)
+ - [ProgramResults](docs/Model/ProgramResults.md)
+ - [ReadOnly](docs/Model/ReadOnly.md)
+ - [RelationsPlaceholder](docs/Model/RelationsPlaceholder.md)
+ - [Success](docs/Model/Success.md)
+ - [Tag](docs/Model/Tag.md)
+ - [TagOutputOnly](docs/Model/TagOutputOnly.md)
+ - [TagRelations](docs/Model/TagRelations.md)
+ - [TagRelationsBroadcasts](docs/Model/TagRelationsBroadcasts.md)
+ - [TagRelationsBroadcastsParams](docs/Model/TagRelationsBroadcastsParams.md)
+ - [TagRelationsContacts](docs/Model/TagRelationsContacts.md)
+ - [TagRelationsItems](docs/Model/TagRelationsItems.md)
+ - [TagRelationsPrograms](docs/Model/TagRelationsPrograms.md)
+ - [TagResults](docs/Model/TagResults.md)
+ - [TextString](docs/Model/TextString.md)
+ - [TooManyRequests](docs/Model/TooManyRequests.md)
+ - [UnprocessableEntity](docs/Model/UnprocessableEntity.md)
+ - [UserResult](docs/Model/UserResult.md)
+ - [UserResultSettings](docs/Model/UserResultSettings.md)
+ - [UserResults](docs/Model/UserResults.md)
+ - [BlockResult](docs/Model/BlockResult.md)
+ - [BroadcastDataInput](docs/Model/BroadcastDataInput.md)
+ - [BroadcastResult](docs/Model/BroadcastResult.md)
+ - [CampaignDataInput](docs/Model/CampaignDataInput.md)
+ - [CampaignResult](docs/Model/CampaignResult.md)
+ - [ContactDataInput](docs/Model/ContactDataInput.md)
+ - [ContactResult](docs/Model/ContactResult.md)
+ - [GenreResult](docs/Model/GenreResult.md)
+ - [ItemDataInput](docs/Model/ItemDataInput.md)
+ - [ItemResult](docs/Model/ItemResult.md)
+ - [ModelTypeResult](docs/Model/ModelTypeResult.md)
+ - [PresenterDataInput](docs/Model/PresenterDataInput.md)
+ - [PresenterResult](docs/Model/PresenterResult.md)
+ - [ProgramDataInput](docs/Model/ProgramDataInput.md)
+ - [ProgramResult](docs/Model/ProgramResult.md)
+ - [TagDataInput](docs/Model/TagDataInput.md)
+ - [TagResult](docs/Model/TagResult.md)
+
+
+## Documentation For Authorization
+
+
+## API Key
+
+- **Type**: API key
+- **API key parameter name**: api-key
+- **Location**: HTTP header
+
+
+## Author
+
+support@pluxbox.com
+
+
