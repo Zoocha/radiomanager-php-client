@@ -1,5 +1,5 @@
 {
-    "name": "pluxbox/GIT_REPO_ID",
+    "name": "pluxbox/radiomanager-php-client",
     "description": "",
     "keywords": [
         "swagger",
@@ -7,12 +7,12 @@
         "sdk",
         "api"
     ],
-    "homepage": "http://swagger.io",
-    "license": "proprietary",
+    "homepage": "https://radiomanager.pluxbox.com",
+    "license": "MIT",
     "authors": [
         {
-            "name": "Swagger and contributors",
-            "homepage": "https://github.com/swagger-api/swagger-codegen"
+            "name": "Pluxbox",
+            "homepage": "https://radiomanager.pluxbox.com"
         }
     ],
     "require": {

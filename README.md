@@ -59,7 +59,7 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://radiomanager.pb/api/v2*
+All URIs are relative to *http://staging.radiomanager.pluxbox.com/api/v2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
