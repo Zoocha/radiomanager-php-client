@@ -1,6 +1,6 @@
 # RadioManager\ExternalMessageApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -25,7 +25,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\ExternalMessageApi();
-$message = new \RadioManager\RadioManagerModels\ExternalMessageQueueData(); // \RadioManager\RadioManagerModels\ExternalMessageQueueData | Data **(Required)**
+$message = new \RadioManager\Model\ExternalMessageQueueData(); // \RadioManager\Model\ExternalMessageQueueData | Data **(Required)**
 
 try {
     $result = $api_instance->queueExternalMessage($message);
@@ -40,7 +40,7 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **message** | [**\RadioManager\RadioManagerModels\ExternalMessageQueueData**](../Model/ExternalMessageQueueData.md)| Data **(Required)** |
+ **message** | [**\RadioManager\Model\ExternalMessageQueueData**](../Model/ExternalMessageQueueData.md)| Data **(Required)** |
 
 ### Return type
 

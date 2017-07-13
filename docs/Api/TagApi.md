@@ -1,6 +1,6 @@
 # RadioManager\TagApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **createTag**
-> \RadioManager\RadioManagerModels\PostSuccess createTag($data)
+> \RadioManager\Model\PostSuccess createTag($data)
 
 Create tag.
 
@@ -29,7 +29,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\TagApi();
-$data = new \RadioManager\RadioManagerModels\TagDataInput(); // \RadioManager\RadioManagerModels\TagDataInput | Data **(Required)**
+$data = new \RadioManager\Model\TagDataInput(); // \RadioManager\Model\TagDataInput | Data **(Required)**
 
 try {
     $result = $api_instance->createTag($data);
@@ -44,11 +44,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\TagDataInput**](../Model/TagDataInput.md)| Data **(Required)** |
+ **data** | [**\RadioManager\Model\TagDataInput**](../Model/TagDataInput.md)| Data **(Required)** |
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\PostSuccess**](../Model/PostSuccess.md)
+[**\RadioManager\Model\PostSuccess**](../Model/PostSuccess.md)
 
 ### Authorization
 
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteTagById**
-> \RadioManager\RadioManagerModels\Success deleteTagById($id)
+> \RadioManager\Model\Success deleteTagById($id)
 
 Delete tag by id
 
@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getTagById**
-> \RadioManager\RadioManagerModels\TagResult getTagById($id, $_station_id)
+> \RadioManager\Model\TagResult getTagById($id, $_external_station_id)
 
 Get tags by id
 
@@ -130,10 +130,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\TagApi();
 $id = 789; // int | ID of Tag **(Required)**
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getTagById($id, $_station_id);
+    $result = $api_instance->getTagById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling TagApi->getTagById: ', $e->getMessage(), PHP_EOL;
@@ -146,11 +146,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Tag **(Required)** |
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\TagResult**](../Model/TagResult.md)
+[**\RadioManager\Model\TagResult**](../Model/TagResult.md)
 
 ### Authorization
 
@@ -164,7 +164,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listTags**
-> \RadioManager\RadioManagerModels\TagResults listTags($page, $program_id, $item_id, $broadcast_id, $contact_id, $_station_id)
+> \RadioManager\Model\TagResults listTags($page, $program_id, $item_id, $broadcast_id, $contact_id, $_external_station_id)
 
 Get a list of all the tags currently in your station.
 
@@ -186,10 +186,10 @@ $program_id = 789; // int | Search on Program ID *(Optional)* `(Relation)`
 $item_id = 789; // int | Search on Item ID *(Optional)* `(Relation)`
 $broadcast_id = 789; // int | Search on Broadcast ID *(Optional)* `(Relation)`
 $contact_id = 789; // int | Search on Contact ID *(Optional)* `(Relation)`
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listTags($page, $program_id, $item_id, $broadcast_id, $contact_id, $_station_id);
+    $result = $api_instance->listTags($page, $program_id, $item_id, $broadcast_id, $contact_id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling TagApi->listTags: ', $e->getMessage(), PHP_EOL;
@@ -206,11 +206,11 @@ Name | Type | Description  | Notes
  **item_id** | **int**| Search on Item ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **broadcast_id** | **int**| Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **contact_id** | **int**| Search on Contact ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\TagResults**](../Model/TagResults.md)
+[**\RadioManager\Model\TagResults**](../Model/TagResults.md)
 
 ### Authorization
 
@@ -224,7 +224,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **updateTagByID**
-> \RadioManager\RadioManagerModels\Success updateTagByID($id, $data)
+> \RadioManager\Model\Success updateTagByID($id, $data)
 
 Update tag by id
 
@@ -242,7 +242,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\TagApi();
 $id = 789; // int | ID of Tag **(Required)**
-$data = new \RadioManager\RadioManagerModels\TagDataInput(); // \RadioManager\RadioManagerModels\TagDataInput | Data *(Optional)*
+$data = new \RadioManager\Model\TagDataInput(); // \RadioManager\Model\TagDataInput | Data *(Optional)*
 
 try {
     $result = $api_instance->updateTagByID($id, $data);
@@ -258,11 +258,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Tag **(Required)** |
- **data** | [**\RadioManager\RadioManagerModels\TagDataInput**](../Model/TagDataInput.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\TagDataInput**](../Model/TagDataInput.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 

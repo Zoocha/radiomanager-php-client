@@ -134,9 +134,9 @@ class ItemResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test attribute "_station_id"
+     * Test attribute "_external_station_id"
      */
-    public function testPropertyStationId()
+    public function testPropertyExternalStationId()
     {
     }
 

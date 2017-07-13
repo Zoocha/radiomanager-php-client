@@ -1,6 +1,6 @@
 # RadioManager\ProgramApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **createProgram**
-> \RadioManager\RadioManagerModels\PostSuccess createProgram($data)
+> \RadioManager\Model\PostSuccess createProgram($data)
 
 Create program.
 
@@ -29,7 +29,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\ProgramApi();
-$data = new \RadioManager\RadioManagerModels\ProgramDataInput(); // \RadioManager\RadioManagerModels\ProgramDataInput | Data **(Required)**
+$data = new \RadioManager\Model\ProgramDataInput(); // \RadioManager\Model\ProgramDataInput | Data **(Required)**
 
 try {
     $result = $api_instance->createProgram($data);
@@ -44,11 +44,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\ProgramDataInput**](../Model/ProgramDataInput.md)| Data **(Required)** |
+ **data** | [**\RadioManager\Model\ProgramDataInput**](../Model/ProgramDataInput.md)| Data **(Required)** |
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\PostSuccess**](../Model/PostSuccess.md)
+[**\RadioManager\Model\PostSuccess**](../Model/PostSuccess.md)
 
 ### Authorization
 
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteProgramById**
-> \RadioManager\RadioManagerModels\Success deleteProgramById($id)
+> \RadioManager\Model\Success deleteProgramById($id)
 
 Delete program by id
 
@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getProgramById**
-> \RadioManager\RadioManagerModels\ProgramResult getProgramById($id, $_station_id)
+> \RadioManager\Model\ProgramResult getProgramById($id, $_external_station_id)
 
 Get program by id
 
@@ -130,10 +130,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\ProgramApi();
 $id = 789; // int | ID of Program **(Required)**
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getProgramById($id, $_station_id);
+    $result = $api_instance->getProgramById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ProgramApi->getProgramById: ', $e->getMessage(), PHP_EOL;
@@ -146,11 +146,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Program **(Required)** |
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\ProgramResult**](../Model/ProgramResult.md)
+[**\RadioManager\Model\ProgramResult**](../Model/ProgramResult.md)
 
 ### Authorization
 
@@ -164,7 +164,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listPrograms**
-> \RadioManager\RadioManagerModels\ProgramResults listPrograms($page, $genre_id, $model_type_id, $presenter_id, $tag_id, $broadcast_id, $item_id, $block_id, $_station_id)
+> \RadioManager\Model\ProgramResults listPrograms($page, $genre_id, $model_type_id, $presenter_id, $tag_id, $broadcast_id, $item_id, $block_id, $_external_station_id)
 
 Get all programs.
 
@@ -189,10 +189,10 @@ $tag_id = 789; // int | Search on Tag ID *(Optional)* `(Relation)`
 $broadcast_id = 789; // int | Search on Broadcast ID *(Optional)* `(Relation)`
 $item_id = 789; // int | Search on Item ID *(Optional)* `(Relation)`
 $block_id = 789; // int | Search on Block ID *(Optional)* `(Relation)`
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listPrograms($page, $genre_id, $model_type_id, $presenter_id, $tag_id, $broadcast_id, $item_id, $block_id, $_station_id);
+    $result = $api_instance->listPrograms($page, $genre_id, $model_type_id, $presenter_id, $tag_id, $broadcast_id, $item_id, $block_id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ProgramApi->listPrograms: ', $e->getMessage(), PHP_EOL;
@@ -212,11 +212,11 @@ Name | Type | Description  | Notes
  **broadcast_id** | **int**| Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **item_id** | **int**| Search on Item ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **block_id** | **int**| Search on Block ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\ProgramResults**](../Model/ProgramResults.md)
+[**\RadioManager\Model\ProgramResults**](../Model/ProgramResults.md)
 
 ### Authorization
 
@@ -230,7 +230,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **updateProgramByID**
-> \RadioManager\RadioManagerModels\Success updateProgramByID($id, $data)
+> \RadioManager\Model\Success updateProgramByID($id, $data)
 
 Update program by id
 
@@ -248,7 +248,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\ProgramApi();
 $id = 789; // int | ID of Program **(Required)**
-$data = new \RadioManager\RadioManagerModels\ProgramDataInput(); // \RadioManager\RadioManagerModels\ProgramDataInput | Data *(Optional)*
+$data = new \RadioManager\Model\ProgramDataInput(); // \RadioManager\Model\ProgramDataInput | Data *(Optional)*
 
 try {
     $result = $api_instance->updateProgramByID($id, $data);
@@ -264,11 +264,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Program **(Required)** |
- **data** | [**\RadioManager\RadioManagerModels\ProgramDataInput**](../Model/ProgramDataInput.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\ProgramDataInput**](../Model/ProgramDataInput.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 

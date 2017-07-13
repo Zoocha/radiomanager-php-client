@@ -1,6 +1,6 @@
 # RadioManager\GenreApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **getGenreById**
-> \RadioManager\RadioManagerModels\GenreResult getGenreById($id, $_station_id)
+> \RadioManager\Model\GenreResult getGenreById($id, $_external_station_id)
 
 Get genre by id
 
@@ -27,10 +27,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\GenreApi();
 $id = 789; // int | ID of Genre **(Required)**
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getGenreById($id, $_station_id);
+    $result = $api_instance->getGenreById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling GenreApi->getGenreById: ', $e->getMessage(), PHP_EOL;
@@ -43,11 +43,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Genre **(Required)** |
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\GenreResult**](../Model/GenreResult.md)
+[**\RadioManager\Model\GenreResult**](../Model/GenreResult.md)
 
 ### Authorization
 
@@ -61,7 +61,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listGenres**
-> \RadioManager\RadioManagerModels\GenreResults listGenres($page, $parent_id, $program_id, $broadcast_id, $_station_id)
+> \RadioManager\Model\GenreResults listGenres($page, $parent_id, $program_id, $broadcast_id, $_external_station_id)
 
 List all genres.
 
@@ -82,10 +82,10 @@ $page = 789; // int | Current page *(Optional)*
 $parent_id = 789; // int | Search on Parent ID of Genre *(Optional)*
 $program_id = 789; // int | Search on Program ID *(Optional)* `(Relation)`
 $broadcast_id = 789; // int | Search on Broadcast ID *(Optional)* `(Relation)`
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listGenres($page, $parent_id, $program_id, $broadcast_id, $_station_id);
+    $result = $api_instance->listGenres($page, $parent_id, $program_id, $broadcast_id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling GenreApi->listGenres: ', $e->getMessage(), PHP_EOL;
@@ -101,11 +101,11 @@ Name | Type | Description  | Notes
  **parent_id** | **int**| Search on Parent ID of Genre *(Optional)* | [optional]
  **program_id** | **int**| Search on Program ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **broadcast_id** | **int**| Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\GenreResults**](../Model/GenreResults.md)
+[**\RadioManager\Model\GenreResults**](../Model/GenreResults.md)
 
 ### Authorization
 

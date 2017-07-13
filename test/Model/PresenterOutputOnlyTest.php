@@ -104,4 +104,11 @@ class PresenterOutputOnlyTest extends \PHPUnit_Framework_TestCase
     public function testPropertyDeletedAt()
     {
     }
+
+    /**
+     * Test attribute "_external_station_id"
+     */
+    public function testPropertyExternalStationId()
+    {
+    }
 }

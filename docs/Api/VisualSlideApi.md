@@ -1,6 +1,6 @@
 # RadioManager\VisualSlideApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **downloadVisualSlide**
-> \RadioManager\RadioManagerModels\VisualImageResult downloadVisualSlide()
+> \RadioManager\Model\VisualImageResult downloadVisualSlide()
 
 Get Visual Slide Image as JPEG
 
@@ -41,7 +41,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\VisualImageResult**](../Model/VisualImageResult.md)
+[**\RadioManager\Model\VisualImageResult**](../Model/VisualImageResult.md)
 
 ### Authorization
 
@@ -55,7 +55,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getVisualSlide**
-> \RadioManager\RadioManagerModels\VisualResult getVisualSlide()
+> \RadioManager\Model\VisualResult getVisualSlide()
 
 Get Visual Slide Image as Base64
 
@@ -87,7 +87,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\VisualResult**](../Model/VisualResult.md)
+[**\RadioManager\Model\VisualResult**](../Model/VisualResult.md)
 
 ### Authorization
 

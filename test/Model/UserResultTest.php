@@ -148,9 +148,9 @@ class UserResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test attribute "active_station_id"
+     * Test attribute "active_external_station_id"
      */
-    public function testPropertyActiveStationId()
+    public function testPropertyActiveExternalStationId()
     {
     }
 

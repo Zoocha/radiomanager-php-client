@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**_2016_01_11** | [**null[]**](.md) |  | 
+**_2016_01_11** | [**\RadioManager\Model\BroadcastResult[]**](BroadcastResult.md) |  | 
 **next_page_url** | **string** |  | [default to 'http://radiomanager/pb/api/v1/broadcasts/epg/{identifier}/2016-01-12']
 **prev_page_url** | **string** |  | [default to 'http://radiomanager/pb/api/v1/broadcasts/epg/{identifier}/2016-01-10']
 

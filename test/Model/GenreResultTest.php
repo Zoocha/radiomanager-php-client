@@ -118,4 +118,11 @@ class GenreResultTest extends \PHPUnit_Framework_TestCase
     public function testPropertyPrograms()
     {
     }
+
+    /**
+     * Test attribute "_external_station_id"
+     */
+    public function testPropertyExternalStationId()
+    {
+    }
 }

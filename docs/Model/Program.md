@@ -4,7 +4,7 @@
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **model_type_id** | **int** |  | 
-**field_values** | [**\RadioManager\RadioManagerModels\ProgramFieldValues**](ProgramFieldValues.md) |  | [optional] 
+**field_values** | [**\RadioManager\Model\ProgramFieldValues**](ProgramFieldValues.md) |  | [optional] 
 **title** | **string** |  | 
 **disabled** | **bool** |  | [optional] 
 **genre_id** | **int** |  | [optional] 

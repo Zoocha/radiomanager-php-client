@@ -7,9 +7,9 @@ Name | Type | Description | Notes
 **updated_at** | [**\DateTime**](\DateTime.md) |  | 
 **created_at** | [**\DateTime**](\DateTime.md) |  | 
 **deleted_at** | [**\DateTime**](\DateTime.md) |  | 
-**_station_id** | **int** |  | [optional] 
+**_external_station_id** | **int** |  | [optional] 
 **model_type_id** | **int** |  | 
-**field_values** | [**\RadioManager\RadioManagerModels\ProgramFieldValues**](ProgramFieldValues.md) |  | [optional] 
+**field_values** | [**\RadioManager\Model\ProgramFieldValues**](ProgramFieldValues.md) |  | [optional] 
 **title** | **string** |  | 
 **disabled** | **bool** |  | [optional] 
 **genre_id** | **int** |  | [optional] 
@@ -21,12 +21,12 @@ Name | Type | Description | Notes
 **recommended** | **bool** |  | [optional] 
 **language** | **string** |  | [optional] 
 **pty_code_id** | **int** |  | [optional] 
-**items** | [**\RadioManager\RadioManagerModels\ProgramRelationsItems**](ProgramRelationsItems.md) |  | [optional] 
-**blocks** | [**\RadioManager\RadioManagerModels\ProgramRelationsBlocks**](ProgramRelationsBlocks.md) |  | [optional] 
-**broadcasts** | [**\RadioManager\RadioManagerModels\ProgramRelationsBroadcasts**](ProgramRelationsBroadcasts.md) |  | [optional] 
-**presenters** | [**\RadioManager\RadioManagerModels\ProgramRelationsPresenters**](ProgramRelationsPresenters.md) |  | [optional] 
-**tags** | [**\RadioManager\RadioManagerModels\ProgramRelationsTags**](ProgramRelationsTags.md) |  | [optional] 
-**model_type** | [**\RadioManager\RadioManagerModels\BroadcastRelationsModelType**](BroadcastRelationsModelType.md) |  | [optional] 
+**items** | [**\RadioManager\Model\ProgramRelationsItems**](ProgramRelationsItems.md) |  | [optional] 
+**blocks** | [**\RadioManager\Model\ProgramRelationsBlocks**](ProgramRelationsBlocks.md) |  | [optional] 
+**broadcasts** | [**\RadioManager\Model\ProgramRelationsBroadcasts**](ProgramRelationsBroadcasts.md) |  | [optional] 
+**presenters** | [**\RadioManager\Model\ProgramRelationsPresenters**](ProgramRelationsPresenters.md) |  | [optional] 
+**tags** | [**\RadioManager\Model\ProgramRelationsTags**](ProgramRelationsTags.md) |  | [optional] 
+**model_type** | [**\RadioManager\Model\BroadcastRelationsModelType**](BroadcastRelationsModelType.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

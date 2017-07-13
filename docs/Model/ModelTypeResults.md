@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **prev_page_url** | **string** |  | [optional] 
 **to** | **int** |  | [optional] 
 **total** | **int** |  | [optional] 
-**results** | [**\RadioManager\RadioManagerModels\ModelTypeResult[]**](ModelTypeResult.md) |  | [optional] 
+**results** | [**\RadioManager\Model\ModelTypeResult[]**](ModelTypeResult.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

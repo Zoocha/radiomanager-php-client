@@ -1,6 +1,6 @@
 # RadioManager\ModelTypeApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -9,7 +9,7 @@ Method | HTTP request | Description
 
 
 # **getModelTypeById**
-> \RadioManager\RadioManagerModels\ModelTypeResult getModelTypeById($id, $_station_id)
+> \RadioManager\Model\ModelTypeResult getModelTypeById($id, $_external_station_id)
 
 Get modelType by id
 
@@ -27,10 +27,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\ModelTypeApi();
 $id = 789; // int | ID of ModelType **(Required)**
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getModelTypeById($id, $_station_id);
+    $result = $api_instance->getModelTypeById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ModelTypeApi->getModelTypeById: ', $e->getMessage(), PHP_EOL;
@@ -43,11 +43,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of ModelType **(Required)** |
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\ModelTypeResult**](../Model/ModelTypeResult.md)
+[**\RadioManager\Model\ModelTypeResult**](../Model/ModelTypeResult.md)
 
 ### Authorization
 
@@ -61,7 +61,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listModelTypes**
-> \RadioManager\RadioManagerModels\ModelTypeResults listModelTypes($page, $model, $program_id, $broadcast_id, $item_id, $campaign_id, $presenter_id, $contact_id, $_station_id)
+> \RadioManager\Model\ModelTypeResults listModelTypes($page, $model, $program_id, $broadcast_id, $item_id, $campaign_id, $presenter_id, $contact_id, $_external_station_id)
 
 Get all modelTypes.
 
@@ -86,10 +86,10 @@ $item_id = 789; // int | Search on Item ID *(Optional)*
 $campaign_id = 789; // int | Search on Campaign ID *(Optional)*
 $presenter_id = 789; // int | Search on Presenter ID *(Optional)*
 $contact_id = 789; // int | Search on Contact ID *(Optional)*
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listModelTypes($page, $model, $program_id, $broadcast_id, $item_id, $campaign_id, $presenter_id, $contact_id, $_station_id);
+    $result = $api_instance->listModelTypes($page, $model, $program_id, $broadcast_id, $item_id, $campaign_id, $presenter_id, $contact_id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ModelTypeApi->listModelTypes: ', $e->getMessage(), PHP_EOL;
@@ -109,11 +109,11 @@ Name | Type | Description  | Notes
  **campaign_id** | **int**| Search on Campaign ID *(Optional)* | [optional]
  **presenter_id** | **int**| Search on Presenter ID *(Optional)* | [optional]
  **contact_id** | **int**| Search on Contact ID *(Optional)* | [optional]
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\ModelTypeResults**](../Model/ModelTypeResults.md)
+[**\RadioManager\Model\ModelTypeResults**](../Model/ModelTypeResults.md)
 
 ### Authorization
 

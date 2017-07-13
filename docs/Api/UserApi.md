@@ -1,6 +1,6 @@
 # RadioManager\UserApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -11,7 +11,7 @@ Method | HTTP request | Description
 
 
 # **deleteUserById**
-> \RadioManager\RadioManagerModels\Success deleteUserById($id)
+> \RadioManager\Model\Success deleteUserById($id)
 
 Remove user from station by Id
 
@@ -47,7 +47,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -61,7 +61,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getUserById**
-> \RadioManager\RadioManagerModels\UserResult getUserById($id)
+> \RadioManager\Model\UserResult getUserById($id)
 
 Get user by id
 
@@ -97,7 +97,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\UserResult**](../Model/UserResult.md)
+[**\RadioManager\Model\UserResult**](../Model/UserResult.md)
 
 ### Authorization
 
@@ -111,7 +111,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **inviteUserByMail**
-> \RadioManager\RadioManagerModels\InviteUserSuccess inviteUserByMail($data)
+> \RadioManager\Model\InviteUserSuccess inviteUserByMail($data)
 
 Invite user by mail
 
@@ -128,7 +128,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\UserApi();
-$data = new \RadioManager\RadioManagerModels\InviteUserData(); // \RadioManager\RadioManagerModels\InviteUserData | Data **(Required)**
+$data = new \RadioManager\Model\InviteUserData(); // \RadioManager\Model\InviteUserData | Data **(Required)**
 
 try {
     $result = $api_instance->inviteUserByMail($data);
@@ -143,11 +143,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\InviteUserData**](../Model/InviteUserData.md)| Data **(Required)** |
+ **data** | [**\RadioManager\Model\InviteUserData**](../Model/InviteUserData.md)| Data **(Required)** |
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\InviteUserSuccess**](../Model/InviteUserSuccess.md)
+[**\RadioManager\Model\InviteUserSuccess**](../Model/InviteUserSuccess.md)
 
 ### Authorization
 
@@ -161,7 +161,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listUsers**
-> \RadioManager\RadioManagerModels\UserResults listUsers($page, $role_id)
+> \RadioManager\Model\UserResults listUsers($page, $role_id)
 
 Get all users.
 
@@ -199,7 +199,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\UserResults**](../Model/UserResults.md)
+[**\RadioManager\Model\UserResults**](../Model/UserResults.md)
 
 ### Authorization
 

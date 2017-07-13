@@ -106,6 +106,13 @@ class PresenterResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test attribute "_external_station_id"
+     */
+    public function testPropertyExternalStationId()
+    {
+    }
+
+    /**
      * Test attribute "model_type_id"
      */
     public function testPropertyModelTypeId()

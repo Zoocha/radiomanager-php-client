@@ -7,14 +7,14 @@ Name | Type | Description | Notes
 **updated_at** | [**\DateTime**](\DateTime.md) |  | 
 **created_at** | [**\DateTime**](\DateTime.md) |  | 
 **deleted_at** | [**\DateTime**](\DateTime.md) |  | 
-**_station_id** | **int** |  | [optional] 
-**program_id** | **int** |  | 
-**model_type_id** | **int** |  | 
+**_external_station_id** | **int** |  | [optional] 
+**program_id** | **int** |  | [optional] 
+**model_type_id** | **int** |  | [optional] 
 **station_id** | **int** |  | [optional] 
-**field_values** | [**\RadioManager\RadioManagerModels\BroadcastFieldValues**](BroadcastFieldValues.md) |  | [optional] 
-**title** | **string** |  | 
-**start** | [**\DateTime**](\DateTime.md) |  | 
-**stop** | [**\DateTime**](\DateTime.md) |  | 
+**field_values** | [**\RadioManager\Model\BroadcastFieldValues**](BroadcastFieldValues.md) |  | [optional] 
+**title** | **string** |  | [optional] 
+**start** | [**\DateTime**](\DateTime.md) |  | [optional] 
+**stop** | [**\DateTime**](\DateTime.md) |  | [optional] 
 **genre_id** | **int** |  | [optional] 
 **description** | **string** |  | [optional] 
 **short_name** | **string** |  | [optional] 
@@ -28,14 +28,14 @@ Name | Type | Description | Notes
 **repetition_type** | **string** |  | [optional] 
 **repetition_end** | [**\DateTime**](\DateTime.md) |  | [optional] 
 **repetition_start** | [**\DateTime**](\DateTime.md) |  | [optional] 
-**repetition_days** | [**null[]**](.md) |  | [optional] 
+**repetition_days** | **bool[]** |  | [optional] 
 **pty_code_id** | **int** |  | [optional] 
-**items** | [**\RadioManager\RadioManagerModels\BroadcastRelationsItems**](BroadcastRelationsItems.md) |  | [optional] 
-**blocks** | [**\RadioManager\RadioManagerModels\BroadcastRelationsBlocks**](BroadcastRelationsBlocks.md) |  | [optional] 
-**program** | [**\RadioManager\RadioManagerModels\BlockRelationsProgram**](BlockRelationsProgram.md) |  | [optional] 
-**tags** | [**\RadioManager\RadioManagerModels\BroadcastRelationsTags**](BroadcastRelationsTags.md) |  | [optional] 
-**presenters** | [**\RadioManager\RadioManagerModels\BroadcastRelationsPresenters**](BroadcastRelationsPresenters.md) |  | [optional] 
-**model_type** | [**\RadioManager\RadioManagerModels\BroadcastRelationsModelType**](BroadcastRelationsModelType.md) |  | [optional] 
+**items** | [**\RadioManager\Model\BroadcastRelationsItems**](BroadcastRelationsItems.md) |  | [optional] 
+**blocks** | [**\RadioManager\Model\BroadcastRelationsBlocks**](BroadcastRelationsBlocks.md) |  | [optional] 
+**program** | [**\RadioManager\Model\BlockRelationsProgram**](BlockRelationsProgram.md) |  | [optional] 
+**tags** | [**\RadioManager\Model\BroadcastRelationsTags**](BroadcastRelationsTags.md) |  | [optional] 
+**presenters** | [**\RadioManager\Model\BroadcastRelationsPresenters**](BroadcastRelationsPresenters.md) |  | [optional] 
+**model_type** | [**\RadioManager\Model\BroadcastRelationsModelType**](BroadcastRelationsModelType.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

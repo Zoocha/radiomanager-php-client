@@ -10,10 +10,10 @@ Name | Type | Description | Notes
 **created_at** | [**\DateTime**](\DateTime.md) | Time of the creation of the Block (formatted as a DateTime object), saved with an TimeZone. | 
 **updated_at** | [**\DateTime**](\DateTime.md) | Time of the last update of the Block (formatted as a DateTime object), saved with an TimeZone. | 
 **deleted_at** | [**\DateTime**](\DateTime.md) | Moment when the Block got deleted (formatted as a DateTime object), saved with an TimeZone. | 
-**items** | [**\RadioManager\RadioManagerModels\BlockRelationsItems**](BlockRelationsItems.md) |  | [optional] 
-**broadcast** | [**\RadioManager\RadioManagerModels\BlockRelationsBroadcast**](BlockRelationsBroadcast.md) |  | [optional] 
-**program** | [**\RadioManager\RadioManagerModels\BlockRelationsProgram**](BlockRelationsProgram.md) |  | [optional] 
-**_station_id** | **int** |  | [optional] 
+**_external_station_id** | **int** |  | [optional] 
+**items** | [**\RadioManager\Model\BlockRelationsItems**](BlockRelationsItems.md) |  | [optional] 
+**broadcast** | [**\RadioManager\Model\BlockRelationsBroadcast**](BlockRelationsBroadcast.md) |  | [optional] 
+**program** | [**\RadioManager\Model\BlockRelationsProgram**](BlockRelationsProgram.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

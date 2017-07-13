@@ -10,6 +10,7 @@ Name | Type | Description | Notes
 **created_at** | [**\DateTime**](\DateTime.md) | Time of the creation of the Block (formatted as a DateTime object), saved with an TimeZone. | 
 **updated_at** | [**\DateTime**](\DateTime.md) | Time of the last update of the Block (formatted as a DateTime object), saved with an TimeZone. | 
 **deleted_at** | [**\DateTime**](\DateTime.md) | Moment when the Block got deleted (formatted as a DateTime object), saved with an TimeZone. | 
+**_external_station_id** | **int** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

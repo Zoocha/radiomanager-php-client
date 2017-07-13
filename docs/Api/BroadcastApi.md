@@ -1,6 +1,6 @@
 # RadioManager\BroadcastApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -18,7 +18,7 @@ Method | HTTP request | Description
 
 
 # **createBroadcast**
-> \RadioManager\RadioManagerModels\PostSuccess createBroadcast($data)
+> \RadioManager\Model\PostSuccess createBroadcast($data)
 
 Create broadcast.
 
@@ -35,7 +35,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\BroadcastApi();
-$data = new \RadioManager\RadioManagerModels\BroadcastDataInput(); // \RadioManager\RadioManagerModels\BroadcastDataInput | Data **(Required)**
+$data = new \RadioManager\Model\BroadcastDataInput(); // \RadioManager\Model\BroadcastDataInput | Data **(Required)**
 
 try {
     $result = $api_instance->createBroadcast($data);
@@ -50,11 +50,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\BroadcastDataInput**](../Model/BroadcastDataInput.md)| Data **(Required)** |
+ **data** | [**\RadioManager\Model\BroadcastDataInput**](../Model/BroadcastDataInput.md)| Data **(Required)** |
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\PostSuccess**](../Model/PostSuccess.md)
+[**\RadioManager\Model\PostSuccess**](../Model/PostSuccess.md)
 
 ### Authorization
 
@@ -68,7 +68,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteBroadcastById**
-> \RadioManager\RadioManagerModels\Success deleteBroadcastById($id)
+> \RadioManager\Model\Success deleteBroadcastById($id)
 
 Delete broadcast by id
 
@@ -104,7 +104,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -118,7 +118,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getBroadcastById**
-> \RadioManager\RadioManagerModels\BroadcastResult getBroadcastById($id, $_station_id)
+> \RadioManager\Model\BroadcastResult getBroadcastById($id, $_external_station_id)
 
 Get broadcast by id
 
@@ -136,10 +136,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\BroadcastApi();
 $id = 789; // int | ID of Broadcast **(Required)**
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getBroadcastById($id, $_station_id);
+    $result = $api_instance->getBroadcastById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling BroadcastApi->getBroadcastById: ', $e->getMessage(), PHP_EOL;
@@ -152,11 +152,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Broadcast **(Required)** |
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\BroadcastResult**](../Model/BroadcastResult.md)
+[**\RadioManager\Model\BroadcastResult**](../Model/BroadcastResult.md)
 
 ### Authorization
 
@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCurrentBroadcast**
-> \RadioManager\RadioManagerModels\Broadcast getCurrentBroadcast()
+> \RadioManager\Model\Broadcast getCurrentBroadcast()
 
 Get current Broadcast
 
@@ -202,7 +202,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Broadcast**](../Model/Broadcast.md)
+[**\RadioManager\Model\Broadcast**](../Model/Broadcast.md)
 
 ### Authorization
 
@@ -216,7 +216,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getDailyEPG**
-> \RadioManager\RadioManagerModels\EPGBroadcast getDailyEPG($date)
+> \RadioManager\Model\EPGBroadcast getDailyEPG($date)
 
 Get daily EPG
 
@@ -252,7 +252,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\EPGBroadcast**](../Model/EPGBroadcast.md)
+[**\RadioManager\Model\EPGBroadcast**](../Model/EPGBroadcast.md)
 
 ### Authorization
 
@@ -266,7 +266,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getEPGByDate**
-> \RadioManager\RadioManagerModels\EPGBroadcast getEPGByDate($date)
+> \RadioManager\Model\EPGBroadcast getEPGByDate($date)
 
 Get EPG by date
 
@@ -302,7 +302,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\EPGBroadcast**](../Model/EPGBroadcast.md)
+[**\RadioManager\Model\EPGBroadcast**](../Model/EPGBroadcast.md)
 
 ### Authorization
 
@@ -316,7 +316,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getNextBroadcast**
-> \RadioManager\RadioManagerModels\Broadcast getNextBroadcast()
+> \RadioManager\Model\Broadcast getNextBroadcast()
 
 Get next Broadcast
 
@@ -348,7 +348,7 @@ This endpoint does not need any parameter.
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Broadcast**](../Model/Broadcast.md)
+[**\RadioManager\Model\Broadcast**](../Model/Broadcast.md)
 
 ### Authorization
 
@@ -362,7 +362,7 @@ This endpoint does not need any parameter.
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getWeeklyEPG**
-> \RadioManager\RadioManagerModels\EPGBroadcast getWeeklyEPG($date)
+> \RadioManager\Model\EPGBroadcast getWeeklyEPG($date)
 
 Get weekly EPG
 
@@ -398,7 +398,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\EPGBroadcast**](../Model/EPGBroadcast.md)
+[**\RadioManager\Model\EPGBroadcast**](../Model/EPGBroadcast.md)
 
 ### Authorization
 
@@ -412,7 +412,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listBroadcasts**
-> \RadioManager\RadioManagerModels\BroadcastResults listBroadcasts($page, $start_min, $start_max, $model_type_id, $tag_id, $presenter_id, $item_id, $block_id, $genre_id, $program_id, $_station_id)
+> \RadioManager\Model\BroadcastResults listBroadcasts($page, $start_min, $start_max, $model_type_id, $tag_id, $presenter_id, $item_id, $block_id, $genre_id, $program_id, $_external_station_id)
 
 Get all broadcasts.
 
@@ -439,10 +439,10 @@ $item_id = 789; // int | Search on Item ID *(Optional)* `(Relation)`
 $block_id = 789; // int | Search on Block ID *(Optional)* `(Relation)`
 $genre_id = 789; // int | Search on Genre ID *(Optional)* `(Relation)`
 $program_id = 789; // int | Search on Program ID *(Optional)* `(Relation)`
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listBroadcasts($page, $start_min, $start_max, $model_type_id, $tag_id, $presenter_id, $item_id, $block_id, $genre_id, $program_id, $_station_id);
+    $result = $api_instance->listBroadcasts($page, $start_min, $start_max, $model_type_id, $tag_id, $presenter_id, $item_id, $block_id, $genre_id, $program_id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling BroadcastApi->listBroadcasts: ', $e->getMessage(), PHP_EOL;
@@ -464,11 +464,11 @@ Name | Type | Description  | Notes
  **block_id** | **int**| Search on Block ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **genre_id** | **int**| Search on Genre ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **program_id** | **int**| Search on Program ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\BroadcastResults**](../Model/BroadcastResults.md)
+[**\RadioManager\Model\BroadcastResults**](../Model/BroadcastResults.md)
 
 ### Authorization
 
@@ -482,7 +482,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **printBroadcastById**
-> \RadioManager\RadioManagerModels\EPGBroadcast printBroadcastById($id, $program_id, $presenter_id, $tag_id)
+> \RadioManager\Model\EPGBroadcast printBroadcastById($id, $program_id, $presenter_id, $tag_id)
 
 Print Broadcast by id
 
@@ -524,7 +524,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\EPGBroadcast**](../Model/EPGBroadcast.md)
+[**\RadioManager\Model\EPGBroadcast**](../Model/EPGBroadcast.md)
 
 ### Authorization
 
@@ -538,7 +538,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **updateBroadcastByID**
-> \RadioManager\RadioManagerModels\Success updateBroadcastByID($id, $data)
+> \RadioManager\Model\Success updateBroadcastByID($id, $data)
 
 Update broadcast by id
 
@@ -556,7 +556,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\BroadcastApi();
 $id = 789; // int | ID of Broadcast **(Required)**
-$data = new \RadioManager\RadioManagerModels\BroadcastDataInput(); // \RadioManager\RadioManagerModels\BroadcastDataInput | Data *(Optional)*
+$data = new \RadioManager\Model\BroadcastDataInput(); // \RadioManager\Model\BroadcastDataInput | Data *(Optional)*
 
 try {
     $result = $api_instance->updateBroadcastByID($id, $data);
@@ -572,11 +572,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Broadcast **(Required)** |
- **data** | [**\RadioManager\RadioManagerModels\BroadcastDataInput**](../Model/BroadcastDataInput.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\BroadcastDataInput**](../Model/BroadcastDataInput.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 

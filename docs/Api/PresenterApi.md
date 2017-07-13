@@ -1,6 +1,6 @@
 # RadioManager\PresenterApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **createPresenter**
-> \RadioManager\RadioManagerModels\PostSuccess createPresenter($data)
+> \RadioManager\Model\PostSuccess createPresenter($data)
 
 Create presenter.
 
@@ -29,7 +29,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\PresenterApi();
-$data = new \RadioManager\RadioManagerModels\PresenterDataInput(); // \RadioManager\RadioManagerModels\PresenterDataInput | Data **(Required)**
+$data = new \RadioManager\Model\PresenterDataInput(); // \RadioManager\Model\PresenterDataInput | Data **(Required)**
 
 try {
     $result = $api_instance->createPresenter($data);
@@ -44,11 +44,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\PresenterDataInput**](../Model/PresenterDataInput.md)| Data **(Required)** |
+ **data** | [**\RadioManager\Model\PresenterDataInput**](../Model/PresenterDataInput.md)| Data **(Required)** |
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\PostSuccess**](../Model/PostSuccess.md)
+[**\RadioManager\Model\PostSuccess**](../Model/PostSuccess.md)
 
 ### Authorization
 
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deletePresenterById**
-> \RadioManager\RadioManagerModels\Success deletePresenterById($id)
+> \RadioManager\Model\Success deletePresenterById($id)
 
 Delete presenter by id
 
@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getPresenterById**
-> \RadioManager\RadioManagerModels\PresenterResult getPresenterById($id, $_station_id)
+> \RadioManager\Model\PresenterResult getPresenterById($id, $_external_station_id)
 
 Get presenter by id
 
@@ -130,10 +130,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\PresenterApi();
 $id = 789; // int | id of Presenter
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getPresenterById($id, $_station_id);
+    $result = $api_instance->getPresenterById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PresenterApi->getPresenterById: ', $e->getMessage(), PHP_EOL;
@@ -146,11 +146,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| id of Presenter |
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\PresenterResult**](../Model/PresenterResult.md)
+[**\RadioManager\Model\PresenterResult**](../Model/PresenterResult.md)
 
 ### Authorization
 
@@ -164,7 +164,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listPresenters**
-> \RadioManager\RadioManagerModels\PresenterResults listPresenters($page, $model_type_id, $program_id, $broadcast_id, $_station_id)
+> \RadioManager\Model\PresenterResults listPresenters($page, $model_type_id, $program_id, $broadcast_id, $_external_station_id)
 
 Get all presenters.
 
@@ -185,10 +185,10 @@ $page = 789; // int | Current page *(Optional)*
 $model_type_id = 789; // int | Search on ModelType ID (Optional)
 $program_id = 789; // int | Search on Program ID *(Optional)* `(Relation)`
 $broadcast_id = 789; // int | Search on Broadcast ID *(Optional)* `(Relation)`
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listPresenters($page, $model_type_id, $program_id, $broadcast_id, $_station_id);
+    $result = $api_instance->listPresenters($page, $model_type_id, $program_id, $broadcast_id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling PresenterApi->listPresenters: ', $e->getMessage(), PHP_EOL;
@@ -204,11 +204,11 @@ Name | Type | Description  | Notes
  **model_type_id** | **int**| Search on ModelType ID (Optional) | [optional]
  **program_id** | **int**| Search on Program ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **broadcast_id** | **int**| Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\PresenterResults**](../Model/PresenterResults.md)
+[**\RadioManager\Model\PresenterResults**](../Model/PresenterResults.md)
 
 ### Authorization
 
@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **updatePresenterByID**
-> \RadioManager\RadioManagerModels\Success updatePresenterByID($id, $data)
+> \RadioManager\Model\Success updatePresenterByID($id, $data)
 
 Update presenter by id
 
@@ -240,7 +240,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\PresenterApi();
 $id = 789; // int | id of Presenter
-$data = new \RadioManager\RadioManagerModels\PresenterDataInput(); // \RadioManager\RadioManagerModels\PresenterDataInput | Data *(Optional)*
+$data = new \RadioManager\Model\PresenterDataInput(); // \RadioManager\Model\PresenterDataInput | Data *(Optional)*
 
 try {
     $result = $api_instance->updatePresenterByID($id, $data);
@@ -256,11 +256,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| id of Presenter |
- **data** | [**\RadioManager\RadioManagerModels\PresenterDataInput**](../Model/PresenterDataInput.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\PresenterDataInput**](../Model/PresenterDataInput.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 

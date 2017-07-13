@@ -8,15 +8,16 @@ Name | Type | Description | Notes
 **model** | **string** |  | [optional] 
 **created_at** | [**\DateTime**](\DateTime.md) |  | [optional] 
 **updated_at** | [**\DateTime**](\DateTime.md) |  | [optional] 
-**options** | [**\RadioManager\RadioManagerModels\ModelTypeOptions**](ModelTypeOptions.md) |  | [optional] 
+**options** | [**\RadioManager\Model\ModelTypeOptions**](ModelTypeOptions.md) |  | [optional] 
 **order** | **int** |  | [optional] 
 **deleted_at** | [**\DateTime**](\DateTime.md) |  | [optional] 
-**campaigns** | [**\RadioManager\RadioManagerModels\ModelTypeRelationsCampaigns**](ModelTypeRelationsCampaigns.md) |  | [optional] 
-**broadcasts** | [**\RadioManager\RadioManagerModels\ModelTypeRelationsBroadcasts**](ModelTypeRelationsBroadcasts.md) |  | [optional] 
-**programs** | [**\RadioManager\RadioManagerModels\ModelTypeRelationsPrograms**](ModelTypeRelationsPrograms.md) |  | [optional] 
-**contacts** | [**\RadioManager\RadioManagerModels\ModelTypeRelationsContacts**](ModelTypeRelationsContacts.md) |  | [optional] 
-**presenters** | [**\RadioManager\RadioManagerModels\ModelTypeRelationsPresenters**](ModelTypeRelationsPresenters.md) |  | [optional] 
-**items** | [**\RadioManager\RadioManagerModels\ModelTypeRelationsItems**](ModelTypeRelationsItems.md) |  | [optional] 
+**campaigns** | [**\RadioManager\Model\ModelTypeRelationsCampaigns**](ModelTypeRelationsCampaigns.md) |  | [optional] 
+**broadcasts** | [**\RadioManager\Model\ModelTypeRelationsBroadcasts**](ModelTypeRelationsBroadcasts.md) |  | [optional] 
+**programs** | [**\RadioManager\Model\ModelTypeRelationsPrograms**](ModelTypeRelationsPrograms.md) |  | [optional] 
+**contacts** | [**\RadioManager\Model\ModelTypeRelationsContacts**](ModelTypeRelationsContacts.md) |  | [optional] 
+**presenters** | [**\RadioManager\Model\ModelTypeRelationsPresenters**](ModelTypeRelationsPresenters.md) |  | [optional] 
+**items** | [**\RadioManager\Model\ModelTypeRelationsItems**](ModelTypeRelationsItems.md) |  | [optional] 
+**_external_station_id** | **int** |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

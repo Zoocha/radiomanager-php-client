@@ -1,6 +1,6 @@
 # RadioManager\ContactApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **createContact**
-> \RadioManager\RadioManagerModels\PostSuccess createContact($data)
+> \RadioManager\Model\PostSuccess createContact($data)
 
 Create contact.
 
@@ -29,7 +29,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\ContactApi();
-$data = new \RadioManager\RadioManagerModels\ContactDataInput(); // \RadioManager\RadioManagerModels\ContactDataInput | Data **(Required)**
+$data = new \RadioManager\Model\ContactDataInput(); // \RadioManager\Model\ContactDataInput | Data **(Required)**
 
 try {
     $result = $api_instance->createContact($data);
@@ -44,11 +44,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\ContactDataInput**](../Model/ContactDataInput.md)| Data **(Required)** |
+ **data** | [**\RadioManager\Model\ContactDataInput**](../Model/ContactDataInput.md)| Data **(Required)** |
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\PostSuccess**](../Model/PostSuccess.md)
+[**\RadioManager\Model\PostSuccess**](../Model/PostSuccess.md)
 
 ### Authorization
 
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteContactById**
-> \RadioManager\RadioManagerModels\Success deleteContactById($id)
+> \RadioManager\Model\Success deleteContactById($id)
 
 Delete contact by id
 
@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getContactById**
-> \RadioManager\RadioManagerModels\ContactResult getContactById($id, $_station_id)
+> \RadioManager\Model\ContactResult getContactById($id, $_external_station_id)
 
 Get contact by id
 
@@ -130,10 +130,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\ContactApi();
 $id = 789; // int | ID of Contact **(Required)**
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getContactById($id, $_station_id);
+    $result = $api_instance->getContactById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ContactApi->getContactById: ', $e->getMessage(), PHP_EOL;
@@ -146,11 +146,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Contact **(Required)** |
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\ContactResult**](../Model/ContactResult.md)
+[**\RadioManager\Model\ContactResult**](../Model/ContactResult.md)
 
 ### Authorization
 
@@ -164,7 +164,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listContacts**
-> \RadioManager\RadioManagerModels\ContactResults listContacts($page, $model_type_id, $tag_id, $item_id, $_station_id)
+> \RadioManager\Model\ContactResults listContacts($page, $model_type_id, $tag_id, $item_id, $_external_station_id)
 
 Get all contacts.
 
@@ -185,10 +185,10 @@ $page = 1; // int | Current page *(Optional)*
 $model_type_id = 789; // int | Search on ModelType ID *(Optional)*
 $tag_id = 789; // int | Search on Tag ID *(Optional)* `(Relation)`
 $item_id = 789; // int | Search on Item ID *(Optional)* `(Relation)`
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listContacts($page, $model_type_id, $tag_id, $item_id, $_station_id);
+    $result = $api_instance->listContacts($page, $model_type_id, $tag_id, $item_id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ContactApi->listContacts: ', $e->getMessage(), PHP_EOL;
@@ -204,11 +204,11 @@ Name | Type | Description  | Notes
  **model_type_id** | **int**| Search on ModelType ID *(Optional)* | [optional]
  **tag_id** | **int**| Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **item_id** | **int**| Search on Item ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\ContactResults**](../Model/ContactResults.md)
+[**\RadioManager\Model\ContactResults**](../Model/ContactResults.md)
 
 ### Authorization
 
@@ -222,7 +222,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **updateContactByID**
-> \RadioManager\RadioManagerModels\Success updateContactByID($id, $data)
+> \RadioManager\Model\Success updateContactByID($id, $data)
 
 Update contact by id
 
@@ -240,7 +240,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\ContactApi();
 $id = 789; // int | ID of Contact **(Required)**
-$data = new \RadioManager\RadioManagerModels\ContactDataInput(); // \RadioManager\RadioManagerModels\ContactDataInput | Data *(Optional)*
+$data = new \RadioManager\Model\ContactDataInput(); // \RadioManager\Model\ContactDataInput | Data *(Optional)*
 
 try {
     $result = $api_instance->updateContactByID($id, $data);
@@ -256,11 +256,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Contact **(Required)** |
- **data** | [**\RadioManager\RadioManagerModels\ContactDataInput**](../Model/ContactDataInput.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\ContactDataInput**](../Model/ContactDataInput.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 

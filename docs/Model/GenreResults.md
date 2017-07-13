@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **prev_page_url** | **string** |  | [optional] 
 **to** | **int** |  | [optional] 
 **total** | **int** |  | [optional] 
-**results** | [**\RadioManager\RadioManagerModels\GenreResult[]**](GenreResult.md) |  | [optional] 
+**results** | [**\RadioManager\Model\GenreResult[]**](GenreResult.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

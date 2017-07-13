@@ -11,11 +11,11 @@ Name | Type | Description | Notes
 **order** | **int** |  | [optional] 
 **templateblock_id** | **int** |  | [optional] 
 **templateitem_id** | **int** |  | [optional] 
-**_station_id** | **int** |  | [optional] 
+**_external_station_id** | **int** |  | [optional] 
 **model_type_id** | **int** |  | 
 **block_id** | **int** |  | [optional] 
 **external_id** | **int** |  | 
-**field_values** | [**\RadioManager\RadioManagerModels\ImportItemFieldValues**](ImportItemFieldValues.md) |  | [optional] 
+**field_values** | [**\RadioManager\Model\ImportItemFieldValues**](ImportItemFieldValues.md) |  | [optional] 
 **title** | **string** |  | [optional] 
 **duration** | **int** |  | [optional] 
 **start** | [**\DateTime**](\DateTime.md) |  | [optional] 
@@ -28,13 +28,13 @@ Name | Type | Description | Notes
 **user_draft_id** | **int** |  | [optional] 
 **static_start** | **bool** |  | [optional] 
 **details** | **string** |  | [optional] 
-**block** | [**\RadioManager\RadioManagerModels\ItemRelationsBlock**](ItemRelationsBlock.md) |  | [optional] 
-**broadcast** | [**\RadioManager\RadioManagerModels\BlockRelationsBroadcast**](BlockRelationsBroadcast.md) |  | [optional] 
-**program** | [**\RadioManager\RadioManagerModels\ItemRelationsProgram**](ItemRelationsProgram.md) |  | [optional] 
-**contacts** | [**\RadioManager\RadioManagerModels\ItemRelationsContacts**](ItemRelationsContacts.md) |  | [optional] 
-**tags** | [**\RadioManager\RadioManagerModels\ItemRelationsTags**](ItemRelationsTags.md) |  | [optional] 
-**campaign** | [**\RadioManager\RadioManagerModels\ItemRelationsCampaign**](ItemRelationsCampaign.md) |  | [optional] 
-**model_type** | [**\RadioManager\RadioManagerModels\BroadcastRelationsModelType**](BroadcastRelationsModelType.md) |  | [optional] 
+**block** | [**\RadioManager\Model\ItemRelationsBlock**](ItemRelationsBlock.md) |  | [optional] 
+**broadcast** | [**\RadioManager\Model\BlockRelationsBroadcast**](BlockRelationsBroadcast.md) |  | [optional] 
+**program** | [**\RadioManager\Model\ItemRelationsProgram**](ItemRelationsProgram.md) |  | [optional] 
+**contacts** | [**\RadioManager\Model\ItemRelationsContacts**](ItemRelationsContacts.md) |  | [optional] 
+**tags** | [**\RadioManager\Model\ItemRelationsTags**](ItemRelationsTags.md) |  | [optional] 
+**campaign** | [**\RadioManager\Model\ItemRelationsCampaign**](ItemRelationsCampaign.md) |  | [optional] 
+**model_type** | [**\RadioManager\Model\BroadcastRelationsModelType**](BroadcastRelationsModelType.md) |  | [optional] 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

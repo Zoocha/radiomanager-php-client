@@ -174,4 +174,11 @@ class ModelTypeResultTest extends \PHPUnit_Framework_TestCase
     public function testPropertyItems()
     {
     }
+
+    /**
+     * Test attribute "_external_station_id"
+     */
+    public function testPropertyExternalStationId()
+    {
+    }
 }

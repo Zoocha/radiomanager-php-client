@@ -1,6 +1,6 @@
 # RadioManager\CampaignApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -12,7 +12,7 @@ Method | HTTP request | Description
 
 
 # **createCampaign**
-> \RadioManager\RadioManagerModels\PostSuccess createCampaign($data)
+> \RadioManager\Model\PostSuccess createCampaign($data)
 
 Create campaign.
 
@@ -29,7 +29,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\CampaignApi();
-$data = new \RadioManager\RadioManagerModels\CampaignDataInput(); // \RadioManager\RadioManagerModels\CampaignDataInput | Data **(Required)**
+$data = new \RadioManager\Model\CampaignDataInput(); // \RadioManager\Model\CampaignDataInput | Data **(Required)**
 
 try {
     $result = $api_instance->createCampaign($data);
@@ -44,11 +44,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\CampaignDataInput**](../Model/CampaignDataInput.md)| Data **(Required)** |
+ **data** | [**\RadioManager\Model\CampaignDataInput**](../Model/CampaignDataInput.md)| Data **(Required)** |
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\PostSuccess**](../Model/PostSuccess.md)
+[**\RadioManager\Model\PostSuccess**](../Model/PostSuccess.md)
 
 ### Authorization
 
@@ -62,7 +62,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteCampaignById**
-> \RadioManager\RadioManagerModels\Success deleteCampaignById($id)
+> \RadioManager\Model\Success deleteCampaignById($id)
 
 Delete campaign by id
 
@@ -98,7 +98,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -112,7 +112,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCampaignById**
-> \RadioManager\RadioManagerModels\CampaignResult getCampaignById($id, $_station_id)
+> \RadioManager\Model\CampaignResult getCampaignById($id, $_external_station_id)
 
 Get campaign by id
 
@@ -130,10 +130,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\CampaignApi();
 $id = 789; // int | ID of Campaign **(Required)**
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getCampaignById($id, $_station_id);
+    $result = $api_instance->getCampaignById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CampaignApi->getCampaignById: ', $e->getMessage(), PHP_EOL;
@@ -146,11 +146,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Campaign **(Required)** |
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\CampaignResult**](../Model/CampaignResult.md)
+[**\RadioManager\Model\CampaignResult**](../Model/CampaignResult.md)
 
 ### Authorization
 
@@ -164,7 +164,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listCampaigns**
-> \RadioManager\RadioManagerModels\CampaignResults listCampaigns($page, $model_type_id, $item_id, $start_min, $start_max, $_station_id)
+> \RadioManager\Model\CampaignResults listCampaigns($page, $model_type_id, $item_id, $start_min, $start_max, $_external_station_id)
 
 Get all campaigns.
 
@@ -186,10 +186,10 @@ $model_type_id = 789; // int | Search on ModelType ID *(Optional)*
 $item_id = 789; // int | Search on Item ID *(Optional)* `(Relation)`
 $start_min = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Minimum start date *(Optional)*
 $start_max = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Maximum start date *(Optional)*
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listCampaigns($page, $model_type_id, $item_id, $start_min, $start_max, $_station_id);
+    $result = $api_instance->listCampaigns($page, $model_type_id, $item_id, $start_min, $start_max, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling CampaignApi->listCampaigns: ', $e->getMessage(), PHP_EOL;
@@ -206,11 +206,11 @@ Name | Type | Description  | Notes
  **item_id** | **int**| Search on Item ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **start_min** | **\DateTime**| Minimum start date *(Optional)* | [optional]
  **start_max** | **\DateTime**| Maximum start date *(Optional)* | [optional]
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\CampaignResults**](../Model/CampaignResults.md)
+[**\RadioManager\Model\CampaignResults**](../Model/CampaignResults.md)
 
 ### Authorization
 
@@ -224,7 +224,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **updateCampaignByID**
-> \RadioManager\RadioManagerModels\Success updateCampaignByID($id, $data)
+> \RadioManager\Model\Success updateCampaignByID($id, $data)
 
 Update campaign by id
 
@@ -242,7 +242,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\CampaignApi();
 $id = 789; // int | ID of Campaign **(Required)**
-$data = new \RadioManager\RadioManagerModels\CampaignDataInput(); // \RadioManager\RadioManagerModels\CampaignDataInput | Data *(Optional)*
+$data = new \RadioManager\Model\CampaignDataInput(); // \RadioManager\Model\CampaignDataInput | Data *(Optional)*
 
 try {
     $result = $api_instance->updateCampaignByID($id, $data);
@@ -258,11 +258,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Campaign **(Required)** |
- **data** | [**\RadioManager\RadioManagerModels\CampaignDataInput**](../Model/CampaignDataInput.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\CampaignDataInput**](../Model/CampaignDataInput.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 

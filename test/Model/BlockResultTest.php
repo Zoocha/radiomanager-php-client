@@ -127,6 +127,13 @@ class BlockResultTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test attribute "_external_station_id"
+     */
+    public function testPropertyExternalStationId()
+    {
+    }
+
+    /**
      * Test attribute "items"
      */
     public function testPropertyItems()
@@ -144,13 +151,6 @@ class BlockResultTest extends \PHPUnit_Framework_TestCase
      * Test attribute "program"
      */
     public function testPropertyProgram()
-    {
-    }
-
-    /**
-     * Test attribute "_station_id"
-     */
-    public function testPropertyStationId()
     {
     }
 }

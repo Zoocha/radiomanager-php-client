@@ -6,7 +6,7 @@ Name | Type | Description | Notes
 **model_type_id** | **int** |  | 
 **block_id** | **int** |  | [optional] 
 **external_id** | **int** |  | 
-**field_values** | [**\RadioManager\RadioManagerModels\ImportItemFieldValues**](ImportItemFieldValues.md) |  | [optional] 
+**field_values** | [**\RadioManager\Model\ImportItemFieldValues**](ImportItemFieldValues.md) |  | [optional] 
 **title** | **string** |  | [optional] 
 **duration** | **int** |  | [optional] 
 **start** | [**\DateTime**](\DateTime.md) |  | [optional] 

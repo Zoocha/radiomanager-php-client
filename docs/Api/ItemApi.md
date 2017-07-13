@@ -1,6 +1,6 @@
 # RadioManager\ItemApi
 
-All URIs are relative to *http://radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -16,7 +16,7 @@ Method | HTTP request | Description
 
 
 # **createItem**
-> \RadioManager\RadioManagerModels\PostSuccess createItem($data)
+> \RadioManager\Model\PostSuccess createItem($data)
 
 Create an new item.
 
@@ -33,7 +33,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\ItemApi();
-$data = new \RadioManager\RadioManagerModels\ItemDataInput(); // \RadioManager\RadioManagerModels\ItemDataInput | Data *(Optional)*
+$data = new \RadioManager\Model\ItemDataInput(); // \RadioManager\Model\ItemDataInput | Data *(Optional)*
 
 try {
     $result = $api_instance->createItem($data);
@@ -48,11 +48,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\ItemDataInput**](../Model/ItemDataInput.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\ItemDataInput**](../Model/ItemDataInput.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\PostSuccess**](../Model/PostSuccess.md)
+[**\RadioManager\Model\PostSuccess**](../Model/PostSuccess.md)
 
 ### Authorization
 
@@ -66,7 +66,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **currentItemPostStructure**
-> \RadioManager\RadioManagerModels\Success currentItemPostStructure($data)
+> \RadioManager\Model\Success currentItemPostStructure($data)
 
 Post a current playing item, keep structure
 
@@ -83,7 +83,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\ItemApi();
-$data = new \RadioManager\RadioManagerModels\ImportItem(); // \RadioManager\RadioManagerModels\ImportItem | Data *(Optional)*
+$data = new \RadioManager\Model\ImportItem(); // \RadioManager\Model\ImportItem | Data *(Optional)*
 
 try {
     $result = $api_instance->currentItemPostStructure($data);
@@ -98,11 +98,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\ImportItem**](../Model/ImportItem.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\ImportItem**](../Model/ImportItem.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -116,7 +116,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **currentItemPostTiming**
-> \RadioManager\RadioManagerModels\Success currentItemPostTiming($data)
+> \RadioManager\Model\Success currentItemPostTiming($data)
 
 Post a current playing item
 
@@ -133,7 +133,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\ItemApi();
-$data = new \RadioManager\RadioManagerModels\ImportItem(); // \RadioManager\RadioManagerModels\ImportItem | Data *(Optional)*
+$data = new \RadioManager\Model\ImportItem(); // \RadioManager\Model\ImportItem | Data *(Optional)*
 
 try {
     $result = $api_instance->currentItemPostTiming($data);
@@ -148,11 +148,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\ImportItem**](../Model/ImportItem.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\ImportItem**](../Model/ImportItem.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -166,7 +166,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **deleteItemById**
-> \RadioManager\RadioManagerModels\Success deleteItemById($id)
+> \RadioManager\Model\Success deleteItemById($id)
 
 Delete item by ID.
 
@@ -202,7 +202,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 
@@ -216,7 +216,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getItemById**
-> \RadioManager\RadioManagerModels\ItemResult getItemById($id, $_station_id)
+> \RadioManager\Model\ItemResult getItemById($id, $_external_station_id)
 
 Get extended item details by ID.
 
@@ -234,10 +234,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\ItemApi();
 $id = 789; // int | ID of Item **(Required)**
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getItemById($id, $_station_id);
+    $result = $api_instance->getItemById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->getItemById: ', $e->getMessage(), PHP_EOL;
@@ -250,11 +250,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Item **(Required)** |
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\ItemResult**](../Model/ItemResult.md)
+[**\RadioManager\Model\ItemResult**](../Model/ItemResult.md)
 
 ### Authorization
 
@@ -268,7 +268,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **listItems**
-> \RadioManager\RadioManagerModels\ItemResults listItems($page, $order_by, $order_direction, $start_min, $start_max, $duration_min, $duration_max, $status, $model_type_id, $program_draft_id, $user_draft_id, $station_draft_id, $block_id, $broadcast_id, $campaign_id, $contact_id, $program_id, $tag_id, $_station_id)
+> \RadioManager\Model\ItemResults listItems($page, $order_by, $order_direction, $start_min, $start_max, $duration_min, $duration_max, $status, $model_type_id, $program_draft_id, $user_draft_id, $station_draft_id, $block_id, $broadcast_id, $campaign_id, $contact_id, $program_id, $tag_id, $_external_station_id)
 
 Get a list of all the items currently in your station.
 
@@ -303,10 +303,10 @@ $campaign_id = 789; // int | Search on Campaign ID *(Optional)* `(Relation)`
 $contact_id = 789; // int | Search on Contact ID *(Optional)* `(Relation)`
 $program_id = 789; // int | Search on Program ID *(Optional)* `(Relation)`
 $tag_id = 789; // int | Search on Tag ID *(Optional)* `(Relation)`
-$_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
+$_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listItems($page, $order_by, $order_direction, $start_min, $start_max, $duration_min, $duration_max, $status, $model_type_id, $program_draft_id, $user_draft_id, $station_draft_id, $block_id, $broadcast_id, $campaign_id, $contact_id, $program_id, $tag_id, $_station_id);
+    $result = $api_instance->listItems($page, $order_by, $order_direction, $start_min, $start_max, $duration_min, $duration_max, $status, $model_type_id, $program_draft_id, $user_draft_id, $station_draft_id, $block_id, $broadcast_id, $campaign_id, $contact_id, $program_id, $tag_id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->listItems: ', $e->getMessage(), PHP_EOL;
@@ -336,11 +336,11 @@ Name | Type | Description  | Notes
  **contact_id** | **int**| Search on Contact ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **program_id** | **int**| Search on Program ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
  **tag_id** | **int**| Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; | [optional]
- **_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
+ **_external_station_id** | **int**| Query on a different (content providing) station *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\ItemResults**](../Model/ItemResults.md)
+[**\RadioManager\Model\ItemResults**](../Model/ItemResults.md)
 
 ### Authorization
 
@@ -354,7 +354,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **playlistPostStructure**
-> \RadioManager\RadioManagerModels\InlineResponse202 playlistPostStructure($data)
+> \RadioManager\Model\InlineResponse202 playlistPostStructure($data)
 
 Post a playlist, keep current structure
 
@@ -371,7 +371,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\ItemApi();
-$data = new \RadioManager\RadioManagerModels\Data1(); // \RadioManager\RadioManagerModels\Data1 | Data *(Optional)*
+$data = new \RadioManager\Model\Data1(); // \RadioManager\Model\Data1 | Data *(Optional)*
 
 try {
     $result = $api_instance->playlistPostStructure($data);
@@ -386,11 +386,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\Data1**](../Model/Data1.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\Data1**](../Model/Data1.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\InlineResponse202**](../Model/InlineResponse202.md)
+[**\RadioManager\Model\InlineResponse202**](../Model/InlineResponse202.md)
 
 ### Authorization
 
@@ -404,7 +404,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **playlistPostTiming**
-> \RadioManager\RadioManagerModels\InlineResponse202 playlistPostTiming($data)
+> \RadioManager\Model\InlineResponse202 playlistPostTiming($data)
 
 Post a playlist
 
@@ -421,7 +421,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\ItemApi();
-$data = new \RadioManager\RadioManagerModels\Data(); // \RadioManager\RadioManagerModels\Data | Data *(Optional)*
+$data = new \RadioManager\Model\Data(); // \RadioManager\Model\Data | Data *(Optional)*
 
 try {
     $result = $api_instance->playlistPostTiming($data);
@@ -436,11 +436,11 @@ try {
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **data** | [**\RadioManager\RadioManagerModels\Data**](../Model/Data.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\Data**](../Model/Data.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\InlineResponse202**](../Model/InlineResponse202.md)
+[**\RadioManager\Model\InlineResponse202**](../Model/InlineResponse202.md)
 
 ### Authorization
 
@@ -454,7 +454,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **updateItemById**
-> \RadioManager\RadioManagerModels\Success updateItemById($id, $data)
+> \RadioManager\Model\Success updateItemById($id, $data)
 
 Update extended item details by ID.
 
@@ -472,7 +472,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 
 $api_instance = new RadioManager\Api\ItemApi();
 $id = 789; // int | ID of Item **(Required)**
-$data = new \RadioManager\RadioManagerModels\Item(); // \RadioManager\RadioManagerModels\Item | Data *(Optional)*
+$data = new \RadioManager\Model\Item(); // \RadioManager\Model\Item | Data *(Optional)*
 
 try {
     $result = $api_instance->updateItemById($id, $data);
@@ -488,11 +488,11 @@ try {
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **id** | **int**| ID of Item **(Required)** |
- **data** | [**\RadioManager\RadioManagerModels\Item**](../Model/Item.md)| Data *(Optional)* | [optional]
+ **data** | [**\RadioManager\Model\Item**](../Model/Item.md)| Data *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\RadioManagerModels\Success**](../Model/Success.md)
+[**\RadioManager\Model\Success**](../Model/Success.md)
 
 ### Authorization
 

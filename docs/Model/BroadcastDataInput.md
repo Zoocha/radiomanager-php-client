@@ -3,13 +3,13 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**program_id** | **int** |  | 
-**model_type_id** | **int** |  | 
+**program_id** | **int** |  | [optional] 
+**model_type_id** | **int** |  | [optional] 
 **station_id** | **int** |  | [optional] 
-**field_values** | [**\RadioManager\RadioManagerModels\BroadcastFieldValues**](BroadcastFieldValues.md) |  | [optional] 
-**title** | **string** |  | 
-**start** | [**\DateTime**](\DateTime.md) |  | 
-**stop** | [**\DateTime**](\DateTime.md) |  | 
+**field_values** | [**\RadioManager\Model\BroadcastFieldValues**](BroadcastFieldValues.md) |  | [optional] 
+**title** | **string** |  | [optional] 
+**start** | [**\DateTime**](\DateTime.md) |  | [optional] 
+**stop** | [**\DateTime**](\DateTime.md) |  | [optional] 
 **genre_id** | **int** |  | [optional] 
 **description** | **string** |  | [optional] 
 **short_name** | **string** |  | [optional] 
@@ -23,7 +23,7 @@ Name | Type | Description | Notes
 **repetition_type** | **string** |  | [optional] 
 **repetition_end** | [**\DateTime**](\DateTime.md) |  | [optional] 
 **repetition_start** | [**\DateTime**](\DateTime.md) |  | [optional] 
-**repetition_days** | [**null[]**](.md) |  | [optional] 
+**repetition_days** | **bool[]** |  | [optional] 
 **pty_code_id** | **int** |  | [optional] 
 **tags** | **int[]** |  | [optional] 
 **presenters** | **int[]** |  | [optional] 
