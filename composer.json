@@ -5,7 +5,9 @@
         "swagger",
         "php",
         "sdk",
-        "api"
+        "radiomanager",
+        "pluxbox",
+        "radio"
     ],
     "homepage": "http://pluxbox.com",
     "license": "MIT",
