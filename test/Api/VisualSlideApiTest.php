@@ -73,16 +73,6 @@ class VisualSlideApiTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test case for downloadVisualSlide
-     *
-     * Get Visual Slide Image as JPEG.
-     *
-     */
-    public function testDownloadVisualSlide()
-    {
-    }
-
-    /**
      * Test case for getVisualSlide
      *
      * Get Visual Slide Image as Base64.
