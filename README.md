@@ -17,14 +17,12 @@ To install the bindings via [Composer](http://getcomposer.org/), run the followi
 composer require pluxbox/radiomanager-php-client
 ```
 
-Then run `composer install`
-
 ### Manual Installation
 
 Download the files and include `autoload.php`:
 
 ```php
-    require_once('/path/to/RadioManager/autoload.php');
+require_once('/path/to/RadioManager/autoload.php');
 ```
 
 ## Tests
@@ -32,7 +30,6 @@ Download the files and include `autoload.php`:
 To run the unit tests:
 
 ```
-composer install
 ./vendor/bin/phpunit
 ```
 
