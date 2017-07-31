@@ -11,9 +11,9 @@
  */
 
 /**
- * Pluxbox Radiomanager Client
+ * RadioManager
  *
- * Pluxbox RadioManager gives you the power, flexibility and speed you always wanted in a lightweight and easy-to-use web-based radio solution. With Pluxbox RadioManager you can organise your radio workflow and automate your omnichannel communication with your listeners. We offer wide range specialised services for the radio and connections like Hybrid Radio, Visual Radio, your website and social media without losing focus on your broadcast. For more information visit https://pluxbox.com
+ * RadioManager
  *
  * OpenAPI spec version: 2.0
  * Contact: support@pluxbox.com
@@ -143,8 +143,8 @@ class EPGBroadcast implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['_2016_01_11'] = isset($data['_2016_01_11']) ? $data['_2016_01_11'] : null;
-        $this->container['next_page_url'] = isset($data['next_page_url']) ? $data['next_page_url'] : 'http://radiomanager/pb/api/v1/broadcasts/epg/{identifier}/2016-01-12';
-        $this->container['prev_page_url'] = isset($data['prev_page_url']) ? $data['prev_page_url'] : 'http://radiomanager/pb/api/v1/broadcasts/epg/{identifier}/2016-01-10';
+        $this->container['next_page_url'] = isset($data['next_page_url']) ? $data['next_page_url'] : 'https://raidiomanager.pluxbox.com/api/v1/broadcasts/epg/{identifier}/2016-01-12';
+        $this->container['prev_page_url'] = isset($data['prev_page_url']) ? $data['prev_page_url'] : 'https://raidiomanager.pluxbox.com/pb/api/v1/broadcasts/epg/{identifier}/2016-01-10';
     }
 
     /**
