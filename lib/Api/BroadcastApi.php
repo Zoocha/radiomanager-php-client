@@ -910,7 +910,7 @@ class BroadcastApi
         }
         // query params
         if ($start_max !== null) {
-            $queryParams['start_max'] = $this->apiClient->getSerializer()->toQueryValue($start_max);
+            $queryParams['start-max'] = $this->apiClient->getSerializer()->toQueryValue($start_max);
         }
         // query params
         if ($model_type_id !== null) {
