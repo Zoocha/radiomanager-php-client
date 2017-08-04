@@ -28,7 +28,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\StoryApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\StoryApi();
 $data = new \RadioManager\Model\StoryDataInput(); // \RadioManager\Model\StoryDataInput | Data **(Required)**
 
 try {
@@ -78,7 +78,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\StoryApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\StoryApi();
 $id = 789; // int | ID of Story **(Required)**
 
 try {
@@ -128,7 +128,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\StoryApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\StoryApi();
 $id = 789; // int | ID of Story **(Required)**
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
@@ -180,7 +180,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\StoryApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\StoryApi();
 $page = 1; // int | Current page *(Optional)*
 $model_type_id = 789; // int | Search on ModelType ID *(Optional)*
 $tag_id = 789; // int | Search on Tag ID *(Optional)* `(Relation)`
@@ -238,7 +238,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\StoryApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\StoryApi();
 $id = 789; // int | ID of Story **(Required)**
 $data = new \RadioManager\Model\StoryDataInput(); // \RadioManager\Model\StoryDataInput | Data *(Optional)*
 

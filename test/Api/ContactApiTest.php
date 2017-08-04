@@ -29,6 +29,7 @@
 namespace RadioManager;
 
 use \RadioManager\Configuration;
+use \RadioManager\ApiClient;
 use \RadioManager\ApiException;
 use \RadioManager\ObjectSerializer;
 

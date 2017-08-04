@@ -28,15 +28,10 @@
 
 namespace RadioManager\Api;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\MultipartStream;
-use GuzzleHttp\Psr7\Request;
-use RadioManager\ApiException;
-use RadioManager\Configuration;
-use RadioManager\HeaderSelector;
-use RadioManager\ObjectSerializer;
+use \RadioManager\ApiClient;
+use \RadioManager\ApiException;
+use \RadioManager\Configuration;
+use \RadioManager\ObjectSerializer;
 
 /**
  * GenreApi Class Doc Comment
@@ -49,36 +44,47 @@ use RadioManager\ObjectSerializer;
 class GenreApi
 {
     /**
-     * @var ClientInterface
+     * API Client
+     *
+     * @var \RadioManager\ApiClient instance of the ApiClient
      */
-    protected $client;
+    protected $apiClient;
 
     /**
-     * @var Configuration
+     * Constructor
+     *
+     * @param \RadioManager\ApiClient|null $apiClient The api client to use
      */
-    protected $config;
+    public function __construct(\RadioManager\ApiClient $apiClient = null)
+    {
+        if ($apiClient === null) {
+            $apiClient = new ApiClient();
+        }
 
-    /**
-     * @param ClientInterface $client
-     * @param Configuration $config
-     * @param HeaderSelector $selector
-     */
-    public function __construct(
-        ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null
-    ) {
-        $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
+        $this->apiClient = $apiClient;
     }
 
     /**
-     * @return Configuration
+     * Get API client
+     *
+     * @return \RadioManager\ApiClient get the API client
      */
-    public function getConfig()
+    public function getApiClient()
     {
-        return $this->config;
+        return $this->apiClient;
+    }
+
+    /**
+     * Set the API client
+     *
+     * @param \RadioManager\ApiClient $apiClient set the API client
+     *
+     * @return GenreApi
+     */
+    public function setApiClient(\RadioManager\ApiClient $apiClient)
+    {
+        $this->apiClient = $apiClient;
+        return $this;
     }
 
     /**
@@ -89,7 +95,6 @@ class GenreApi
      * @param int $id ID of Genre **(Required)** (required)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\GenreResult
      */
     public function getGenreById($id, $_external_station_id = null)
@@ -106,233 +111,89 @@ class GenreApi
      * @param int $id ID of Genre **(Required)** (required)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\GenreResult, HTTP status code, HTTP response headers (array of strings)
      */
     public function getGenreByIdWithHttpInfo($id, $_external_station_id = null)
-    {
-        $returnType = '\RadioManager\Model\GenreResult';
-        $request = $this->getGenreByIdRequest($id, $_external_station_id);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\GenreResult', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getGenreByIdAsync
-     *
-     * Get genre by id
-     *
-     * @param int $id ID of Genre **(Required)** (required)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getGenreByIdAsync($id, $_external_station_id = null)
-    {
-        return $this->getGenreByIdAsyncWithHttpInfo($id, $_external_station_id)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getGenreByIdAsyncWithHttpInfo
-     *
-     * Get genre by id
-     *
-     * @param int $id ID of Genre **(Required)** (required)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getGenreByIdAsyncWithHttpInfo($id, $_external_station_id = null)
-    {
-        $returnType = '\RadioManager\Model\GenreResult';
-        $request = $this->getGenreByIdRequest($id, $_external_station_id);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getGenreById'
-     *
-     * @param int $id ID of Genre **(Required)** (required)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getGenreByIdRequest($id, $_external_station_id = null)
     {
         // verify the required parameter 'id' is set
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling getGenreById');
         }
-        if ($id < 0) {
+        if (($id < 0)) {
             throw new \InvalidArgumentException('invalid value for "$id" when calling GenreApi.getGenreById, must be bigger than or equal to 0.');
         }
 
-
-        $resourcePath = '/genres/{id}';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/genres/{id}";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($_external_station_id !== null) {
-            $queryParams['_external_station_id'] = ObjectSerializer::toQueryValue($_external_station_id);
+            $queryParams['_external_station_id'] = $this->apiClient->getSerializer()->toQueryValue($_external_station_id);
         }
-
         // path params
         if ($id !== null) {
-            $resourcePath = str_replace('{' . 'id' . '}', ObjectSerializer::toPathValue($id), $resourcePath);
-        }
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
+            $resourcePath = str_replace(
+                "{" . "id" . "}",
+                $this->apiClient->getSerializer()->toPathValue($id),
+                $resourcePath
             );
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\GenreResult',
+                '/genres/{id}'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\GenreResult', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\GenreResult', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -346,7 +207,6 @@ class GenreApi
      * @param int $broadcast_id Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\GenreResults
      */
     public function listGenres($page = null, $parent_id = null, $program_id = null, $broadcast_id = null, $_external_station_id = null)
@@ -366,250 +226,92 @@ class GenreApi
      * @param int $broadcast_id Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\GenreResults, HTTP status code, HTTP response headers (array of strings)
      */
     public function listGenresWithHttpInfo($page = null, $parent_id = null, $program_id = null, $broadcast_id = null, $_external_station_id = null)
     {
-        $returnType = '\RadioManager\Model\GenreResults';
-        $request = $this->listGenresRequest($page, $parent_id, $program_id, $broadcast_id, $_external_station_id);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\GenreResults', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation listGenresAsync
-     *
-     * List all genres.
-     *
-     * @param int $page Current page *(Optional)* (optional)
-     * @param int $parent_id Search on Parent ID of Genre *(Optional)* (optional)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $broadcast_id Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function listGenresAsync($page = null, $parent_id = null, $program_id = null, $broadcast_id = null, $_external_station_id = null)
-    {
-        return $this->listGenresAsyncWithHttpInfo($page, $parent_id, $program_id, $broadcast_id, $_external_station_id)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation listGenresAsyncWithHttpInfo
-     *
-     * List all genres.
-     *
-     * @param int $page Current page *(Optional)* (optional)
-     * @param int $parent_id Search on Parent ID of Genre *(Optional)* (optional)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $broadcast_id Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function listGenresAsyncWithHttpInfo($page = null, $parent_id = null, $program_id = null, $broadcast_id = null, $_external_station_id = null)
-    {
-        $returnType = '\RadioManager\Model\GenreResults';
-        $request = $this->listGenresRequest($page, $parent_id, $program_id, $broadcast_id, $_external_station_id);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'listGenres'
-     *
-     * @param int $page Current page *(Optional)* (optional)
-     * @param int $parent_id Search on Parent ID of Genre *(Optional)* (optional)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $broadcast_id Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function listGenresRequest($page = null, $parent_id = null, $program_id = null, $broadcast_id = null, $_external_station_id = null)
-    {
-        if ($page !== null && $page < 0) {
+        if (!is_null($page) && ($page < 0)) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling GenreApi.listGenres, must be bigger than or equal to 0.');
         }
 
-
-        $resourcePath = '/genres';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/genres";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($page !== null) {
-            $queryParams['page'] = ObjectSerializer::toQueryValue($page);
+            $queryParams['page'] = $this->apiClient->getSerializer()->toQueryValue($page);
         }
         // query params
         if ($parent_id !== null) {
-            $queryParams['parent_id'] = ObjectSerializer::toQueryValue($parent_id);
+            $queryParams['parent_id'] = $this->apiClient->getSerializer()->toQueryValue($parent_id);
         }
         // query params
         if ($program_id !== null) {
-            $queryParams['program_id'] = ObjectSerializer::toQueryValue($program_id);
+            $queryParams['program_id'] = $this->apiClient->getSerializer()->toQueryValue($program_id);
         }
         // query params
         if ($broadcast_id !== null) {
-            $queryParams['broadcast_id'] = ObjectSerializer::toQueryValue($broadcast_id);
+            $queryParams['broadcast_id'] = $this->apiClient->getSerializer()->toQueryValue($broadcast_id);
         }
         // query params
         if ($_external_station_id !== null) {
-            $queryParams['_external_station_id'] = ObjectSerializer::toQueryValue($_external_station_id);
-        }
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+            $queryParams['_external_station_id'] = $this->apiClient->getSerializer()->toQueryValue($_external_station_id);
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\GenreResults',
+                '/genres'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\GenreResults', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\GenreResults', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
-
 }

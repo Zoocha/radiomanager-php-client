@@ -28,15 +28,10 @@
 
 namespace RadioManager\Api;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\MultipartStream;
-use GuzzleHttp\Psr7\Request;
-use RadioManager\ApiException;
-use RadioManager\Configuration;
-use RadioManager\HeaderSelector;
-use RadioManager\ObjectSerializer;
+use \RadioManager\ApiClient;
+use \RadioManager\ApiException;
+use \RadioManager\Configuration;
+use \RadioManager\ObjectSerializer;
 
 /**
  * BlockApi Class Doc Comment
@@ -49,36 +44,47 @@ use RadioManager\ObjectSerializer;
 class BlockApi
 {
     /**
-     * @var ClientInterface
+     * API Client
+     *
+     * @var \RadioManager\ApiClient instance of the ApiClient
      */
-    protected $client;
+    protected $apiClient;
 
     /**
-     * @var Configuration
+     * Constructor
+     *
+     * @param \RadioManager\ApiClient|null $apiClient The api client to use
      */
-    protected $config;
+    public function __construct(\RadioManager\ApiClient $apiClient = null)
+    {
+        if ($apiClient === null) {
+            $apiClient = new ApiClient();
+        }
 
-    /**
-     * @param ClientInterface $client
-     * @param Configuration $config
-     * @param HeaderSelector $selector
-     */
-    public function __construct(
-        ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null
-    ) {
-        $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
+        $this->apiClient = $apiClient;
     }
 
     /**
-     * @return Configuration
+     * Get API client
+     *
+     * @return \RadioManager\ApiClient get the API client
      */
-    public function getConfig()
+    public function getApiClient()
     {
-        return $this->config;
+        return $this->apiClient;
+    }
+
+    /**
+     * Set the API client
+     *
+     * @param \RadioManager\ApiClient $apiClient set the API client
+     *
+     * @return BlockApi
+     */
+    public function setApiClient(\RadioManager\ApiClient $apiClient)
+    {
+        $this->apiClient = $apiClient;
+        return $this;
     }
 
     /**
@@ -89,7 +95,6 @@ class BlockApi
      * @param int $id ID of Block **(Required)** (required)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\BlockResult
      */
     public function getBlockById($id, $_external_station_id = null)
@@ -106,233 +111,89 @@ class BlockApi
      * @param int $id ID of Block **(Required)** (required)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\BlockResult, HTTP status code, HTTP response headers (array of strings)
      */
     public function getBlockByIdWithHttpInfo($id, $_external_station_id = null)
-    {
-        $returnType = '\RadioManager\Model\BlockResult';
-        $request = $this->getBlockByIdRequest($id, $_external_station_id);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\BlockResult', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getBlockByIdAsync
-     *
-     * Get block by id
-     *
-     * @param int $id ID of Block **(Required)** (required)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getBlockByIdAsync($id, $_external_station_id = null)
-    {
-        return $this->getBlockByIdAsyncWithHttpInfo($id, $_external_station_id)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getBlockByIdAsyncWithHttpInfo
-     *
-     * Get block by id
-     *
-     * @param int $id ID of Block **(Required)** (required)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getBlockByIdAsyncWithHttpInfo($id, $_external_station_id = null)
-    {
-        $returnType = '\RadioManager\Model\BlockResult';
-        $request = $this->getBlockByIdRequest($id, $_external_station_id);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getBlockById'
-     *
-     * @param int $id ID of Block **(Required)** (required)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getBlockByIdRequest($id, $_external_station_id = null)
     {
         // verify the required parameter 'id' is set
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling getBlockById');
         }
-        if ($id < 0) {
+        if (($id < 0)) {
             throw new \InvalidArgumentException('invalid value for "$id" when calling BlockApi.getBlockById, must be bigger than or equal to 0.');
         }
 
-
-        $resourcePath = '/blocks/{id}';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/blocks/{id}";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($_external_station_id !== null) {
-            $queryParams['_external_station_id'] = ObjectSerializer::toQueryValue($_external_station_id);
+            $queryParams['_external_station_id'] = $this->apiClient->getSerializer()->toQueryValue($_external_station_id);
         }
-
         // path params
         if ($id !== null) {
-            $resourcePath = str_replace('{' . 'id' . '}', ObjectSerializer::toPathValue($id), $resourcePath);
-        }
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
+            $resourcePath = str_replace(
+                "{" . "id" . "}",
+                $this->apiClient->getSerializer()->toPathValue($id),
+                $resourcePath
             );
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\BlockResult',
+                '/blocks/{id}'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\BlockResult', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\BlockResult', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -341,7 +202,6 @@ class BlockApi
      * Get current Block
      *
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\BlockResult
      */
     public function getCurrentBlock()
@@ -356,211 +216,69 @@ class BlockApi
      * Get current Block
      *
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\BlockResult, HTTP status code, HTTP response headers (array of strings)
      */
     public function getCurrentBlockWithHttpInfo()
     {
-        $returnType = '\RadioManager\Model\BlockResult';
-        $request = $this->getCurrentBlockRequest();
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\BlockResult', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getCurrentBlockAsync
-     *
-     * Get current Block
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getCurrentBlockAsync()
-    {
-        return $this->getCurrentBlockAsyncWithHttpInfo()->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getCurrentBlockAsyncWithHttpInfo
-     *
-     * Get current Block
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getCurrentBlockAsyncWithHttpInfo()
-    {
-        $returnType = '\RadioManager\Model\BlockResult';
-        $request = $this->getCurrentBlockRequest();
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getCurrentBlock'
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getCurrentBlockRequest()
-    {
-
-        $resourcePath = '/blocks/current';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/blocks/current";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
         }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
+
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\BlockResult',
+                '/blocks/current'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\BlockResult', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\BlockResult', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -569,7 +287,6 @@ class BlockApi
      * Get next Block
      *
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\BlockResult
      */
     public function getNextBlock()
@@ -584,211 +301,69 @@ class BlockApi
      * Get next Block
      *
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\BlockResult, HTTP status code, HTTP response headers (array of strings)
      */
     public function getNextBlockWithHttpInfo()
     {
-        $returnType = '\RadioManager\Model\BlockResult';
-        $request = $this->getNextBlockRequest();
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\BlockResult', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getNextBlockAsync
-     *
-     * Get next Block
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getNextBlockAsync()
-    {
-        return $this->getNextBlockAsyncWithHttpInfo()->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getNextBlockAsyncWithHttpInfo
-     *
-     * Get next Block
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getNextBlockAsyncWithHttpInfo()
-    {
-        $returnType = '\RadioManager\Model\BlockResult';
-        $request = $this->getNextBlockRequest();
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getNextBlock'
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getNextBlockRequest()
-    {
-
-        $resourcePath = '/blocks/next';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/blocks/next";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
         }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
+
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\BlockResult',
+                '/blocks/next'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\BlockResult', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\BlockResult', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -804,7 +379,6 @@ class BlockApi
      * @param int $item_id Search on Item ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\BlockResults
      */
     public function listBlocks($page = '1', $start_min = null, $start_max = null, $broadcast_id = null, $program_id = null, $item_id = null, $_external_station_id = null)
@@ -826,264 +400,100 @@ class BlockApi
      * @param int $item_id Search on Item ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\BlockResults, HTTP status code, HTTP response headers (array of strings)
      */
     public function listBlocksWithHttpInfo($page = '1', $start_min = null, $start_max = null, $broadcast_id = null, $program_id = null, $item_id = null, $_external_station_id = null)
     {
-        $returnType = '\RadioManager\Model\BlockResults';
-        $request = $this->listBlocksRequest($page, $start_min, $start_max, $broadcast_id, $program_id, $item_id, $_external_station_id);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\BlockResults', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation listBlocksAsync
-     *
-     * Get a list of all blocks currently in your station.
-     *
-     * @param int $page Current page *(Optional)* (optional, default to 1)
-     * @param \DateTime $start_min Minimum start date *(Optional)* (optional)
-     * @param \DateTime $start_max Maximum start date *(Optional)* (optional)
-     * @param int $broadcast_id Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $item_id Search on Item ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function listBlocksAsync($page = '1', $start_min = null, $start_max = null, $broadcast_id = null, $program_id = null, $item_id = null, $_external_station_id = null)
-    {
-        return $this->listBlocksAsyncWithHttpInfo($page, $start_min, $start_max, $broadcast_id, $program_id, $item_id, $_external_station_id)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation listBlocksAsyncWithHttpInfo
-     *
-     * Get a list of all blocks currently in your station.
-     *
-     * @param int $page Current page *(Optional)* (optional, default to 1)
-     * @param \DateTime $start_min Minimum start date *(Optional)* (optional)
-     * @param \DateTime $start_max Maximum start date *(Optional)* (optional)
-     * @param int $broadcast_id Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $item_id Search on Item ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function listBlocksAsyncWithHttpInfo($page = '1', $start_min = null, $start_max = null, $broadcast_id = null, $program_id = null, $item_id = null, $_external_station_id = null)
-    {
-        $returnType = '\RadioManager\Model\BlockResults';
-        $request = $this->listBlocksRequest($page, $start_min, $start_max, $broadcast_id, $program_id, $item_id, $_external_station_id);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'listBlocks'
-     *
-     * @param int $page Current page *(Optional)* (optional, default to 1)
-     * @param \DateTime $start_min Minimum start date *(Optional)* (optional)
-     * @param \DateTime $start_max Maximum start date *(Optional)* (optional)
-     * @param int $broadcast_id Search on Broadcast ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $item_id Search on Item ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function listBlocksRequest($page = '1', $start_min = null, $start_max = null, $broadcast_id = null, $program_id = null, $item_id = null, $_external_station_id = null)
-    {
-        if ($page !== null && $page < 0) {
+        if (!is_null($page) && ($page < 0)) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling BlockApi.listBlocks, must be bigger than or equal to 0.');
         }
 
-
-        $resourcePath = '/blocks';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/blocks";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($page !== null) {
-            $queryParams['page'] = ObjectSerializer::toQueryValue($page);
+            $queryParams['page'] = $this->apiClient->getSerializer()->toQueryValue($page);
         }
         // query params
         if ($start_min !== null) {
-            $queryParams['start-min'] = ObjectSerializer::toQueryValue($start_min);
+            $queryParams['start-min'] = $this->apiClient->getSerializer()->toQueryValue($start_min);
         }
         // query params
         if ($start_max !== null) {
-            $queryParams['start-max'] = ObjectSerializer::toQueryValue($start_max);
+            $queryParams['start-max'] = $this->apiClient->getSerializer()->toQueryValue($start_max);
         }
         // query params
         if ($broadcast_id !== null) {
-            $queryParams['broadcast_id'] = ObjectSerializer::toQueryValue($broadcast_id);
+            $queryParams['broadcast_id'] = $this->apiClient->getSerializer()->toQueryValue($broadcast_id);
         }
         // query params
         if ($program_id !== null) {
-            $queryParams['program_id'] = ObjectSerializer::toQueryValue($program_id);
+            $queryParams['program_id'] = $this->apiClient->getSerializer()->toQueryValue($program_id);
         }
         // query params
         if ($item_id !== null) {
-            $queryParams['item_id'] = ObjectSerializer::toQueryValue($item_id);
+            $queryParams['item_id'] = $this->apiClient->getSerializer()->toQueryValue($item_id);
         }
         // query params
         if ($_external_station_id !== null) {
-            $queryParams['_external_station_id'] = ObjectSerializer::toQueryValue($_external_station_id);
-        }
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+            $queryParams['_external_station_id'] = $this->apiClient->getSerializer()->toQueryValue($_external_station_id);
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\BlockResults',
+                '/blocks'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\BlockResults', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\BlockResults', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
-
 }

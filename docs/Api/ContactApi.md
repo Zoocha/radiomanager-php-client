@@ -28,7 +28,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ContactApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ContactApi();
 $data = new \RadioManager\Model\ContactDataInput(); // \RadioManager\Model\ContactDataInput | Data **(Required)**
 
 try {
@@ -78,7 +78,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ContactApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ContactApi();
 $id = 789; // int | ID of Contact **(Required)**
 
 try {
@@ -128,7 +128,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ContactApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ContactApi();
 $id = 789; // int | ID of Contact **(Required)**
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
@@ -180,7 +180,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ContactApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ContactApi();
 $page = 1; // int | Current page *(Optional)*
 $model_type_id = 789; // int | Search on ModelType ID *(Optional)*
 $tag_id = 789; // int | Search on Tag ID *(Optional)* `(Relation)`
@@ -238,7 +238,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ContactApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ContactApi();
 $id = 789; // int | ID of Contact **(Required)**
 $data = new \RadioManager\Model\ContactDataInput(); // \RadioManager\Model\ContactDataInput | Data *(Optional)*
 

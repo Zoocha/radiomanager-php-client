@@ -28,15 +28,10 @@
 
 namespace RadioManager\Api;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\MultipartStream;
-use GuzzleHttp\Psr7\Request;
-use RadioManager\ApiException;
-use RadioManager\Configuration;
-use RadioManager\HeaderSelector;
-use RadioManager\ObjectSerializer;
+use \RadioManager\ApiClient;
+use \RadioManager\ApiException;
+use \RadioManager\Configuration;
+use \RadioManager\ObjectSerializer;
 
 /**
  * BroadcastApi Class Doc Comment
@@ -49,36 +44,47 @@ use RadioManager\ObjectSerializer;
 class BroadcastApi
 {
     /**
-     * @var ClientInterface
+     * API Client
+     *
+     * @var \RadioManager\ApiClient instance of the ApiClient
      */
-    protected $client;
+    protected $apiClient;
 
     /**
-     * @var Configuration
+     * Constructor
+     *
+     * @param \RadioManager\ApiClient|null $apiClient The api client to use
      */
-    protected $config;
+    public function __construct(\RadioManager\ApiClient $apiClient = null)
+    {
+        if ($apiClient === null) {
+            $apiClient = new ApiClient();
+        }
 
-    /**
-     * @param ClientInterface $client
-     * @param Configuration $config
-     * @param HeaderSelector $selector
-     */
-    public function __construct(
-        ClientInterface $client = null,
-        Configuration $config = null,
-        HeaderSelector $selector = null
-    ) {
-        $this->client = $client ?: new Client();
-        $this->config = $config ?: new Configuration();
-        $this->headerSelector = $selector ?: new HeaderSelector();
+        $this->apiClient = $apiClient;
     }
 
     /**
-     * @return Configuration
+     * Get API client
+     *
+     * @return \RadioManager\ApiClient get the API client
      */
-    public function getConfig()
+    public function getApiClient()
     {
-        return $this->config;
+        return $this->apiClient;
+    }
+
+    /**
+     * Set the API client
+     *
+     * @param \RadioManager\ApiClient $apiClient set the API client
+     *
+     * @return BroadcastApi
+     */
+    public function setApiClient(\RadioManager\ApiClient $apiClient)
+    {
+        $this->apiClient = $apiClient;
+        return $this;
     }
 
     /**
@@ -88,7 +94,6 @@ class BroadcastApi
      *
      * @param \RadioManager\Model\BroadcastDataInput $data Data **(Required)** (required)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\PostSuccess
      */
     public function createBroadcast($data)
@@ -104,160 +109,25 @@ class BroadcastApi
      *
      * @param \RadioManager\Model\BroadcastDataInput $data Data **(Required)** (required)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\PostSuccess, HTTP status code, HTTP response headers (array of strings)
      */
     public function createBroadcastWithHttpInfo($data)
-    {
-        $returnType = '\RadioManager\Model\PostSuccess';
-        $request = $this->createBroadcastRequest($data);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\PostSuccess', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 422:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\UnprocessableEntity', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation createBroadcastAsync
-     *
-     * Create broadcast.
-     *
-     * @param \RadioManager\Model\BroadcastDataInput $data Data **(Required)** (required)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function createBroadcastAsync($data)
-    {
-        return $this->createBroadcastAsyncWithHttpInfo($data)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation createBroadcastAsyncWithHttpInfo
-     *
-     * Create broadcast.
-     *
-     * @param \RadioManager\Model\BroadcastDataInput $data Data **(Required)** (required)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function createBroadcastAsyncWithHttpInfo($data)
-    {
-        $returnType = '\RadioManager\Model\PostSuccess';
-        $request = $this->createBroadcastRequest($data);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'createBroadcast'
-     *
-     * @param \RadioManager\Model\BroadcastDataInput $data Data **(Required)** (required)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function createBroadcastRequest($data)
     {
         // verify the required parameter 'data' is set
         if ($data === null) {
             throw new \InvalidArgumentException('Missing the required parameter $data when calling createBroadcast');
         }
-
-        $resourcePath = '/broadcasts';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // body params
         $_tempBody = null;
@@ -265,66 +135,56 @@ class BroadcastApi
             $_tempBody = $data;
         }
 
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
-        }
-
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'POST',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\PostSuccess',
+                '/broadcasts'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\PostSuccess', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\PostSuccess', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 422:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\UnprocessableEntity', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'POST',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -334,7 +194,6 @@ class BroadcastApi
      *
      * @param int $id ID of Broadcast **(Required)** (required)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\Success
      */
     public function deleteBroadcastById($id)
@@ -350,226 +209,85 @@ class BroadcastApi
      *
      * @param int $id ID of Broadcast **(Required)** (required)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\Success, HTTP status code, HTTP response headers (array of strings)
      */
     public function deleteBroadcastByIdWithHttpInfo($id)
-    {
-        $returnType = '\RadioManager\Model\Success';
-        $request = $this->deleteBroadcastByIdRequest($id);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Success', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation deleteBroadcastByIdAsync
-     *
-     * Delete broadcast by id
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function deleteBroadcastByIdAsync($id)
-    {
-        return $this->deleteBroadcastByIdAsyncWithHttpInfo($id)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation deleteBroadcastByIdAsyncWithHttpInfo
-     *
-     * Delete broadcast by id
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function deleteBroadcastByIdAsyncWithHttpInfo($id)
-    {
-        $returnType = '\RadioManager\Model\Success';
-        $request = $this->deleteBroadcastByIdRequest($id);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'deleteBroadcastById'
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function deleteBroadcastByIdRequest($id)
     {
         // verify the required parameter 'id' is set
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling deleteBroadcastById');
         }
-        if ($id < 0) {
+        if (($id < 0)) {
             throw new \InvalidArgumentException('invalid value for "$id" when calling BroadcastApi.deleteBroadcastById, must be bigger than or equal to 0.');
         }
 
-
-        $resourcePath = '/broadcasts/{id}';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts/{id}";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // path params
         if ($id !== null) {
-            $resourcePath = str_replace('{' . 'id' . '}', ObjectSerializer::toPathValue($id), $resourcePath);
-        }
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
+            $resourcePath = str_replace(
+                "{" . "id" . "}",
+                $this->apiClient->getSerializer()->toPathValue($id),
+                $resourcePath
             );
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'DELETE',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\Success',
+                '/broadcasts/{id}'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\Success', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Success', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'DELETE',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -580,7 +298,6 @@ class BroadcastApi
      * @param int $id ID of Broadcast **(Required)** (required)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\BroadcastResult
      */
     public function getBroadcastById($id, $_external_station_id = null)
@@ -597,233 +314,89 @@ class BroadcastApi
      * @param int $id ID of Broadcast **(Required)** (required)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\BroadcastResult, HTTP status code, HTTP response headers (array of strings)
      */
     public function getBroadcastByIdWithHttpInfo($id, $_external_station_id = null)
-    {
-        $returnType = '\RadioManager\Model\BroadcastResult';
-        $request = $this->getBroadcastByIdRequest($id, $_external_station_id);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\BroadcastResult', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getBroadcastByIdAsync
-     *
-     * Get broadcast by id
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getBroadcastByIdAsync($id, $_external_station_id = null)
-    {
-        return $this->getBroadcastByIdAsyncWithHttpInfo($id, $_external_station_id)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getBroadcastByIdAsyncWithHttpInfo
-     *
-     * Get broadcast by id
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getBroadcastByIdAsyncWithHttpInfo($id, $_external_station_id = null)
-    {
-        $returnType = '\RadioManager\Model\BroadcastResult';
-        $request = $this->getBroadcastByIdRequest($id, $_external_station_id);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getBroadcastById'
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getBroadcastByIdRequest($id, $_external_station_id = null)
     {
         // verify the required parameter 'id' is set
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling getBroadcastById');
         }
-        if ($id < 0) {
+        if (($id < 0)) {
             throw new \InvalidArgumentException('invalid value for "$id" when calling BroadcastApi.getBroadcastById, must be bigger than or equal to 0.');
         }
 
-
-        $resourcePath = '/broadcasts/{id}';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts/{id}";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($_external_station_id !== null) {
-            $queryParams['_external_station_id'] = ObjectSerializer::toQueryValue($_external_station_id);
+            $queryParams['_external_station_id'] = $this->apiClient->getSerializer()->toQueryValue($_external_station_id);
         }
-
         // path params
         if ($id !== null) {
-            $resourcePath = str_replace('{' . 'id' . '}', ObjectSerializer::toPathValue($id), $resourcePath);
-        }
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
+            $resourcePath = str_replace(
+                "{" . "id" . "}",
+                $this->apiClient->getSerializer()->toPathValue($id),
+                $resourcePath
             );
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\BroadcastResult',
+                '/broadcasts/{id}'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\BroadcastResult', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\BroadcastResult', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -832,7 +405,6 @@ class BroadcastApi
      * Get current Broadcast
      *
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\Broadcast
      */
     public function getCurrentBroadcast()
@@ -847,211 +419,69 @@ class BroadcastApi
      * Get current Broadcast
      *
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\Broadcast, HTTP status code, HTTP response headers (array of strings)
      */
     public function getCurrentBroadcastWithHttpInfo()
     {
-        $returnType = '\RadioManager\Model\Broadcast';
-        $request = $this->getCurrentBroadcastRequest();
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Broadcast', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getCurrentBroadcastAsync
-     *
-     * Get current Broadcast
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getCurrentBroadcastAsync()
-    {
-        return $this->getCurrentBroadcastAsyncWithHttpInfo()->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getCurrentBroadcastAsyncWithHttpInfo
-     *
-     * Get current Broadcast
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getCurrentBroadcastAsyncWithHttpInfo()
-    {
-        $returnType = '\RadioManager\Model\Broadcast';
-        $request = $this->getCurrentBroadcastRequest();
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getCurrentBroadcast'
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getCurrentBroadcastRequest()
-    {
-
-        $resourcePath = '/broadcasts/current';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts/current";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
         }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
+
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\Broadcast',
+                '/broadcasts/current'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\Broadcast', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Broadcast', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -1061,7 +491,6 @@ class BroadcastApi
      *
      * @param \DateTime $date Date *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\EPGBroadcast
      */
     public function getDailyEPG($date = null)
@@ -1077,218 +506,73 @@ class BroadcastApi
      *
      * @param \DateTime $date Date *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\EPGBroadcast, HTTP status code, HTTP response headers (array of strings)
      */
     public function getDailyEPGWithHttpInfo($date = null)
     {
-        $returnType = '\RadioManager\Model\EPGBroadcast';
-        $request = $this->getDailyEPGRequest($date);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\EPGBroadcast', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getDailyEPGAsync
-     *
-     * Get daily EPG
-     *
-     * @param \DateTime $date Date *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getDailyEPGAsync($date = null)
-    {
-        return $this->getDailyEPGAsyncWithHttpInfo($date)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getDailyEPGAsyncWithHttpInfo
-     *
-     * Get daily EPG
-     *
-     * @param \DateTime $date Date *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getDailyEPGAsyncWithHttpInfo($date = null)
-    {
-        $returnType = '\RadioManager\Model\EPGBroadcast';
-        $request = $this->getDailyEPGRequest($date);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getDailyEPG'
-     *
-     * @param \DateTime $date Date *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getDailyEPGRequest($date = null)
-    {
-
-        $resourcePath = '/broadcasts/epg/daily';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts/epg/daily";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($date !== null) {
-            $queryParams['date'] = ObjectSerializer::toQueryValue($date);
-        }
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+            $queryParams['date'] = $this->apiClient->getSerializer()->toQueryValue($date);
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\EPGBroadcast',
+                '/broadcasts/epg/daily'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\EPGBroadcast', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\EPGBroadcast', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -1298,7 +582,6 @@ class BroadcastApi
      *
      * @param \DateTime $date Date *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\EPGBroadcast
      */
     public function getEPGByDate($date = null)
@@ -1314,218 +597,73 @@ class BroadcastApi
      *
      * @param \DateTime $date Date *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\EPGBroadcast, HTTP status code, HTTP response headers (array of strings)
      */
     public function getEPGByDateWithHttpInfo($date = null)
     {
-        $returnType = '\RadioManager\Model\EPGBroadcast';
-        $request = $this->getEPGByDateRequest($date);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\EPGBroadcast', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getEPGByDateAsync
-     *
-     * Get EPG by date
-     *
-     * @param \DateTime $date Date *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getEPGByDateAsync($date = null)
-    {
-        return $this->getEPGByDateAsyncWithHttpInfo($date)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getEPGByDateAsyncWithHttpInfo
-     *
-     * Get EPG by date
-     *
-     * @param \DateTime $date Date *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getEPGByDateAsyncWithHttpInfo($date = null)
-    {
-        $returnType = '\RadioManager\Model\EPGBroadcast';
-        $request = $this->getEPGByDateRequest($date);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getEPGByDate'
-     *
-     * @param \DateTime $date Date *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getEPGByDateRequest($date = null)
-    {
-
-        $resourcePath = '/broadcasts/epg';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts/epg";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($date !== null) {
-            $queryParams['date'] = ObjectSerializer::toQueryValue($date);
-        }
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+            $queryParams['date'] = $this->apiClient->getSerializer()->toQueryValue($date);
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\EPGBroadcast',
+                '/broadcasts/epg'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\EPGBroadcast', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\EPGBroadcast', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -1534,7 +672,6 @@ class BroadcastApi
      * Get next Broadcast
      *
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\Broadcast
      */
     public function getNextBroadcast()
@@ -1549,211 +686,69 @@ class BroadcastApi
      * Get next Broadcast
      *
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\Broadcast, HTTP status code, HTTP response headers (array of strings)
      */
     public function getNextBroadcastWithHttpInfo()
     {
-        $returnType = '\RadioManager\Model\Broadcast';
-        $request = $this->getNextBroadcastRequest();
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Broadcast', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getNextBroadcastAsync
-     *
-     * Get next Broadcast
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getNextBroadcastAsync()
-    {
-        return $this->getNextBroadcastAsyncWithHttpInfo()->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getNextBroadcastAsyncWithHttpInfo
-     *
-     * Get next Broadcast
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getNextBroadcastAsyncWithHttpInfo()
-    {
-        $returnType = '\RadioManager\Model\Broadcast';
-        $request = $this->getNextBroadcastRequest();
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getNextBroadcast'
-     *
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getNextBroadcastRequest()
-    {
-
-        $resourcePath = '/broadcasts/next';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts/next";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
         }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
+
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\Broadcast',
+                '/broadcasts/next'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\Broadcast', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Broadcast', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -1763,7 +758,6 @@ class BroadcastApi
      *
      * @param string $date Date *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\EPGBroadcast
      */
     public function getWeeklyEPG($date = null)
@@ -1779,214 +773,69 @@ class BroadcastApi
      *
      * @param string $date Date *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\EPGBroadcast, HTTP status code, HTTP response headers (array of strings)
      */
     public function getWeeklyEPGWithHttpInfo($date = null)
     {
-        $returnType = '\RadioManager\Model\EPGBroadcast';
-        $request = $this->getWeeklyEPGRequest($date);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\EPGBroadcast', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation getWeeklyEPGAsync
-     *
-     * Get weekly EPG
-     *
-     * @param string $date Date *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getWeeklyEPGAsync($date = null)
-    {
-        return $this->getWeeklyEPGAsyncWithHttpInfo($date)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation getWeeklyEPGAsyncWithHttpInfo
-     *
-     * Get weekly EPG
-     *
-     * @param string $date Date *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function getWeeklyEPGAsyncWithHttpInfo($date = null)
-    {
-        $returnType = '\RadioManager\Model\EPGBroadcast';
-        $request = $this->getWeeklyEPGRequest($date);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'getWeeklyEPG'
-     *
-     * @param string $date Date *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function getWeeklyEPGRequest($date = null)
-    {
-
-        $resourcePath = '/broadcasts/epg/weekly';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts/epg/weekly";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($date !== null) {
-            $queryParams['date'] = ObjectSerializer::toQueryValue($date);
-        }
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+            $queryParams['date'] = $this->apiClient->getSerializer()->toQueryValue($date);
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\EPGBroadcast',
+                '/broadcasts/epg/weekly'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\EPGBroadcast', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\EPGBroadcast', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -2006,7 +855,6 @@ class BroadcastApi
      * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\BroadcastResults
      */
     public function listBroadcasts($page = '1', $start_min = null, $start_max = null, $model_type_id = null, $tag_id = null, $presenter_id = null, $item_id = null, $block_id = null, $genre_id = null, $program_id = null, $_external_station_id = null)
@@ -2032,292 +880,117 @@ class BroadcastApi
      * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\BroadcastResults, HTTP status code, HTTP response headers (array of strings)
      */
     public function listBroadcastsWithHttpInfo($page = '1', $start_min = null, $start_max = null, $model_type_id = null, $tag_id = null, $presenter_id = null, $item_id = null, $block_id = null, $genre_id = null, $program_id = null, $_external_station_id = null)
     {
-        $returnType = '\RadioManager\Model\BroadcastResults';
-        $request = $this->listBroadcastsRequest($page, $start_min, $start_max, $model_type_id, $tag_id, $presenter_id, $item_id, $block_id, $genre_id, $program_id, $_external_station_id);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\BroadcastResults', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation listBroadcastsAsync
-     *
-     * Get all broadcasts.
-     *
-     * @param int $page Current page *(Optional)* (optional, default to 1)
-     * @param \DateTime $start_min Minimum start date *(Optional)* (optional)
-     * @param \DateTime $start_max Maximum start date *(Optional)* (optional)
-     * @param int $model_type_id Search on ModelType ID *(Optional)* (optional)
-     * @param int $tag_id Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $presenter_id Search on Presenter ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $item_id Search on Item ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $block_id Search on Block ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $genre_id Search on Genre ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function listBroadcastsAsync($page = '1', $start_min = null, $start_max = null, $model_type_id = null, $tag_id = null, $presenter_id = null, $item_id = null, $block_id = null, $genre_id = null, $program_id = null, $_external_station_id = null)
-    {
-        return $this->listBroadcastsAsyncWithHttpInfo($page, $start_min, $start_max, $model_type_id, $tag_id, $presenter_id, $item_id, $block_id, $genre_id, $program_id, $_external_station_id)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation listBroadcastsAsyncWithHttpInfo
-     *
-     * Get all broadcasts.
-     *
-     * @param int $page Current page *(Optional)* (optional, default to 1)
-     * @param \DateTime $start_min Minimum start date *(Optional)* (optional)
-     * @param \DateTime $start_max Maximum start date *(Optional)* (optional)
-     * @param int $model_type_id Search on ModelType ID *(Optional)* (optional)
-     * @param int $tag_id Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $presenter_id Search on Presenter ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $item_id Search on Item ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $block_id Search on Block ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $genre_id Search on Genre ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function listBroadcastsAsyncWithHttpInfo($page = '1', $start_min = null, $start_max = null, $model_type_id = null, $tag_id = null, $presenter_id = null, $item_id = null, $block_id = null, $genre_id = null, $program_id = null, $_external_station_id = null)
-    {
-        $returnType = '\RadioManager\Model\BroadcastResults';
-        $request = $this->listBroadcastsRequest($page, $start_min, $start_max, $model_type_id, $tag_id, $presenter_id, $item_id, $block_id, $genre_id, $program_id, $_external_station_id);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'listBroadcasts'
-     *
-     * @param int $page Current page *(Optional)* (optional, default to 1)
-     * @param \DateTime $start_min Minimum start date *(Optional)* (optional)
-     * @param \DateTime $start_max Maximum start date *(Optional)* (optional)
-     * @param int $model_type_id Search on ModelType ID *(Optional)* (optional)
-     * @param int $tag_id Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $presenter_id Search on Presenter ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $item_id Search on Item ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $block_id Search on Block ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $genre_id Search on Genre ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $_external_station_id Query on a different (content providing) station *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function listBroadcastsRequest($page = '1', $start_min = null, $start_max = null, $model_type_id = null, $tag_id = null, $presenter_id = null, $item_id = null, $block_id = null, $genre_id = null, $program_id = null, $_external_station_id = null)
-    {
-        if ($page !== null && $page < 0) {
+        if (!is_null($page) && ($page < 0)) {
             throw new \InvalidArgumentException('invalid value for "$page" when calling BroadcastApi.listBroadcasts, must be bigger than or equal to 0.');
         }
 
-
-        $resourcePath = '/broadcasts';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($page !== null) {
-            $queryParams['page'] = ObjectSerializer::toQueryValue($page);
+            $queryParams['page'] = $this->apiClient->getSerializer()->toQueryValue($page);
         }
         // query params
         if ($start_min !== null) {
-            $queryParams['start-min'] = ObjectSerializer::toQueryValue($start_min);
+            $queryParams['start-min'] = $this->apiClient->getSerializer()->toQueryValue($start_min);
         }
         // query params
         if ($start_max !== null) {
-            $queryParams['start-max'] = ObjectSerializer::toQueryValue($start_max);
+            $queryParams['start-max'] = $this->apiClient->getSerializer()->toQueryValue($start_max);
         }
         // query params
         if ($model_type_id !== null) {
-            $queryParams['model_type_id'] = ObjectSerializer::toQueryValue($model_type_id);
+            $queryParams['model_type_id'] = $this->apiClient->getSerializer()->toQueryValue($model_type_id);
         }
         // query params
         if ($tag_id !== null) {
-            $queryParams['tag_id'] = ObjectSerializer::toQueryValue($tag_id);
+            $queryParams['tag_id'] = $this->apiClient->getSerializer()->toQueryValue($tag_id);
         }
         // query params
         if ($presenter_id !== null) {
-            $queryParams['presenter_id'] = ObjectSerializer::toQueryValue($presenter_id);
+            $queryParams['presenter_id'] = $this->apiClient->getSerializer()->toQueryValue($presenter_id);
         }
         // query params
         if ($item_id !== null) {
-            $queryParams['item_id'] = ObjectSerializer::toQueryValue($item_id);
+            $queryParams['item_id'] = $this->apiClient->getSerializer()->toQueryValue($item_id);
         }
         // query params
         if ($block_id !== null) {
-            $queryParams['block_id'] = ObjectSerializer::toQueryValue($block_id);
+            $queryParams['block_id'] = $this->apiClient->getSerializer()->toQueryValue($block_id);
         }
         // query params
         if ($genre_id !== null) {
-            $queryParams['genre_id'] = ObjectSerializer::toQueryValue($genre_id);
+            $queryParams['genre_id'] = $this->apiClient->getSerializer()->toQueryValue($genre_id);
         }
         // query params
         if ($program_id !== null) {
-            $queryParams['program_id'] = ObjectSerializer::toQueryValue($program_id);
+            $queryParams['program_id'] = $this->apiClient->getSerializer()->toQueryValue($program_id);
         }
         // query params
         if ($_external_station_id !== null) {
-            $queryParams['_external_station_id'] = ObjectSerializer::toQueryValue($_external_station_id);
-        }
-
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
+            $queryParams['_external_station_id'] = $this->apiClient->getSerializer()->toQueryValue($_external_station_id);
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\BroadcastResults',
+                '/broadcasts'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\BroadcastResults', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\BroadcastResults', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -2330,7 +1003,6 @@ class BroadcastApi
      * @param int $presenter_id Search on Presenter ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @param int $tag_id Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\EPGBroadcast
      */
     public function printBroadcastById($id, $program_id = null, $presenter_id = null, $tag_id = null)
@@ -2349,247 +1021,97 @@ class BroadcastApi
      * @param int $presenter_id Search on Presenter ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @param int $tag_id Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\EPGBroadcast, HTTP status code, HTTP response headers (array of strings)
      */
     public function printBroadcastByIdWithHttpInfo($id, $program_id = null, $presenter_id = null, $tag_id = null)
-    {
-        $returnType = '\RadioManager\Model\EPGBroadcast';
-        $request = $this->printBroadcastByIdRequest($id, $program_id, $presenter_id, $tag_id);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\EPGBroadcast', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation printBroadcastByIdAsync
-     *
-     * Print Broadcast by id
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $presenter_id Search on Presenter ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $tag_id Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function printBroadcastByIdAsync($id, $program_id = null, $presenter_id = null, $tag_id = null)
-    {
-        return $this->printBroadcastByIdAsyncWithHttpInfo($id, $program_id, $presenter_id, $tag_id)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation printBroadcastByIdAsyncWithHttpInfo
-     *
-     * Print Broadcast by id
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $presenter_id Search on Presenter ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $tag_id Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function printBroadcastByIdAsyncWithHttpInfo($id, $program_id = null, $presenter_id = null, $tag_id = null)
-    {
-        $returnType = '\RadioManager\Model\EPGBroadcast';
-        $request = $this->printBroadcastByIdRequest($id, $program_id, $presenter_id, $tag_id);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'printBroadcastById'
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @param int $program_id Search on Program ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $presenter_id Search on Presenter ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @param int $tag_id Search on Tag ID *(Optional)* &#x60;(Relation)&#x60; (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function printBroadcastByIdRequest($id, $program_id = null, $presenter_id = null, $tag_id = null)
     {
         // verify the required parameter 'id' is set
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling printBroadcastById');
         }
-        if ($id < 0) {
+        if (($id < 0)) {
             throw new \InvalidArgumentException('invalid value for "$id" when calling BroadcastApi.printBroadcastById, must be bigger than or equal to 0.');
         }
 
-
-        $resourcePath = '/broadcasts/print/{id}';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts/print/{id}";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // query params
         if ($program_id !== null) {
-            $queryParams['program_id'] = ObjectSerializer::toQueryValue($program_id);
+            $queryParams['program_id'] = $this->apiClient->getSerializer()->toQueryValue($program_id);
         }
         // query params
         if ($presenter_id !== null) {
-            $queryParams['presenter_id'] = ObjectSerializer::toQueryValue($presenter_id);
+            $queryParams['presenter_id'] = $this->apiClient->getSerializer()->toQueryValue($presenter_id);
         }
         // query params
         if ($tag_id !== null) {
-            $queryParams['tag_id'] = ObjectSerializer::toQueryValue($tag_id);
+            $queryParams['tag_id'] = $this->apiClient->getSerializer()->toQueryValue($tag_id);
         }
-
         // path params
         if ($id !== null) {
-            $resourcePath = str_replace('{' . 'id' . '}', ObjectSerializer::toPathValue($id), $resourcePath);
-        }
-
-
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
+            $resourcePath = str_replace(
+                "{" . "id" . "}",
+                $this->apiClient->getSerializer()->toPathValue($id),
+                $resourcePath
             );
         }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'GET',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\EPGBroadcast',
+                '/broadcasts/print/{id}'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\EPGBroadcast', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\EPGBroadcast', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'GET',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
 
     /**
@@ -2600,7 +1122,6 @@ class BroadcastApi
      * @param int $id ID of Broadcast **(Required)** (required)
      * @param \RadioManager\Model\BroadcastDataInput $data Data *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return \RadioManager\Model\Success
      */
     public function updateBroadcastByID($id, $data = null)
@@ -2617,238 +1138,93 @@ class BroadcastApi
      * @param int $id ID of Broadcast **(Required)** (required)
      * @param \RadioManager\Model\BroadcastDataInput $data Data *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @throws \InvalidArgumentException
      * @return array of \RadioManager\Model\Success, HTTP status code, HTTP response headers (array of strings)
      */
     public function updateBroadcastByIDWithHttpInfo($id, $data = null)
-    {
-        $returnType = '\RadioManager\Model\Success';
-        $request = $this->updateBroadcastByIDRequest($id, $data);
-
-        try {
-
-            try {
-                $response = $this->client->send($request);
-            } catch (RequestException $e) {
-                throw new ApiException(
-                    "[{$e->getCode()}] {$e->getMessage()}",
-                    $e->getCode(),
-                    $e->getResponse() ? $e->getResponse()->getHeaders() : null
-                );
-            }
-
-            $statusCode = $response->getStatusCode();
-
-            if ($statusCode < 200 || $statusCode > 299) {
-                throw new ApiException(
-                    "[$statusCode] Error connecting to the API ({$request->getUri()})",
-                    $statusCode,
-                    $response->getHeaders(),
-                    $response->getBody()
-                );
-            }
-
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-
-        } catch (ApiException $e) {
-            switch ($e->getCode()) {
-                case 200:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Success', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 403:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 404:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 422:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\UnprocessableEntity', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-                case 429:
-                    $data = ObjectSerializer::deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
-                    $e->setResponseObject($data);
-                    break;
-            }
-            throw $e;
-        }
-    }
-
-    /**
-     * Operation updateBroadcastByIDAsync
-     *
-     * Update broadcast by id
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @param \RadioManager\Model\BroadcastDataInput $data Data *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function updateBroadcastByIDAsync($id, $data = null)
-    {
-        return $this->updateBroadcastByIDAsyncWithHttpInfo($id, $data)->then(function ($response) {
-            return $response[0];
-        });
-    }
-
-    /**
-     * Operation updateBroadcastByIDAsyncWithHttpInfo
-     *
-     * Update broadcast by id
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @param \RadioManager\Model\BroadcastDataInput $data Data *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Promise\PromiseInterface
-     */
-    public function updateBroadcastByIDAsyncWithHttpInfo($id, $data = null)
-    {
-        $returnType = '\RadioManager\Model\Success';
-        $request = $this->updateBroadcastByIDRequest($id, $data);
-
-        return $this->client->sendAsync($request)->then(function ($response) use ($returnType) {
-            $responseBody = $response->getBody();
-            if ($returnType === '\SplFileObject') {
-                $content = $responseBody; //stream goes to serializer
-            } else {
-                $content = $responseBody->getContents();
-                if ($returnType !== 'string') {
-                    $content = json_decode($content);
-                }
-            }
-
-            return [
-                ObjectSerializer::deserialize($content, $returnType, []),
-                $response->getStatusCode(),
-                $response->getHeaders()
-            ];
-        }, function ($exception) {
-            $response = $exception->getResponse();
-            $statusCode = $response->getStatusCode();
-            throw new ApiException(
-                "[$statusCode] Error connecting to the API ({$exception->getRequest()->getUri()})",
-                $statusCode,
-                $response->getHeaders(),
-                $response->getBody()
-            );
-        });
-    }
-
-    /**
-     * Create request for operation 'updateBroadcastByID'
-     *
-     * @param int $id ID of Broadcast **(Required)** (required)
-     * @param \RadioManager\Model\BroadcastDataInput $data Data *(Optional)* (optional)
-     * @throws \InvalidArgumentException
-     * @return \GuzzleHttp\Psr7\Request
-     */
-    protected function updateBroadcastByIDRequest($id, $data = null)
     {
         // verify the required parameter 'id' is set
         if ($id === null) {
             throw new \InvalidArgumentException('Missing the required parameter $id when calling updateBroadcastByID');
         }
-        if ($id < 0) {
+        if (($id < 0)) {
             throw new \InvalidArgumentException('invalid value for "$id" when calling BroadcastApi.updateBroadcastByID, must be bigger than or equal to 0.');
         }
 
-
-        $resourcePath = '/broadcasts/{id}';
-        $formParams = [];
+        // parse inputs
+        $resourcePath = "/broadcasts/{id}";
+        $httpBody = '';
         $queryParams = [];
         $headerParams = [];
-        $httpBody = '';
-        $multipart = false;
-
+        $formParams = [];
+        $_header_accept = $this->apiClient->selectHeaderAccept(['application/json']);
+        if (!is_null($_header_accept)) {
+            $headerParams['Accept'] = $_header_accept;
+        }
+        $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
         // path params
         if ($id !== null) {
-            $resourcePath = str_replace('{' . 'id' . '}', ObjectSerializer::toPathValue($id), $resourcePath);
+            $resourcePath = str_replace(
+                "{" . "id" . "}",
+                $this->apiClient->getSerializer()->toPathValue($id),
+                $resourcePath
+            );
         }
-
         // body params
         $_tempBody = null;
         if (isset($data)) {
             $_tempBody = $data;
         }
 
-        if ($multipart) {
-            $headers= $this->headerSelector->selectHeadersForMultipart(
-                ['application/json']
-            );
-        } else {
-            $headers = $this->headerSelector->selectHeaders(
-                ['application/json'],
-                ['application/json']
-            );
-        }
-
         // for model (json/xml)
         if (isset($_tempBody)) {
             $httpBody = $_tempBody; // $_tempBody is the method argument, if present
-
         } elseif (count($formParams) > 0) {
-            if ($multipart) {
-                $multipartContents = [];
-                foreach ($formParams as $formParamName => $formParamValue) {
-                    $multipartContents[] = [
-                        'name' => $formParamName,
-                        'contents' => $formParamValue
-                    ];
-                }
-                $httpBody = new MultipartStream($multipartContents); // for HTTP post (form)
-
-            } elseif ($headers['Content-Type'] === 'application/json') {
-                $httpBody = \GuzzleHttp\json_encode($formParams);
-
-            } else {
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams); // for HTTP post (form)
-            }
+            $httpBody = $formParams; // for HTTP post (form)
         }
-
         // this endpoint requires API key authentication
-        $apiKey = $this->config->getApiKeyWithPrefix('api-key');
-        if ($apiKey !== null) {
-            $headers['api-key'] = $apiKey;
+        $apiKey = $this->apiClient->getApiKeyWithPrefix('api-key');
+        if (strlen($apiKey) !== 0) {
+            $headerParams['api-key'] = $apiKey;
         }
+        // make the API Call
+        try {
+            list($response, $statusCode, $httpHeader) = $this->apiClient->callApi(
+                $resourcePath,
+                'PATCH',
+                $queryParams,
+                $httpBody,
+                $headerParams,
+                '\RadioManager\Model\Success',
+                '/broadcasts/{id}'
+            );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
-        $url = $this->config->getHost() . $resourcePath . ($query ? '?' . $query : '');
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\Success', $httpHeader), $statusCode, $httpHeader];
+        } catch (ApiException $e) {
+            switch ($e->getCode()) {
+                case 200:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Success', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 403:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 422:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\UnprocessableEntity', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+                case 429:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\TooManyRequests', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
+            }
 
-        $defaultHeaders = [];
-        if ($this->config->getUserAgent()) {
-            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+            throw $e;
         }
-
-        $headers = array_merge(
-            $defaultHeaders,
-            $headerParams,
-            $headers
-        );
-
-        return new Request(
-            'PATCH',
-            $url,
-            $headers,
-            $httpBody
-        );
     }
-
 }

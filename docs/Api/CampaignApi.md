@@ -28,7 +28,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\CampaignApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\CampaignApi();
 $data = new \RadioManager\Model\CampaignDataInput(); // \RadioManager\Model\CampaignDataInput | Data **(Required)**
 
 try {
@@ -78,7 +78,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\CampaignApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\CampaignApi();
 $id = 789; // int | ID of Campaign **(Required)**
 
 try {
@@ -128,7 +128,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\CampaignApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\CampaignApi();
 $id = 789; // int | ID of Campaign **(Required)**
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
@@ -180,7 +180,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\CampaignApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\CampaignApi();
 $page = 789; // int | Current page *(Optional)*
 $model_type_id = 789; // int | Search on ModelType ID *(Optional)*
 $item_id = 789; // int | Search on Item ID *(Optional)* `(Relation)`
@@ -240,7 +240,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\CampaignApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\CampaignApi();
 $id = 789; // int | ID of Campaign **(Required)**
 $data = new \RadioManager\Model\CampaignDataInput(); // \RadioManager\Model\CampaignDataInput | Data *(Optional)*
 

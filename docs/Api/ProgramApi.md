@@ -28,7 +28,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ProgramApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ProgramApi();
 $data = new \RadioManager\Model\ProgramDataInput(); // \RadioManager\Model\ProgramDataInput | Data **(Required)**
 
 try {
@@ -78,7 +78,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ProgramApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ProgramApi();
 $id = 789; // int | ID of program **(Required)**
 
 try {
@@ -128,7 +128,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ProgramApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ProgramApi();
 $id = 789; // int | ID of Program **(Required)**
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
@@ -180,7 +180,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ProgramApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ProgramApi();
 $page = 789; // int | Current page *(Optional)*
 $genre_id = 789; // int | Search on Genre ID *(Optional)*
 $model_type_id = 789; // int | Search on ModelType ID *(Optional)*
@@ -246,7 +246,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ProgramApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ProgramApi();
 $id = 789; // int | ID of Program **(Required)**
 $data = new \RadioManager\Model\ProgramDataInput(); // \RadioManager\Model\ProgramDataInput | Data *(Optional)*
 

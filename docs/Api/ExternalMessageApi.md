@@ -24,7 +24,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ExternalMessageApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ExternalMessageApi();
 $message = new \RadioManager\Model\ExternalMessageQueueData(); // \RadioManager\Model\ExternalMessageQueueData | Data **(Required)**
 
 try {

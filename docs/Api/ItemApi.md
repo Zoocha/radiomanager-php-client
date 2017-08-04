@@ -32,7 +32,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ItemApi();
 $data = new \RadioManager\Model\ItemDataInput(); // \RadioManager\Model\ItemDataInput | Data *(Optional)*
 
 try {
@@ -82,7 +82,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ItemApi();
 $data = new \RadioManager\Model\ImportItem(); // \RadioManager\Model\ImportItem | Data *(Optional)*
 
 try {
@@ -132,7 +132,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ItemApi();
 $data = new \RadioManager\Model\ImportItem(); // \RadioManager\Model\ImportItem | Data *(Optional)*
 
 try {
@@ -182,7 +182,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ItemApi();
 $id = 789; // int | ID of Item **(Required)**
 
 try {
@@ -232,7 +232,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ItemApi();
 $id = 789; // int | ID of Item **(Required)**
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
@@ -284,7 +284,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ItemApi();
 $page = 789; // int | Current page *(Optional)*
 $order_by = "order_by_example"; // string | Field to order the results *(Optional)*
 $order_direction = "order_direction_example"; // string | Direction of ordering *(Optional)*
@@ -370,7 +370,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ItemApi();
 $data = new \RadioManager\Model\Data1(); // \RadioManager\Model\Data1 | Data *(Optional)*
 
 try {
@@ -420,7 +420,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ItemApi();
 $data = new \RadioManager\Model\Data(); // \RadioManager\Model\Data | Data *(Optional)*
 
 try {
@@ -470,7 +470,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi(new \Http\Adapter\Guzzle6\Client());
+$api_instance = new RadioManager\Api\ItemApi();
 $id = 789; // int | ID of Item **(Required)**
 $data = new \RadioManager\Model\Item(); // \RadioManager\Model\Item | Data *(Optional)*
 
