@@ -1,6 +1,6 @@
 # RadioManager\StringApi
 
-All URIs are relative to *https://staging.radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -24,7 +24,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\StringApi();
+$api_instance = new RadioManager\Api\StringApi(new \Http\Adapter\Guzzle6\Client());
 $name = "name_example"; // string | Name of Strings **(Required)**
 $full_model = true; // bool | Full model or content only **(Required)**
 

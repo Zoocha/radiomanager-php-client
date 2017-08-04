@@ -111,4 +111,11 @@ class StoryDataInputTest extends \PHPUnit_Framework_TestCase
     public function testPropertyDescription()
     {
     }
+
+    /**
+     * Test attribute "tags"
+     */
+    public function testPropertyTags()
+    {
+    }
 }

@@ -1,6 +1,6 @@
 # RadioManager\PresenterApi
 
-All URIs are relative to *https://staging.radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -28,7 +28,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\PresenterApi();
+$api_instance = new RadioManager\Api\PresenterApi(new \Http\Adapter\Guzzle6\Client());
 $data = new \RadioManager\Model\PresenterDataInput(); // \RadioManager\Model\PresenterDataInput | Data **(Required)**
 
 try {
@@ -78,7 +78,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\PresenterApi();
+$api_instance = new RadioManager\Api\PresenterApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | id of presenter
 
 try {
@@ -128,7 +128,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\PresenterApi();
+$api_instance = new RadioManager\Api\PresenterApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | id of Presenter
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
@@ -180,7 +180,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\PresenterApi();
+$api_instance = new RadioManager\Api\PresenterApi(new \Http\Adapter\Guzzle6\Client());
 $page = 789; // int | Current page *(Optional)*
 $model_type_id = 789; // int | Search on ModelType ID (Optional)
 $program_id = 789; // int | Search on Program ID *(Optional)* `(Relation)`
@@ -238,7 +238,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\PresenterApi();
+$api_instance = new RadioManager\Api\PresenterApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | id of Presenter
 $data = new \RadioManager\Model\PresenterDataInput(); // \RadioManager\Model\PresenterDataInput | Data *(Optional)*
 

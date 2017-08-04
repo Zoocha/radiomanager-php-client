@@ -28,7 +28,7 @@ Name | Type | Description | Notes
 **repetition_type** | **string** |  | [optional] 
 **repetition_end** | [**\DateTime**](\DateTime.md) |  | [optional] 
 **repetition_start** | [**\DateTime**](\DateTime.md) |  | [optional] 
-**repetition_days** | **bool[]** |  | [optional] 
+**repetition_days** | **string** |  | [optional] 
 **pty_code_id** | **int** |  | [optional] 
 **items** | [**\RadioManager\Model\BroadcastRelationsItems**](BroadcastRelationsItems.md) |  | [optional] 
 **blocks** | [**\RadioManager\Model\BroadcastRelationsBlocks**](BroadcastRelationsBlocks.md) |  | [optional] 

@@ -1,6 +1,6 @@
 # RadioManager\TagApi
 
-All URIs are relative to *https://staging.radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -28,7 +28,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\TagApi();
+$api_instance = new RadioManager\Api\TagApi(new \Http\Adapter\Guzzle6\Client());
 $data = new \RadioManager\Model\TagDataInput(); // \RadioManager\Model\TagDataInput | Data **(Required)**
 
 try {
@@ -78,7 +78,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\TagApi();
+$api_instance = new RadioManager\Api\TagApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | ID of Tag **(Required)**
 
 try {
@@ -128,7 +128,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\TagApi();
+$api_instance = new RadioManager\Api\TagApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | ID of Tag **(Required)**
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
@@ -180,7 +180,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\TagApi();
+$api_instance = new RadioManager\Api\TagApi(new \Http\Adapter\Guzzle6\Client());
 $page = 789; // int | Current page *(Optional)*
 $program_id = 789; // int | Search on Program ID *(Optional)* `(Relation)`
 $item_id = 789; // int | Search on Item ID *(Optional)* `(Relation)`
@@ -240,7 +240,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\TagApi();
+$api_instance = new RadioManager\Api\TagApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | ID of Tag **(Required)**
 $data = new \RadioManager\Model\TagDataInput(); // \RadioManager\Model\TagDataInput | Data *(Optional)*
 

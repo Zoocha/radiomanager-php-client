@@ -1,6 +1,6 @@
 # RadioManager\UserApi
 
-All URIs are relative to *https://staging.radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -27,7 +27,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\UserApi();
+$api_instance = new RadioManager\Api\UserApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | id of User
 
 try {
@@ -77,7 +77,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\UserApi();
+$api_instance = new RadioManager\Api\UserApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | id of User
 
 try {
@@ -127,7 +127,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\UserApi();
+$api_instance = new RadioManager\Api\UserApi(new \Http\Adapter\Guzzle6\Client());
 $data = new \RadioManager\Model\InviteUserData(); // \RadioManager\Model\InviteUserData | Data **(Required)**
 
 try {
@@ -177,7 +177,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\UserApi();
+$api_instance = new RadioManager\Api\UserApi(new \Http\Adapter\Guzzle6\Client());
 $page = 1; // int | Current page *(Optional)*
 $role_id = 789; // int | Search on Role ID *(Optional)*
 

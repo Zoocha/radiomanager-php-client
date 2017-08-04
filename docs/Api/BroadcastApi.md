@@ -1,6 +1,6 @@
 # RadioManager\BroadcastApi
 
-All URIs are relative to *https://staging.radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *http://radiomanager.pb/api/v2*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
@@ -34,7 +34,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 $data = new \RadioManager\Model\BroadcastDataInput(); // \RadioManager\Model\BroadcastDataInput | Data **(Required)**
 
 try {
@@ -84,7 +84,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | ID of Broadcast **(Required)**
 
 try {
@@ -134,7 +134,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | ID of Broadcast **(Required)**
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
@@ -186,7 +186,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 
 try {
     $result = $api_instance->getCurrentBroadcast();
@@ -232,7 +232,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 $date = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Date *(Optional)*
 
 try {
@@ -282,7 +282,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 $date = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Date *(Optional)*
 
 try {
@@ -332,7 +332,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 
 try {
     $result = $api_instance->getNextBroadcast();
@@ -378,7 +378,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 $date = "date_example"; // string | Date *(Optional)*
 
 try {
@@ -428,7 +428,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 $page = 1; // int | Current page *(Optional)*
 $start_min = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Minimum start date *(Optional)*
 $start_max = new \DateTime("2013-10-20T19:20:30+01:00"); // \DateTime | Maximum start date *(Optional)*
@@ -498,7 +498,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | ID of Broadcast **(Required)**
 $program_id = 789; // int | Search on Program ID *(Optional)* `(Relation)`
 $presenter_id = 789; // int | Search on Presenter ID *(Optional)* `(Relation)`
@@ -554,7 +554,7 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BroadcastApi();
+$api_instance = new RadioManager\Api\BroadcastApi(new \Http\Adapter\Guzzle6\Client());
 $id = 789; // int | ID of Broadcast **(Required)**
 $data = new \RadioManager\Model\BroadcastDataInput(); // \RadioManager\Model\BroadcastDataInput | Data *(Optional)*
 

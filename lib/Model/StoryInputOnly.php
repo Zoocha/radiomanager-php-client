@@ -1,6 +1,6 @@
 <?php
 /**
- * StoryDataInput
+ * StoryInputOnly
  *
  * PHP version 5
  *
@@ -32,14 +32,14 @@ namespace RadioManager\Model;
 use \ArrayAccess;
 
 /**
- * StoryDataInput Class Doc Comment
+ * StoryInputOnly Class Doc Comment
  *
  * @category    Class
  * @package     RadioManager
  * @author      Swagger Codegen team
  * @link        https://github.com/swagger-api/swagger-codegen
  */
-class StoryDataInput implements ArrayAccess
+class StoryInputOnly implements ArrayAccess
 {
     const DISCRIMINATOR = null;
 
@@ -47,18 +47,13 @@ class StoryDataInput implements ArrayAccess
       * The original name of the model.
       * @var string
       */
-    protected static $swaggerModelName = 'StoryDataInput';
+    protected static $swaggerModelName = 'StoryInputOnly';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'model_type_id' => 'int',
-        'recommended' => 'bool',
-        'field_values' => 'object',
-        'name' => 'string',
-        'description' => 'string',
         'tags' => 'int[]'
     ];
 
@@ -67,11 +62,6 @@ class StoryDataInput implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerFormats = [
-        'model_type_id' => 'int64',
-        'recommended' => null,
-        'field_values' => null,
-        'name' => null,
-        'description' => null,
         'tags' => null
     ];
 
@@ -90,11 +80,6 @@ class StoryDataInput implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'model_type_id' => 'model_type_id',
-        'recommended' => 'recommended',
-        'field_values' => 'field_values',
-        'name' => 'name',
-        'description' => 'description',
         'tags' => 'tags'
     ];
 
@@ -104,11 +89,6 @@ class StoryDataInput implements ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'model_type_id' => 'setModelTypeId',
-        'recommended' => 'setRecommended',
-        'field_values' => 'setFieldValues',
-        'name' => 'setName',
-        'description' => 'setDescription',
         'tags' => 'setTags'
     ];
 
@@ -118,11 +98,6 @@ class StoryDataInput implements ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'model_type_id' => 'getModelTypeId',
-        'recommended' => 'getRecommended',
-        'field_values' => 'getFieldValues',
-        'name' => 'getName',
-        'description' => 'getDescription',
         'tags' => 'getTags'
     ];
 
@@ -157,11 +132,6 @@ class StoryDataInput implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['model_type_id'] = isset($data['model_type_id']) ? $data['model_type_id'] : null;
-        $this->container['recommended'] = isset($data['recommended']) ? $data['recommended'] : null;
-        $this->container['field_values'] = isset($data['field_values']) ? $data['field_values'] : null;
-        $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['description'] = isset($data['description']) ? $data['description'] : null;
         $this->container['tags'] = isset($data['tags']) ? $data['tags'] : null;
     }
 
@@ -174,12 +144,6 @@ class StoryDataInput implements ArrayAccess
     {
         $invalid_properties = [];
 
-        if ($this->container['model_type_id'] === null) {
-            $invalid_properties[] = "'model_type_id' can't be null";
-        }
-        if ($this->container['name'] === null) {
-            $invalid_properties[] = "'name' can't be null";
-        }
         return $invalid_properties;
     }
 
@@ -192,120 +156,9 @@ class StoryDataInput implements ArrayAccess
     public function valid()
     {
 
-        if ($this->container['model_type_id'] === null) {
-            return false;
-        }
-        if ($this->container['name'] === null) {
-            return false;
-        }
         return true;
     }
 
-
-    /**
-     * Gets model_type_id
-     * @return int
-     */
-    public function getModelTypeId()
-    {
-        return $this->container['model_type_id'];
-    }
-
-    /**
-     * Sets model_type_id
-     * @param int $model_type_id
-     * @return $this
-     */
-    public function setModelTypeId($model_type_id)
-    {
-        $this->container['model_type_id'] = $model_type_id;
-
-        return $this;
-    }
-
-    /**
-     * Gets recommended
-     * @return bool
-     */
-    public function getRecommended()
-    {
-        return $this->container['recommended'];
-    }
-
-    /**
-     * Sets recommended
-     * @param bool $recommended
-     * @return $this
-     */
-    public function setRecommended($recommended)
-    {
-        $this->container['recommended'] = $recommended;
-
-        return $this;
-    }
-
-    /**
-     * Gets field_values
-     * @return object
-     */
-    public function getFieldValues()
-    {
-        return $this->container['field_values'];
-    }
-
-    /**
-     * Sets field_values
-     * @param object $field_values
-     * @return $this
-     */
-    public function setFieldValues($field_values)
-    {
-        $this->container['field_values'] = $field_values;
-
-        return $this;
-    }
-
-    /**
-     * Gets name
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->container['name'];
-    }
-
-    /**
-     * Sets name
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->container['name'] = $name;
-
-        return $this;
-    }
-
-    /**
-     * Gets description
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->container['description'];
-    }
-
-    /**
-     * Sets description
-     * @param string $description
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->container['description'] = $description;
-
-        return $this;
-    }
 
     /**
      * Gets tags

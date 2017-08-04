@@ -74,7 +74,7 @@ class BroadcastDataInput implements ArrayAccess
         'repetition_type' => 'string',
         'repetition_end' => '\DateTime',
         'repetition_start' => '\DateTime',
-        'repetition_days' => 'bool[]',
+        'repetition_days' => 'string',
         'pty_code_id' => 'int',
         'tags' => 'int[]',
         'presenters' => 'int[]'
@@ -766,7 +766,7 @@ class BroadcastDataInput implements ArrayAccess
 
     /**
      * Gets repetition_days
-     * @return bool[]
+     * @return string
      */
     public function getRepetitionDays()
     {
@@ -775,7 +775,7 @@ class BroadcastDataInput implements ArrayAccess
 
     /**
      * Sets repetition_days
-     * @param bool[] $repetition_days
+     * @param string $repetition_days
      * @return $this
      */
     public function setRepetitionDays($repetition_days)
