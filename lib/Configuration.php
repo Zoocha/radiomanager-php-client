@@ -81,7 +81,7 @@ class Configuration
      *
      * @var string
      */
-    protected $host = 'http://radiomanager.pb/api/v2';
+    protected $host = 'https://staging.radiomanager.pluxbox.com/api/v2';
 
     /**
      * User agent of the HTTP request, set to "PHP-Swagger" by default
