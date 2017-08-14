@@ -169,6 +169,10 @@ class StoryApi
                     $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Forbidden', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
+                case 404:
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\NotFound', $e->getResponseHeaders());
+                    $e->setResponseObject($data);
+                    break;
                 case 422:
                     $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\UnprocessableEntity', $e->getResponseHeaders());
                     $e->setResponseObject($data);

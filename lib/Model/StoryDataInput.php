@@ -58,8 +58,7 @@ class StoryDataInput implements ArrayAccess
         'recommended' => 'bool',
         'field_values' => 'object',
         'name' => 'string',
-        'description' => 'string',
-        'tags' => 'int[]'
+        'description' => 'string'
     ];
 
     /**
@@ -71,8 +70,7 @@ class StoryDataInput implements ArrayAccess
         'recommended' => null,
         'field_values' => null,
         'name' => null,
-        'description' => null,
-        'tags' => null
+        'description' => null
     ];
 
     public static function swaggerTypes()
@@ -94,8 +92,7 @@ class StoryDataInput implements ArrayAccess
         'recommended' => 'recommended',
         'field_values' => 'field_values',
         'name' => 'name',
-        'description' => 'description',
-        'tags' => 'tags'
+        'description' => 'description'
     ];
 
 
@@ -108,8 +105,7 @@ class StoryDataInput implements ArrayAccess
         'recommended' => 'setRecommended',
         'field_values' => 'setFieldValues',
         'name' => 'setName',
-        'description' => 'setDescription',
-        'tags' => 'setTags'
+        'description' => 'setDescription'
     ];
 
 
@@ -122,8 +118,7 @@ class StoryDataInput implements ArrayAccess
         'recommended' => 'getRecommended',
         'field_values' => 'getFieldValues',
         'name' => 'getName',
-        'description' => 'getDescription',
-        'tags' => 'getTags'
+        'description' => 'getDescription'
     ];
 
     public static function attributeMap()
@@ -162,7 +157,6 @@ class StoryDataInput implements ArrayAccess
         $this->container['field_values'] = isset($data['field_values']) ? $data['field_values'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
         $this->container['description'] = isset($data['description']) ? $data['description'] : null;
-        $this->container['tags'] = isset($data['tags']) ? $data['tags'] : null;
     }
 
     /**
@@ -303,27 +297,6 @@ class StoryDataInput implements ArrayAccess
     public function setDescription($description)
     {
         $this->container['description'] = $description;
-
-        return $this;
-    }
-
-    /**
-     * Gets tags
-     * @return int[]
-     */
-    public function getTags()
-    {
-        return $this->container['tags'];
-    }
-
-    /**
-     * Sets tags
-     * @param int[] $tags
-     * @return $this
-     */
-    public function setTags($tags)
-    {
-        $this->container['tags'] = $tags;
 
         return $this;
     }
