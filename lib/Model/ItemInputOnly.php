@@ -54,7 +54,7 @@ class ItemInputOnly implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'previous_id' => 'int',
+        '_previous_id' => 'int',
         'contacts' => 'int[]',
         'tags' => 'int[]'
     ];
@@ -64,7 +64,7 @@ class ItemInputOnly implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerFormats = [
-        'previous_id' => 'int64',
+        '_previous_id' => 'int64',
         'contacts' => null,
         'tags' => null
     ];
@@ -84,7 +84,7 @@ class ItemInputOnly implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'previous_id' => 'previous_id',
+        '_previous_id' => '_previous_id',
         'contacts' => 'contacts',
         'tags' => 'tags'
     ];
@@ -95,7 +95,7 @@ class ItemInputOnly implements ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'previous_id' => 'setPreviousId',
+        '_previous_id' => 'setPreviousId',
         'contacts' => 'setContacts',
         'tags' => 'setTags'
     ];
@@ -106,7 +106,7 @@ class ItemInputOnly implements ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'previous_id' => 'getPreviousId',
+        '_previous_id' => 'getPreviousId',
         'contacts' => 'getContacts',
         'tags' => 'getTags'
     ];
@@ -142,7 +142,7 @@ class ItemInputOnly implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['previous_id'] = isset($data['previous_id']) ? $data['previous_id'] : null;
+        $this->container['_previous_id'] = isset($data['_previous_id']) ? $data['_previous_id'] : null;
         $this->container['contacts'] = isset($data['contacts']) ? $data['contacts'] : null;
         $this->container['tags'] = isset($data['tags']) ? $data['tags'] : null;
     }
@@ -173,22 +173,22 @@ class ItemInputOnly implements ArrayAccess
 
 
     /**
-     * Gets previous_id
+     * Gets _previous_id
      * @return int
      */
     public function getPreviousId()
     {
-        return $this->container['previous_id'];
+        return $this->container['_previous_id'];
     }
 
     /**
-     * Sets previous_id
-     * @param int $previous_id
+     * Sets _previous_id
+     * @param int $_previous_id
      * @return $this
      */
-    public function setPreviousId($previous_id)
+    public function setPreviousId($_previous_id)
     {
-        $this->container['previous_id'] = $previous_id;
+        $this->container['_previous_id'] = $_previous_id;
 
         return $this;
     }

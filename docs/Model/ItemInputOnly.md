@@ -3,7 +3,7 @@
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**previous_id** | **int** |  | [optional] 
+**_previous_id** | **int** |  | [optional] 
 **contacts** | **int[]** |  | [optional] 
 **tags** | **int[]** |  | [optional] 
 

@@ -19,7 +19,7 @@ Name | Type | Description | Notes
 **user_draft_id** | **int** |  | [optional] 
 **static_start** | **bool** |  | [optional] 
 **details** | **string** |  | [optional] 
-**previous_id** | **int** |  | [optional] 
+**_previous_id** | **int** |  | [optional] 
 **contacts** | **int[]** |  | [optional] 
 **tags** | **int[]** |  | [optional] 
 

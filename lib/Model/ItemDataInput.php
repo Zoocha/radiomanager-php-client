@@ -70,7 +70,7 @@ class ItemDataInput implements ArrayAccess
         'user_draft_id' => 'int',
         'static_start' => 'bool',
         'details' => 'string',
-        'previous_id' => 'int',
+        '_previous_id' => 'int',
         'contacts' => 'int[]',
         'tags' => 'int[]'
     ];
@@ -96,7 +96,7 @@ class ItemDataInput implements ArrayAccess
         'user_draft_id' => 'int64',
         'static_start' => null,
         'details' => null,
-        'previous_id' => 'int64',
+        '_previous_id' => 'int64',
         'contacts' => null,
         'tags' => null
     ];
@@ -132,7 +132,7 @@ class ItemDataInput implements ArrayAccess
         'user_draft_id' => 'user_draft_id',
         'static_start' => 'static_start',
         'details' => 'details',
-        'previous_id' => 'previous_id',
+        '_previous_id' => '_previous_id',
         'contacts' => 'contacts',
         'tags' => 'tags'
     ];
@@ -159,7 +159,7 @@ class ItemDataInput implements ArrayAccess
         'user_draft_id' => 'setUserDraftId',
         'static_start' => 'setStaticStart',
         'details' => 'setDetails',
-        'previous_id' => 'setPreviousId',
+        '_previous_id' => 'setPreviousId',
         'contacts' => 'setContacts',
         'tags' => 'setTags'
     ];
@@ -186,7 +186,7 @@ class ItemDataInput implements ArrayAccess
         'user_draft_id' => 'getUserDraftId',
         'static_start' => 'getStaticStart',
         'details' => 'getDetails',
-        'previous_id' => 'getPreviousId',
+        '_previous_id' => 'getPreviousId',
         'contacts' => 'getContacts',
         'tags' => 'getTags'
     ];
@@ -254,7 +254,7 @@ class ItemDataInput implements ArrayAccess
         $this->container['user_draft_id'] = isset($data['user_draft_id']) ? $data['user_draft_id'] : null;
         $this->container['static_start'] = isset($data['static_start']) ? $data['static_start'] : null;
         $this->container['details'] = isset($data['details']) ? $data['details'] : null;
-        $this->container['previous_id'] = isset($data['previous_id']) ? $data['previous_id'] : null;
+        $this->container['_previous_id'] = isset($data['_previous_id']) ? $data['_previous_id'] : null;
         $this->container['contacts'] = isset($data['contacts']) ? $data['contacts'] : null;
         $this->container['tags'] = isset($data['tags']) ? $data['tags'] : null;
     }
@@ -654,22 +654,22 @@ class ItemDataInput implements ArrayAccess
     }
 
     /**
-     * Gets previous_id
+     * Gets _previous_id
      * @return int
      */
     public function getPreviousId()
     {
-        return $this->container['previous_id'];
+        return $this->container['_previous_id'];
     }
 
     /**
-     * Sets previous_id
-     * @param int $previous_id
+     * Sets _previous_id
+     * @param int $_previous_id
      * @return $this
      */
-    public function setPreviousId($previous_id)
+    public function setPreviousId($_previous_id)
     {
-        $this->container['previous_id'] = $previous_id;
+        $this->container['_previous_id'] = $_previous_id;
 
         return $this;
     }
