@@ -56,7 +56,7 @@ class ItemDataInput implements ArrayAccess
     protected static $swaggerTypes = [
         'model_type_id' => 'int',
         'block_id' => 'int',
-        'external_id' => 'int',
+        'external_id' => 'string',
         'field_values' => '\RadioManager\Model\ImportItemFieldValues',
         'title' => 'string',
         'duration' => 'int',
@@ -82,7 +82,7 @@ class ItemDataInput implements ArrayAccess
     protected static $swaggerFormats = [
         'model_type_id' => 'int64',
         'block_id' => 'int64',
-        'external_id' => 'int64',
+        'external_id' => null,
         'field_values' => null,
         'title' => null,
         'duration' => 'int64',
@@ -271,9 +271,6 @@ class ItemDataInput implements ArrayAccess
         if ($this->container['model_type_id'] === null) {
             $invalid_properties[] = "'model_type_id' can't be null";
         }
-        if ($this->container['external_id'] === null) {
-            $invalid_properties[] = "'external_id' can't be null";
-        }
         $allowed_values = $this->getStatusAllowableValues();
         if (!in_array($this->container['status'], $allowed_values)) {
             $invalid_properties[] = sprintf(
@@ -295,9 +292,6 @@ class ItemDataInput implements ArrayAccess
     {
 
         if ($this->container['model_type_id'] === null) {
-            return false;
-        }
-        if ($this->container['external_id'] === null) {
             return false;
         }
         $allowed_values = $this->getStatusAllowableValues();
@@ -352,7 +346,7 @@ class ItemDataInput implements ArrayAccess
 
     /**
      * Gets external_id
-     * @return int
+     * @return string
      */
     public function getExternalId()
     {
@@ -361,7 +355,7 @@ class ItemDataInput implements ArrayAccess
 
     /**
      * Sets external_id
-     * @param int $external_id
+     * @param string $external_id
      * @return $this
      */
     public function setExternalId($external_id)

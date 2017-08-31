@@ -55,7 +55,7 @@ class ImportItem implements ArrayAccess
       */
     protected static $swaggerTypes = [
         'model_type_id' => 'int',
-        'external_id' => 'int',
+        'external_id' => 'string',
         'field_values' => '\RadioManager\Model\ImportItemFieldValues',
         'title' => 'string',
         'duration' => 'int',
@@ -73,7 +73,7 @@ class ImportItem implements ArrayAccess
       */
     protected static $swaggerFormats = [
         'model_type_id' => 'int64',
-        'external_id' => 'int64',
+        'external_id' => null,
         'field_values' => null,
         'title' => null,
         'duration' => 'int64',
@@ -255,7 +255,7 @@ class ImportItem implements ArrayAccess
 
     /**
      * Gets external_id
-     * @return int
+     * @return string
      */
     public function getExternalId()
     {
@@ -264,7 +264,7 @@ class ImportItem implements ArrayAccess
 
     /**
      * Sets external_id
-     * @param int $external_id
+     * @param string $external_id
      * @return $this
      */
     public function setExternalId($external_id)
