@@ -1,6 +1,6 @@
 <?php
 /**
- * StoryDataInput
+ * PresenterEPGResult
  *
  * PHP version 5
  *
@@ -32,14 +32,14 @@ namespace RadioManager\Model;
 use \ArrayAccess;
 
 /**
- * StoryDataInput Class Doc Comment
+ * PresenterEPGResult Class Doc Comment
  *
  * @category    Class
  * @package     RadioManager
  * @author      Swagger Codegen team
  * @link        https://github.com/swagger-api/swagger-codegen
  */
-class StoryDataInput implements ArrayAccess
+class PresenterEPGResult implements ArrayAccess
 {
     const DISCRIMINATOR = null;
 
@@ -47,7 +47,7 @@ class StoryDataInput implements ArrayAccess
       * The original name of the model.
       * @var string
       */
-    protected static $swaggerModelName = 'StoryDataInput';
+    protected static $swaggerModelName = 'PresenterEPGResult';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
@@ -55,11 +55,16 @@ class StoryDataInput implements ArrayAccess
       */
     protected static $swaggerTypes = [
         'model_type_id' => 'int',
-        'recommended' => 'bool',
-        'field_values' => 'object',
+        'field_values' => 'object[]',
+        'firstname' => 'string',
+        'lastname' => 'string',
+        'active' => 'bool',
         'name' => 'string',
-        'description' => 'string',
-        'tags' => 'int[]'
+        'id' => 'int',
+        'updated_at' => '\DateTime',
+        'created_at' => '\DateTime',
+        'deleted_at' => '\DateTime',
+        '_external_station_id' => 'int'
     ];
 
     /**
@@ -68,11 +73,16 @@ class StoryDataInput implements ArrayAccess
       */
     protected static $swaggerFormats = [
         'model_type_id' => 'int64',
-        'recommended' => null,
         'field_values' => null,
+        'firstname' => null,
+        'lastname' => null,
+        'active' => null,
         'name' => null,
-        'description' => null,
-        'tags' => null
+        'id' => 'int64',
+        'updated_at' => 'date-time',
+        'created_at' => 'date-time',
+        'deleted_at' => 'date-time',
+        '_external_station_id' => 'int64'
     ];
 
     public static function swaggerTypes()
@@ -91,11 +101,16 @@ class StoryDataInput implements ArrayAccess
      */
     protected static $attributeMap = [
         'model_type_id' => 'model_type_id',
-        'recommended' => 'recommended',
         'field_values' => 'field_values',
+        'firstname' => 'firstname',
+        'lastname' => 'lastname',
+        'active' => 'active',
         'name' => 'name',
-        'description' => 'description',
-        'tags' => 'tags'
+        'id' => 'id',
+        'updated_at' => 'updated_at',
+        'created_at' => 'created_at',
+        'deleted_at' => 'deleted_at',
+        '_external_station_id' => '_external_station_id'
     ];
 
 
@@ -105,11 +120,16 @@ class StoryDataInput implements ArrayAccess
      */
     protected static $setters = [
         'model_type_id' => 'setModelTypeId',
-        'recommended' => 'setRecommended',
         'field_values' => 'setFieldValues',
+        'firstname' => 'setFirstname',
+        'lastname' => 'setLastname',
+        'active' => 'setActive',
         'name' => 'setName',
-        'description' => 'setDescription',
-        'tags' => 'setTags'
+        'id' => 'setId',
+        'updated_at' => 'setUpdatedAt',
+        'created_at' => 'setCreatedAt',
+        'deleted_at' => 'setDeletedAt',
+        '_external_station_id' => 'setExternalStationId'
     ];
 
 
@@ -119,11 +139,16 @@ class StoryDataInput implements ArrayAccess
      */
     protected static $getters = [
         'model_type_id' => 'getModelTypeId',
-        'recommended' => 'getRecommended',
         'field_values' => 'getFieldValues',
+        'firstname' => 'getFirstname',
+        'lastname' => 'getLastname',
+        'active' => 'getActive',
         'name' => 'getName',
-        'description' => 'getDescription',
-        'tags' => 'getTags'
+        'id' => 'getId',
+        'updated_at' => 'getUpdatedAt',
+        'created_at' => 'getCreatedAt',
+        'deleted_at' => 'getDeletedAt',
+        '_external_station_id' => 'getExternalStationId'
     ];
 
     public static function attributeMap()
@@ -158,11 +183,16 @@ class StoryDataInput implements ArrayAccess
     public function __construct(array $data = null)
     {
         $this->container['model_type_id'] = isset($data['model_type_id']) ? $data['model_type_id'] : null;
-        $this->container['recommended'] = isset($data['recommended']) ? $data['recommended'] : null;
         $this->container['field_values'] = isset($data['field_values']) ? $data['field_values'] : null;
+        $this->container['firstname'] = isset($data['firstname']) ? $data['firstname'] : null;
+        $this->container['lastname'] = isset($data['lastname']) ? $data['lastname'] : null;
+        $this->container['active'] = isset($data['active']) ? $data['active'] : null;
         $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['description'] = isset($data['description']) ? $data['description'] : null;
-        $this->container['tags'] = isset($data['tags']) ? $data['tags'] : null;
+        $this->container['id'] = isset($data['id']) ? $data['id'] : null;
+        $this->container['updated_at'] = isset($data['updated_at']) ? $data['updated_at'] : null;
+        $this->container['created_at'] = isset($data['created_at']) ? $data['created_at'] : null;
+        $this->container['deleted_at'] = isset($data['deleted_at']) ? $data['deleted_at'] : null;
+        $this->container['_external_station_id'] = isset($data['_external_station_id']) ? $data['_external_station_id'] : null;
     }
 
     /**
@@ -177,8 +207,17 @@ class StoryDataInput implements ArrayAccess
         if ($this->container['model_type_id'] === null) {
             $invalid_properties[] = "'model_type_id' can't be null";
         }
-        if ($this->container['name'] === null) {
-            $invalid_properties[] = "'name' can't be null";
+        if ($this->container['id'] === null) {
+            $invalid_properties[] = "'id' can't be null";
+        }
+        if ($this->container['updated_at'] === null) {
+            $invalid_properties[] = "'updated_at' can't be null";
+        }
+        if ($this->container['created_at'] === null) {
+            $invalid_properties[] = "'created_at' can't be null";
+        }
+        if ($this->container['deleted_at'] === null) {
+            $invalid_properties[] = "'deleted_at' can't be null";
         }
         return $invalid_properties;
     }
@@ -195,7 +234,16 @@ class StoryDataInput implements ArrayAccess
         if ($this->container['model_type_id'] === null) {
             return false;
         }
-        if ($this->container['name'] === null) {
+        if ($this->container['id'] === null) {
+            return false;
+        }
+        if ($this->container['updated_at'] === null) {
+            return false;
+        }
+        if ($this->container['created_at'] === null) {
+            return false;
+        }
+        if ($this->container['deleted_at'] === null) {
             return false;
         }
         return true;
@@ -224,29 +272,8 @@ class StoryDataInput implements ArrayAccess
     }
 
     /**
-     * Gets recommended
-     * @return bool
-     */
-    public function getRecommended()
-    {
-        return $this->container['recommended'];
-    }
-
-    /**
-     * Sets recommended
-     * @param bool $recommended
-     * @return $this
-     */
-    public function setRecommended($recommended)
-    {
-        $this->container['recommended'] = $recommended;
-
-        return $this;
-    }
-
-    /**
      * Gets field_values
-     * @return object
+     * @return object[]
      */
     public function getFieldValues()
     {
@@ -255,12 +282,75 @@ class StoryDataInput implements ArrayAccess
 
     /**
      * Sets field_values
-     * @param object $field_values
+     * @param object[] $field_values
      * @return $this
      */
     public function setFieldValues($field_values)
     {
         $this->container['field_values'] = $field_values;
+
+        return $this;
+    }
+
+    /**
+     * Gets firstname
+     * @return string
+     */
+    public function getFirstname()
+    {
+        return $this->container['firstname'];
+    }
+
+    /**
+     * Sets firstname
+     * @param string $firstname
+     * @return $this
+     */
+    public function setFirstname($firstname)
+    {
+        $this->container['firstname'] = $firstname;
+
+        return $this;
+    }
+
+    /**
+     * Gets lastname
+     * @return string
+     */
+    public function getLastname()
+    {
+        return $this->container['lastname'];
+    }
+
+    /**
+     * Sets lastname
+     * @param string $lastname
+     * @return $this
+     */
+    public function setLastname($lastname)
+    {
+        $this->container['lastname'] = $lastname;
+
+        return $this;
+    }
+
+    /**
+     * Gets active
+     * @return bool
+     */
+    public function getActive()
+    {
+        return $this->container['active'];
+    }
+
+    /**
+     * Sets active
+     * @param bool $active
+     * @return $this
+     */
+    public function setActive($active)
+    {
+        $this->container['active'] = $active;
 
         return $this;
     }
@@ -287,43 +377,106 @@ class StoryDataInput implements ArrayAccess
     }
 
     /**
-     * Gets description
-     * @return string
+     * Gets id
+     * @return int
      */
-    public function getDescription()
+    public function getId()
     {
-        return $this->container['description'];
+        return $this->container['id'];
     }
 
     /**
-     * Sets description
-     * @param string $description
+     * Sets id
+     * @param int $id
      * @return $this
      */
-    public function setDescription($description)
+    public function setId($id)
     {
-        $this->container['description'] = $description;
+        $this->container['id'] = $id;
 
         return $this;
     }
 
     /**
-     * Gets tags
-     * @return int[]
+     * Gets updated_at
+     * @return \DateTime
      */
-    public function getTags()
+    public function getUpdatedAt()
     {
-        return $this->container['tags'];
+        return $this->container['updated_at'];
     }
 
     /**
-     * Sets tags
-     * @param int[] $tags
+     * Sets updated_at
+     * @param \DateTime $updated_at
      * @return $this
      */
-    public function setTags($tags)
+    public function setUpdatedAt($updated_at)
     {
-        $this->container['tags'] = $tags;
+        $this->container['updated_at'] = $updated_at;
+
+        return $this;
+    }
+
+    /**
+     * Gets created_at
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->container['created_at'];
+    }
+
+    /**
+     * Sets created_at
+     * @param \DateTime $created_at
+     * @return $this
+     */
+    public function setCreatedAt($created_at)
+    {
+        $this->container['created_at'] = $created_at;
+
+        return $this;
+    }
+
+    /**
+     * Gets deleted_at
+     * @return \DateTime
+     */
+    public function getDeletedAt()
+    {
+        return $this->container['deleted_at'];
+    }
+
+    /**
+     * Sets deleted_at
+     * @param \DateTime $deleted_at
+     * @return $this
+     */
+    public function setDeletedAt($deleted_at)
+    {
+        $this->container['deleted_at'] = $deleted_at;
+
+        return $this;
+    }
+
+    /**
+     * Gets _external_station_id
+     * @return int
+     */
+    public function getExternalStationId()
+    {
+        return $this->container['_external_station_id'];
+    }
+
+    /**
+     * Sets _external_station_id
+     * @param int $_external_station_id
+     * @return $this
+     */
+    public function setExternalStationId($_external_station_id)
+    {
+        $this->container['_external_station_id'] = $_external_station_id;
 
         return $this;
     }

@@ -1,6 +1,6 @@
 <?php
 /**
- * ItemInputOnlyTest
+ * StationResultTest
  *
  * PHP version 5
  *
@@ -30,16 +30,16 @@
 namespace RadioManager;
 
 /**
- * ItemInputOnlyTest Class Doc Comment
+ * StationResultTest Class Doc Comment
  *
  * @category    Class */
-// * @description ItemInputOnly
+// * @description StationResult
 /**
  * @package     RadioManager
  * @author      Swagger Codegen team
  * @link        https://github.com/swagger-api/swagger-codegen
  */
-class ItemInputOnlyTest extends \PHPUnit_Framework_TestCase
+class StationResultTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -71,30 +71,16 @@ class ItemInputOnlyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test "ItemInputOnly"
+     * Test "StationResult"
      */
-    public function testItemInputOnly()
+    public function testStationResult()
     {
     }
 
     /**
-     * Test attribute "previous_id"
+     * Test attribute "station"
      */
-    public function testPropertyPreviousId()
-    {
-    }
-
-    /**
-     * Test attribute "contacts"
-     */
-    public function testPropertyContacts()
-    {
-    }
-
-    /**
-     * Test attribute "tags"
-     */
-    public function testPropertyTags()
+    public function testPropertyStation()
     {
     }
 }

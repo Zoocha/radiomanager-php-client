@@ -1,6 +1,6 @@
 <?php
 /**
- * StoryDataInput
+ * BroadcastEPGRelations
  *
  * PHP version 5
  *
@@ -32,14 +32,14 @@ namespace RadioManager\Model;
 use \ArrayAccess;
 
 /**
- * StoryDataInput Class Doc Comment
+ * BroadcastEPGRelations Class Doc Comment
  *
  * @category    Class
  * @package     RadioManager
  * @author      Swagger Codegen team
  * @link        https://github.com/swagger-api/swagger-codegen
  */
-class StoryDataInput implements ArrayAccess
+class BroadcastEPGRelations implements ArrayAccess
 {
     const DISCRIMINATOR = null;
 
@@ -47,19 +47,19 @@ class StoryDataInput implements ArrayAccess
       * The original name of the model.
       * @var string
       */
-    protected static $swaggerModelName = 'StoryDataInput';
+    protected static $swaggerModelName = 'BroadcastEPGRelations';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
       * @var string[]
       */
     protected static $swaggerTypes = [
-        'model_type_id' => 'int',
-        'recommended' => 'bool',
-        'field_values' => 'object',
-        'name' => 'string',
-        'description' => 'string',
-        'tags' => 'int[]'
+        'items' => '\RadioManager\Model\BroadcastRelationsItems',
+        'blocks' => '\RadioManager\Model\BroadcastRelationsBlocks',
+        'program' => '\RadioManager\Model\BlockRelationsProgram',
+        'tags' => '\RadioManager\Model\BroadcastRelationsTags',
+        'presenters' => '\RadioManager\Model\PresenterEPGResult[]',
+        'model_type' => '\RadioManager\Model\BroadcastRelationsModelType'
     ];
 
     /**
@@ -67,12 +67,12 @@ class StoryDataInput implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerFormats = [
-        'model_type_id' => 'int64',
-        'recommended' => null,
-        'field_values' => null,
-        'name' => null,
-        'description' => null,
-        'tags' => null
+        'items' => null,
+        'blocks' => null,
+        'program' => null,
+        'tags' => null,
+        'presenters' => null,
+        'model_type' => null
     ];
 
     public static function swaggerTypes()
@@ -90,12 +90,12 @@ class StoryDataInput implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        'model_type_id' => 'model_type_id',
-        'recommended' => 'recommended',
-        'field_values' => 'field_values',
-        'name' => 'name',
-        'description' => 'description',
-        'tags' => 'tags'
+        'items' => 'items',
+        'blocks' => 'blocks',
+        'program' => 'program',
+        'tags' => 'tags',
+        'presenters' => 'presenters',
+        'model_type' => 'model_type'
     ];
 
 
@@ -104,12 +104,12 @@ class StoryDataInput implements ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        'model_type_id' => 'setModelTypeId',
-        'recommended' => 'setRecommended',
-        'field_values' => 'setFieldValues',
-        'name' => 'setName',
-        'description' => 'setDescription',
-        'tags' => 'setTags'
+        'items' => 'setItems',
+        'blocks' => 'setBlocks',
+        'program' => 'setProgram',
+        'tags' => 'setTags',
+        'presenters' => 'setPresenters',
+        'model_type' => 'setModelType'
     ];
 
 
@@ -118,12 +118,12 @@ class StoryDataInput implements ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        'model_type_id' => 'getModelTypeId',
-        'recommended' => 'getRecommended',
-        'field_values' => 'getFieldValues',
-        'name' => 'getName',
-        'description' => 'getDescription',
-        'tags' => 'getTags'
+        'items' => 'getItems',
+        'blocks' => 'getBlocks',
+        'program' => 'getProgram',
+        'tags' => 'getTags',
+        'presenters' => 'getPresenters',
+        'model_type' => 'getModelType'
     ];
 
     public static function attributeMap()
@@ -157,12 +157,12 @@ class StoryDataInput implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['model_type_id'] = isset($data['model_type_id']) ? $data['model_type_id'] : null;
-        $this->container['recommended'] = isset($data['recommended']) ? $data['recommended'] : null;
-        $this->container['field_values'] = isset($data['field_values']) ? $data['field_values'] : null;
-        $this->container['name'] = isset($data['name']) ? $data['name'] : null;
-        $this->container['description'] = isset($data['description']) ? $data['description'] : null;
+        $this->container['items'] = isset($data['items']) ? $data['items'] : null;
+        $this->container['blocks'] = isset($data['blocks']) ? $data['blocks'] : null;
+        $this->container['program'] = isset($data['program']) ? $data['program'] : null;
         $this->container['tags'] = isset($data['tags']) ? $data['tags'] : null;
+        $this->container['presenters'] = isset($data['presenters']) ? $data['presenters'] : null;
+        $this->container['model_type'] = isset($data['model_type']) ? $data['model_type'] : null;
     }
 
     /**
@@ -174,12 +174,6 @@ class StoryDataInput implements ArrayAccess
     {
         $invalid_properties = [];
 
-        if ($this->container['model_type_id'] === null) {
-            $invalid_properties[] = "'model_type_id' can't be null";
-        }
-        if ($this->container['name'] === null) {
-            $invalid_properties[] = "'name' can't be null";
-        }
         return $invalid_properties;
     }
 
@@ -192,124 +186,76 @@ class StoryDataInput implements ArrayAccess
     public function valid()
     {
 
-        if ($this->container['model_type_id'] === null) {
-            return false;
-        }
-        if ($this->container['name'] === null) {
-            return false;
-        }
         return true;
     }
 
 
     /**
-     * Gets model_type_id
-     * @return int
+     * Gets items
+     * @return \RadioManager\Model\BroadcastRelationsItems
      */
-    public function getModelTypeId()
+    public function getItems()
     {
-        return $this->container['model_type_id'];
+        return $this->container['items'];
     }
 
     /**
-     * Sets model_type_id
-     * @param int $model_type_id
+     * Sets items
+     * @param \RadioManager\Model\BroadcastRelationsItems $items
      * @return $this
      */
-    public function setModelTypeId($model_type_id)
+    public function setItems($items)
     {
-        $this->container['model_type_id'] = $model_type_id;
+        $this->container['items'] = $items;
 
         return $this;
     }
 
     /**
-     * Gets recommended
-     * @return bool
+     * Gets blocks
+     * @return \RadioManager\Model\BroadcastRelationsBlocks
      */
-    public function getRecommended()
+    public function getBlocks()
     {
-        return $this->container['recommended'];
+        return $this->container['blocks'];
     }
 
     /**
-     * Sets recommended
-     * @param bool $recommended
+     * Sets blocks
+     * @param \RadioManager\Model\BroadcastRelationsBlocks $blocks
      * @return $this
      */
-    public function setRecommended($recommended)
+    public function setBlocks($blocks)
     {
-        $this->container['recommended'] = $recommended;
+        $this->container['blocks'] = $blocks;
 
         return $this;
     }
 
     /**
-     * Gets field_values
-     * @return object
+     * Gets program
+     * @return \RadioManager\Model\BlockRelationsProgram
      */
-    public function getFieldValues()
+    public function getProgram()
     {
-        return $this->container['field_values'];
+        return $this->container['program'];
     }
 
     /**
-     * Sets field_values
-     * @param object $field_values
+     * Sets program
+     * @param \RadioManager\Model\BlockRelationsProgram $program
      * @return $this
      */
-    public function setFieldValues($field_values)
+    public function setProgram($program)
     {
-        $this->container['field_values'] = $field_values;
-
-        return $this;
-    }
-
-    /**
-     * Gets name
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->container['name'];
-    }
-
-    /**
-     * Sets name
-     * @param string $name
-     * @return $this
-     */
-    public function setName($name)
-    {
-        $this->container['name'] = $name;
-
-        return $this;
-    }
-
-    /**
-     * Gets description
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->container['description'];
-    }
-
-    /**
-     * Sets description
-     * @param string $description
-     * @return $this
-     */
-    public function setDescription($description)
-    {
-        $this->container['description'] = $description;
+        $this->container['program'] = $program;
 
         return $this;
     }
 
     /**
      * Gets tags
-     * @return int[]
+     * @return \RadioManager\Model\BroadcastRelationsTags
      */
     public function getTags()
     {
@@ -318,12 +264,54 @@ class StoryDataInput implements ArrayAccess
 
     /**
      * Sets tags
-     * @param int[] $tags
+     * @param \RadioManager\Model\BroadcastRelationsTags $tags
      * @return $this
      */
     public function setTags($tags)
     {
         $this->container['tags'] = $tags;
+
+        return $this;
+    }
+
+    /**
+     * Gets presenters
+     * @return \RadioManager\Model\PresenterEPGResult[]
+     */
+    public function getPresenters()
+    {
+        return $this->container['presenters'];
+    }
+
+    /**
+     * Sets presenters
+     * @param \RadioManager\Model\PresenterEPGResult[] $presenters
+     * @return $this
+     */
+    public function setPresenters($presenters)
+    {
+        $this->container['presenters'] = $presenters;
+
+        return $this;
+    }
+
+    /**
+     * Gets model_type
+     * @return \RadioManager\Model\BroadcastRelationsModelType
+     */
+    public function getModelType()
+    {
+        return $this->container['model_type'];
+    }
+
+    /**
+     * Sets model_type
+     * @param \RadioManager\Model\BroadcastRelationsModelType $model_type
+     * @return $this
+     */
+    public function setModelType($model_type)
+    {
+        $this->container['model_type'] = $model_type;
 
         return $this;
     }

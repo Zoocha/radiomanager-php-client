@@ -1,14 +1,10 @@
-# StoryDataInput
+# BroadcastEPGDay
 
 ## Properties
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**model_type_id** | **int** |  | 
-**recommended** | **bool** |  | [optional] 
-**field_values** | **object** |  | [optional] 
-**name** | **string** |  | 
-**description** | **string** |  | [optional] 
-**tags** | **int[]** |  | [optional] 
+**day** | [**\DateTime**](Date.md) |  | [optional] 
+**results** | [**\RadioManager\Model\BroadcastEPGResult[]**](BroadcastEPGResult.md) |  | 
 
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 
