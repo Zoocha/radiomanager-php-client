@@ -62,7 +62,7 @@ class BroadcastEPGResult implements ArrayAccess
         'program_id' => 'int',
         'model_type_id' => 'int',
         'station_id' => 'int',
-        'field_values' => '\RadioManager\Model\BroadcastFieldValues',
+        'field_values' => 'object',
         'title' => 'string',
         'start' => '\DateTime',
         'stop' => '\DateTime',
@@ -583,7 +583,7 @@ class BroadcastEPGResult implements ArrayAccess
 
     /**
      * Gets field_values
-     * @return \RadioManager\Model\BroadcastFieldValues
+     * @return object
      */
     public function getFieldValues()
     {
@@ -592,7 +592,7 @@ class BroadcastEPGResult implements ArrayAccess
 
     /**
      * Sets field_values
-     * @param \RadioManager\Model\BroadcastFieldValues $field_values
+     * @param object $field_values
      * @return $this
      */
     public function setFieldValues($field_values)
