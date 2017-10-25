@@ -1,8 +1,9 @@
 # RadioManager
-Pluxbox RadioManager gives you the power, flexibility and speed you always wanted in a lightweight and easy-to-use web-based radio solution. With Pluxbox RadioManager you can organise your radio workflow and automate your omnichannel communication with your listeners. We offer wide range specialised services for the radio and connections like Hybrid Radio, Visual Radio, your website and social media without losing focus on your broadcast. For more information visit https://pluxbox.com
+Pluxbox RadioManager gives you the power, flexibility and speed you always wanted in a lightweight and easy-to-use web-based radio solution. With Pluxbox RadioManager you can organise your radio workflow and automate your omnichannel communication with your listeners. We offer wide range specialised services for the radio and connections like Hybrid Radio, Visual Radio, your website and social media without losing focus on your broadcast. For more information visit: pluxbox.com
 
 - API version: 2.0
-- For more information, please visit [https://pluxbox.com](https://pluxbox.com)
+- Build package: io.swagger.codegen.languages.PhpClientCodegen
+For more information, please visit [https://pluxbox.com](https://pluxbox.com)
 
 ## Requirements
 
@@ -11,18 +12,30 @@ PHP 5.4.0 and later
 ## Installation & Usage
 ### Composer
 
-To install the bindings via [Composer](http://getcomposer.org/), run the following command:
+To install the bindings via [Composer](http://getcomposer.org/), add the following to `composer.json`:
 
 ```
-composer require pluxbox/radiomanager-php-client
+{
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/pluxbox/GIT_REPO_ID.git"
+    }
+  ],
+  "require": {
+    "pluxbox/GIT_REPO_ID": "*@dev"
+  }
+}
 ```
+
+Then run `composer install`
 
 ### Manual Installation
 
 Download the files and include `autoload.php`:
 
 ```php
-require_once('/path/to/RadioManager/autoload.php');
+    require_once('/path/to/RadioManager/autoload.php');
 ```
 
 ## Tests
@@ -30,6 +43,7 @@ require_once('/path/to/RadioManager/autoload.php');
 To run the unit tests:
 
 ```
+composer install
 ./vendor/bin/phpunit
 ```
 
@@ -62,7 +76,7 @@ try {
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *https://staging.radiomanager.pluxbox.com/api/v2*
+All URIs are relative to *https://radiomanager.io/api/v2*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
@@ -91,7 +105,6 @@ Class | Method | HTTP request | Description
 *ContactApi* | [**getContactById**](docs/Api/ContactApi.md#getcontactbyid) | **GET** /contacts/{id} | Get contact by id
 *ContactApi* | [**listContacts**](docs/Api/ContactApi.md#listcontacts) | **GET** /contacts | Get all contacts.
 *ContactApi* | [**updateContactByID**](docs/Api/ContactApi.md#updatecontactbyid) | **PATCH** /contacts/{id} | Update contact by id
-*ExternalMessageApi* | [**queueExternalMessage**](docs/Api/ExternalMessageApi.md#queueexternalmessage) | **POST** /externalmessagequeue | Queue External Message.
 *GenreApi* | [**getGenreById**](docs/Api/GenreApi.md#getgenrebyid) | **GET** /genres/{id} | Get genre by id
 *GenreApi* | [**listGenres**](docs/Api/GenreApi.md#listgenres) | **GET** /genres | List all genres.
 *ItemApi* | [**createItem**](docs/Api/ItemApi.md#createitem) | **POST** /items | Create an new item.
@@ -115,6 +128,12 @@ Class | Method | HTTP request | Description
 *ProgramApi* | [**getProgramById**](docs/Api/ProgramApi.md#getprogrambyid) | **GET** /programs/{id} | Get program by id
 *ProgramApi* | [**listPrograms**](docs/Api/ProgramApi.md#listprograms) | **GET** /programs | Get all programs.
 *ProgramApi* | [**updateProgramByID**](docs/Api/ProgramApi.md#updateprogrambyid) | **PATCH** /programs/{id} | Update program by id
+*StationApi* | [**getStation**](docs/Api/StationApi.md#getstation) | **GET** /station | Get own station only
+*StoryApi* | [**createStory**](docs/Api/StoryApi.md#createstory) | **POST** /stories | Create story.
+*StoryApi* | [**deleteStoryById**](docs/Api/StoryApi.md#deletestorybyid) | **DELETE** /stories/{id} | Delete story by id
+*StoryApi* | [**getStoryById**](docs/Api/StoryApi.md#getstorybyid) | **GET** /stories/{id} | Get story by id
+*StoryApi* | [**listStories**](docs/Api/StoryApi.md#liststories) | **GET** /stories | Get all stories.
+*StoryApi* | [**updateStoryByID**](docs/Api/StoryApi.md#updatestorybyid) | **PATCH** /stories/{id} | Update story by id
 *StringApi* | [**getStringsByName**](docs/Api/StringApi.md#getstringsbyname) | **GET** /strings/{name} | Get Strings (formatted)
 *TagApi* | [**createTag**](docs/Api/TagApi.md#createtag) | **POST** /tags | Create tag.
 *TagApi* | [**deleteTagById**](docs/Api/TagApi.md#deletetagbyid) | **DELETE** /tags/{id} | Delete tag by id
@@ -125,7 +144,6 @@ Class | Method | HTTP request | Description
 *UserApi* | [**getUserById**](docs/Api/UserApi.md#getuserbyid) | **GET** /users/{id} | Get user by id
 *UserApi* | [**inviteUserByMail**](docs/Api/UserApi.md#inviteuserbymail) | **POST** /users/invite | Invite user by mail
 *UserApi* | [**listUsers**](docs/Api/UserApi.md#listusers) | **GET** /users | Get all users.
-*VisualSlideApi* | [**downloadVisualSlide**](docs/Api/VisualSlideApi.md#downloadvisualslide) | **GET** /visual/image | Get Visual Slide Image as JPEG
 *VisualSlideApi* | [**getVisualSlide**](docs/Api/VisualSlideApi.md#getvisualslide) | **GET** /visual | Get Visual Slide Image as Base64
 
 
@@ -140,7 +158,8 @@ Class | Method | HTTP request | Description
  - [BlockRelationsProgram](docs/Model/BlockRelationsProgram.md)
  - [BlockResults](docs/Model/BlockResults.md)
  - [Broadcast](docs/Model/Broadcast.md)
- - [BroadcastFieldValues](docs/Model/BroadcastFieldValues.md)
+ - [BroadcastEPGDay](docs/Model/BroadcastEPGDay.md)
+ - [BroadcastEPGRelations](docs/Model/BroadcastEPGRelations.md)
  - [BroadcastInputOnly](docs/Model/BroadcastInputOnly.md)
  - [BroadcastOutputOnly](docs/Model/BroadcastOutputOnly.md)
  - [BroadcastRelations](docs/Model/BroadcastRelations.md)
@@ -158,7 +177,6 @@ Class | Method | HTTP request | Description
  - [CampaignRelationsItemsParams](docs/Model/CampaignRelationsItemsParams.md)
  - [CampaignResults](docs/Model/CampaignResults.md)
  - [Contact](docs/Model/Contact.md)
- - [ContactFieldValues](docs/Model/ContactFieldValues.md)
  - [ContactOutputOnly](docs/Model/ContactOutputOnly.md)
  - [ContactRelations](docs/Model/ContactRelations.md)
  - [ContactRelationsItems](docs/Model/ContactRelationsItems.md)
@@ -167,8 +185,7 @@ Class | Method | HTTP request | Description
  - [ContactResults](docs/Model/ContactResults.md)
  - [Data](docs/Model/Data.md)
  - [Data1](docs/Model/Data1.md)
- - [EPGBroadcast](docs/Model/EPGBroadcast.md)
- - [ExternalMessageQueueData](docs/Model/ExternalMessageQueueData.md)
+ - [EPGResults](docs/Model/EPGResults.md)
  - [Forbidden](docs/Model/Forbidden.md)
  - [Genre](docs/Model/Genre.md)
  - [GenreOutputOnly](docs/Model/GenreOutputOnly.md)
@@ -178,7 +195,6 @@ Class | Method | HTTP request | Description
  - [GenreRelationsPrograms](docs/Model/GenreRelationsPrograms.md)
  - [GenreResults](docs/Model/GenreResults.md)
  - [ImportItem](docs/Model/ImportItem.md)
- - [ImportItemFieldValues](docs/Model/ImportItemFieldValues.md)
  - [InlineResponse202](docs/Model/InlineResponse202.md)
  - [InternalServerError](docs/Model/InternalServerError.md)
  - [InviteUserData](docs/Model/InviteUserData.md)
@@ -216,7 +232,6 @@ Class | Method | HTTP request | Description
  - [PresenterRelationsProgramsParams](docs/Model/PresenterRelationsProgramsParams.md)
  - [PresenterResults](docs/Model/PresenterResults.md)
  - [Program](docs/Model/Program.md)
- - [ProgramFieldValues](docs/Model/ProgramFieldValues.md)
  - [ProgramInputOnly](docs/Model/ProgramInputOnly.md)
  - [ProgramOutputOnly](docs/Model/ProgramOutputOnly.md)
  - [ProgramRelations](docs/Model/ProgramRelations.md)
@@ -229,6 +244,16 @@ Class | Method | HTTP request | Description
  - [ProgramResults](docs/Model/ProgramResults.md)
  - [ReadOnly](docs/Model/ReadOnly.md)
  - [RelationsPlaceholder](docs/Model/RelationsPlaceholder.md)
+ - [StationResult](docs/Model/StationResult.md)
+ - [StationResultStation](docs/Model/StationResultStation.md)
+ - [Story](docs/Model/Story.md)
+ - [StoryInputOnly](docs/Model/StoryInputOnly.md)
+ - [StoryOutputOnly](docs/Model/StoryOutputOnly.md)
+ - [StoryRelations](docs/Model/StoryRelations.md)
+ - [StoryRelationsItems](docs/Model/StoryRelationsItems.md)
+ - [StoryRelationsTags](docs/Model/StoryRelationsTags.md)
+ - [StoryRelationsTagsParams](docs/Model/StoryRelationsTagsParams.md)
+ - [StoryResults](docs/Model/StoryResults.md)
  - [Success](docs/Model/Success.md)
  - [Tag](docs/Model/Tag.md)
  - [TagOutputOnly](docs/Model/TagOutputOnly.md)
@@ -248,6 +273,7 @@ Class | Method | HTTP request | Description
  - [VisualResult](docs/Model/VisualResult.md)
  - [BlockResult](docs/Model/BlockResult.md)
  - [BroadcastDataInput](docs/Model/BroadcastDataInput.md)
+ - [BroadcastEPGResult](docs/Model/BroadcastEPGResult.md)
  - [BroadcastResult](docs/Model/BroadcastResult.md)
  - [CampaignDataInput](docs/Model/CampaignDataInput.md)
  - [CampaignResult](docs/Model/CampaignResult.md)
@@ -258,9 +284,12 @@ Class | Method | HTTP request | Description
  - [ItemResult](docs/Model/ItemResult.md)
  - [ModelTypeResult](docs/Model/ModelTypeResult.md)
  - [PresenterDataInput](docs/Model/PresenterDataInput.md)
+ - [PresenterEPGResult](docs/Model/PresenterEPGResult.md)
  - [PresenterResult](docs/Model/PresenterResult.md)
  - [ProgramDataInput](docs/Model/ProgramDataInput.md)
  - [ProgramResult](docs/Model/ProgramResult.md)
+ - [StoryDataInput](docs/Model/StoryDataInput.md)
+ - [StoryResult](docs/Model/StoryResult.md)
  - [TagDataInput](docs/Model/TagDataInput.md)
  - [TagResult](docs/Model/TagResult.md)
 
