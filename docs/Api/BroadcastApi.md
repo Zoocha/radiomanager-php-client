@@ -170,7 +170,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getCurrentBroadcast**
-> \RadioManager\Model\Broadcast getCurrentBroadcast()
+> \RadioManager\Model\BroadcastResult getCurrentBroadcast($withunpublished)
 
 Get current Broadcast
 
@@ -187,9 +187,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\BroadcastApi();
+$withunpublished = true; // bool | Show Unpublished *(Optional)*
 
 try {
-    $result = $api_instance->getCurrentBroadcast();
+    $result = $api_instance->getCurrentBroadcast($withunpublished);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling BroadcastApi->getCurrentBroadcast: ', $e->getMessage(), PHP_EOL;
@@ -198,11 +199,14 @@ try {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **withunpublished** | **bool**| Show Unpublished *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\Model\Broadcast**](../Model/Broadcast.md)
+[**\RadioManager\Model\BroadcastResult**](../Model/BroadcastResult.md)
 
 ### Authorization
 
@@ -320,7 +324,7 @@ Name | Type | Description  | Notes
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
 # **getNextBroadcast**
-> \RadioManager\Model\Broadcast getNextBroadcast()
+> \RadioManager\Model\BroadcastResult getNextBroadcast($withunpublished)
 
 Get next Broadcast
 
@@ -337,9 +341,10 @@ RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOU
 // RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
 $api_instance = new RadioManager\Api\BroadcastApi();
+$withunpublished = true; // bool | Show Unpublished *(Optional)*
 
 try {
-    $result = $api_instance->getNextBroadcast();
+    $result = $api_instance->getNextBroadcast($withunpublished);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling BroadcastApi->getNextBroadcast: ', $e->getMessage(), PHP_EOL;
@@ -348,11 +353,14 @@ try {
 ```
 
 ### Parameters
-This endpoint does not need any parameter.
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **withunpublished** | **bool**| Show Unpublished *(Optional)* | [optional]
 
 ### Return type
 
-[**\RadioManager\Model\Broadcast**](../Model/Broadcast.md)
+[**\RadioManager\Model\BroadcastResult**](../Model/BroadcastResult.md)
 
 ### Authorization
 

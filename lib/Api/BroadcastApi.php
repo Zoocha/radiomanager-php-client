@@ -404,12 +404,13 @@ class BroadcastApi
      *
      * Get current Broadcast
      *
+     * @param bool $withunpublished Show Unpublished *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @return \RadioManager\Model\Broadcast
+     * @return \RadioManager\Model\BroadcastResult
      */
-    public function getCurrentBroadcast()
+    public function getCurrentBroadcast($withunpublished = null)
     {
-        list($response) = $this->getCurrentBroadcastWithHttpInfo();
+        list($response) = $this->getCurrentBroadcastWithHttpInfo($withunpublished);
         return $response;
     }
 
@@ -418,10 +419,11 @@ class BroadcastApi
      *
      * Get current Broadcast
      *
+     * @param bool $withunpublished Show Unpublished *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @return array of \RadioManager\Model\Broadcast, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RadioManager\Model\BroadcastResult, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getCurrentBroadcastWithHttpInfo()
+    public function getCurrentBroadcastWithHttpInfo($withunpublished = null)
     {
         // parse inputs
         $resourcePath = "/broadcasts/current";
@@ -435,6 +437,10 @@ class BroadcastApi
         }
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
+        // query params
+        if ($withunpublished !== null) {
+            $queryParams['withunpublished'] = $this->apiClient->getSerializer()->toQueryValue($withunpublished);
+        }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
@@ -455,15 +461,15 @@ class BroadcastApi
                 $queryParams,
                 $httpBody,
                 $headerParams,
-                '\RadioManager\Model\Broadcast',
+                '\RadioManager\Model\BroadcastResult',
                 '/broadcasts/current'
             );
 
-            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\Broadcast', $httpHeader), $statusCode, $httpHeader];
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\BroadcastResult', $httpHeader), $statusCode, $httpHeader];
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Broadcast', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\BroadcastResult', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 403:
@@ -683,12 +689,13 @@ class BroadcastApi
      *
      * Get next Broadcast
      *
+     * @param bool $withunpublished Show Unpublished *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @return \RadioManager\Model\Broadcast
+     * @return \RadioManager\Model\BroadcastResult
      */
-    public function getNextBroadcast()
+    public function getNextBroadcast($withunpublished = null)
     {
-        list($response) = $this->getNextBroadcastWithHttpInfo();
+        list($response) = $this->getNextBroadcastWithHttpInfo($withunpublished);
         return $response;
     }
 
@@ -697,10 +704,11 @@ class BroadcastApi
      *
      * Get next Broadcast
      *
+     * @param bool $withunpublished Show Unpublished *(Optional)* (optional)
      * @throws \RadioManager\ApiException on non-2xx response
-     * @return array of \RadioManager\Model\Broadcast, HTTP status code, HTTP response headers (array of strings)
+     * @return array of \RadioManager\Model\BroadcastResult, HTTP status code, HTTP response headers (array of strings)
      */
-    public function getNextBroadcastWithHttpInfo()
+    public function getNextBroadcastWithHttpInfo($withunpublished = null)
     {
         // parse inputs
         $resourcePath = "/broadcasts/next";
@@ -714,6 +722,10 @@ class BroadcastApi
         }
         $headerParams['Content-Type'] = $this->apiClient->selectHeaderContentType(['application/json']);
 
+        // query params
+        if ($withunpublished !== null) {
+            $queryParams['withunpublished'] = $this->apiClient->getSerializer()->toQueryValue($withunpublished);
+        }
 
         // for model (json/xml)
         if (isset($_tempBody)) {
@@ -734,15 +746,15 @@ class BroadcastApi
                 $queryParams,
                 $httpBody,
                 $headerParams,
-                '\RadioManager\Model\Broadcast',
+                '\RadioManager\Model\BroadcastResult',
                 '/broadcasts/next'
             );
 
-            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\Broadcast', $httpHeader), $statusCode, $httpHeader];
+            return [$this->apiClient->getSerializer()->deserialize($response, '\RadioManager\Model\BroadcastResult', $httpHeader), $statusCode, $httpHeader];
         } catch (ApiException $e) {
             switch ($e->getCode()) {
                 case 200:
-                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\Broadcast', $e->getResponseHeaders());
+                    $data = $this->apiClient->getSerializer()->deserialize($e->getResponseBody(), '\RadioManager\Model\BroadcastResult', $e->getResponseHeaders());
                     $e->setResponseObject($data);
                     break;
                 case 403:

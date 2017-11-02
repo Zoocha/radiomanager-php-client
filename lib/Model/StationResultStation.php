@@ -63,7 +63,7 @@ class StationResultStation implements ArrayAccess
         'medium_name' => 'string',
         'website' => 'string',
         'email' => 'string',
-        'keywords' => 'string',
+        'keywords' => 'string[]',
         'description' => 'string',
         'sms' => 'string',
         'telephone' => 'string',
@@ -501,7 +501,7 @@ class StationResultStation implements ArrayAccess
 
     /**
      * Gets keywords
-     * @return string
+     * @return string[]
      */
     public function getKeywords()
     {
@@ -510,7 +510,7 @@ class StationResultStation implements ArrayAccess
 
     /**
      * Sets keywords
-     * @param string $keywords
+     * @param string[] $keywords
      * @return $this
      */
     public function setKeywords($keywords)
