@@ -82,7 +82,7 @@ Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------
 *BlockApi* | [**getBlockById**](docs/Api/BlockApi.md#getblockbyid) | **GET** /blocks/{id} | Get block by id
 *BlockApi* | [**getCurrentBlock**](docs/Api/BlockApi.md#getcurrentblock) | **GET** /blocks/current | Get current Block
-*BlockApi* | [**getNextBlock**](docs/Api/BlockApi.md#getnextblock) | **GET** /blocks/next | Get next Block
+*BlockApi* | [**getNextBlock**](docs/Api/BlockApi.md#getnextblock) | **GET** /blocks/next | Get upcoming Block
 *BlockApi* | [**listBlocks**](docs/Api/BlockApi.md#listblocks) | **GET** /blocks | Get a list of all blocks currently in your station.
 *BroadcastApi* | [**createBroadcast**](docs/Api/BroadcastApi.md#createbroadcast) | **POST** /broadcasts | Create broadcast.
 *BroadcastApi* | [**deleteBroadcastById**](docs/Api/BroadcastApi.md#deletebroadcastbyid) | **DELETE** /broadcasts/{id} | Delete broadcast by id
@@ -268,6 +268,7 @@ Class | Method | HTTP request | Description
  - [TooManyRequests](docs/Model/TooManyRequests.md)
  - [UnprocessableEntity](docs/Model/UnprocessableEntity.md)
  - [UserResult](docs/Model/UserResult.md)
+ - [UserResultRoles](docs/Model/UserResultRoles.md)
  - [UserResultSettings](docs/Model/UserResultSettings.md)
  - [UserResults](docs/Model/UserResults.md)
  - [VisualResult](docs/Model/VisualResult.md)

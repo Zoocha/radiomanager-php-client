@@ -1,6 +1,6 @@
 <?php
 /**
- * EPGBroadcastTest
+ * UserResultRolesTest
  *
  * PHP version 5
  *
@@ -30,16 +30,16 @@
 namespace RadioManager;
 
 /**
- * EPGBroadcastTest Class Doc Comment
+ * UserResultRolesTest Class Doc Comment
  *
  * @category    Class */
-// * @description EPGBroadcast
+// * @description UserResultRoles
 /**
  * @package     RadioManager
  * @author      Swagger Codegen team
  * @link        https://github.com/swagger-api/swagger-codegen
  */
-class EPGBroadcastTest extends \PHPUnit_Framework_TestCase
+class UserResultRolesTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -71,30 +71,37 @@ class EPGBroadcastTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test "EPGBroadcast"
+     * Test "UserResultRoles"
      */
-    public function testEPGBroadcast()
+    public function testUserResultRoles()
     {
     }
 
     /**
-     * Test attribute "_2016_01_11"
+     * Test attribute "href"
      */
-    public function testProperty20160111()
+    public function testPropertyHref()
     {
     }
 
     /**
-     * Test attribute "next_page_url"
+     * Test attribute "model"
      */
-    public function testPropertyNextPageUrl()
+    public function testPropertyModel()
     {
     }
 
     /**
-     * Test attribute "prev_page_url"
+     * Test attribute "operation"
      */
-    public function testPropertyPrevPageUrl()
+    public function testPropertyOperation()
+    {
+    }
+
+    /**
+     * Test attribute "params"
+     */
+    public function testPropertyParams()
     {
     }
 }

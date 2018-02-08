@@ -1,6 +1,6 @@
 <?php
 /**
- * EPGBroadcast
+ * UserResultRoles
  *
  * PHP version 5
  *
@@ -32,14 +32,14 @@ namespace RadioManager\Model;
 use \ArrayAccess;
 
 /**
- * EPGBroadcast Class Doc Comment
+ * UserResultRoles Class Doc Comment
  *
  * @category    Class
  * @package     RadioManager
  * @author      Swagger Codegen team
  * @link        https://github.com/swagger-api/swagger-codegen
  */
-class EPGBroadcast implements ArrayAccess
+class UserResultRoles implements ArrayAccess
 {
     const DISCRIMINATOR = null;
 
@@ -47,16 +47,17 @@ class EPGBroadcast implements ArrayAccess
       * The original name of the model.
       * @var string
       */
-    protected static $swaggerModelName = 'EPG_Broadcast';
+    protected static $swaggerModelName = 'UserResult_roles';
 
     /**
       * Array of property to type mappings. Used for (de)serialization
       * @var string[]
       */
     protected static $swaggerTypes = [
-        '_2016_01_11' => '\RadioManager\Model\BroadcastResult[]',
-        'next_page_url' => 'string',
-        'prev_page_url' => 'string'
+        'href' => 'string',
+        'model' => 'string',
+        'operation' => 'string',
+        'params' => 'int'
     ];
 
     /**
@@ -64,9 +65,10 @@ class EPGBroadcast implements ArrayAccess
       * @var string[]
       */
     protected static $swaggerFormats = [
-        '_2016_01_11' => null,
-        'next_page_url' => 'url',
-        'prev_page_url' => 'url'
+        'href' => 'url',
+        'model' => null,
+        'operation' => null,
+        'params' => 'int64'
     ];
 
     public static function swaggerTypes()
@@ -84,9 +86,10 @@ class EPGBroadcast implements ArrayAccess
      * @var string[]
      */
     protected static $attributeMap = [
-        '_2016_01_11' => '2016-01-11',
-        'next_page_url' => 'next_page_url',
-        'prev_page_url' => 'prev_page_url'
+        'href' => 'href',
+        'model' => 'model',
+        'operation' => 'operation',
+        'params' => 'params'
     ];
 
 
@@ -95,9 +98,10 @@ class EPGBroadcast implements ArrayAccess
      * @var string[]
      */
     protected static $setters = [
-        '_2016_01_11' => 'set20160111',
-        'next_page_url' => 'setNextPageUrl',
-        'prev_page_url' => 'setPrevPageUrl'
+        'href' => 'setHref',
+        'model' => 'setModel',
+        'operation' => 'setOperation',
+        'params' => 'setParams'
     ];
 
 
@@ -106,9 +110,10 @@ class EPGBroadcast implements ArrayAccess
      * @var string[]
      */
     protected static $getters = [
-        '_2016_01_11' => 'get20160111',
-        'next_page_url' => 'getNextPageUrl',
-        'prev_page_url' => 'getPrevPageUrl'
+        'href' => 'getHref',
+        'model' => 'getModel',
+        'operation' => 'getOperation',
+        'params' => 'getParams'
     ];
 
     public static function attributeMap()
@@ -142,9 +147,10 @@ class EPGBroadcast implements ArrayAccess
      */
     public function __construct(array $data = null)
     {
-        $this->container['_2016_01_11'] = isset($data['_2016_01_11']) ? $data['_2016_01_11'] : null;
-        $this->container['next_page_url'] = isset($data['next_page_url']) ? $data['next_page_url'] : 'https://raidiomanager.pluxbox.com/api/v1/broadcasts/epg/{identifier}/2016-01-12';
-        $this->container['prev_page_url'] = isset($data['prev_page_url']) ? $data['prev_page_url'] : 'https://raidiomanager.pluxbox.com/pb/api/v1/broadcasts/epg/{identifier}/2016-01-10';
+        $this->container['href'] = isset($data['href']) ? $data['href'] : null;
+        $this->container['model'] = isset($data['model']) ? $data['model'] : null;
+        $this->container['operation'] = isset($data['operation']) ? $data['operation'] : null;
+        $this->container['params'] = isset($data['params']) ? $data['params'] : null;
     }
 
     /**
@@ -156,15 +162,6 @@ class EPGBroadcast implements ArrayAccess
     {
         $invalid_properties = [];
 
-        if ($this->container['_2016_01_11'] === null) {
-            $invalid_properties[] = "'_2016_01_11' can't be null";
-        }
-        if ($this->container['next_page_url'] === null) {
-            $invalid_properties[] = "'next_page_url' can't be null";
-        }
-        if ($this->container['prev_page_url'] === null) {
-            $invalid_properties[] = "'prev_page_url' can't be null";
-        }
         return $invalid_properties;
     }
 
@@ -177,78 +174,90 @@ class EPGBroadcast implements ArrayAccess
     public function valid()
     {
 
-        if ($this->container['_2016_01_11'] === null) {
-            return false;
-        }
-        if ($this->container['next_page_url'] === null) {
-            return false;
-        }
-        if ($this->container['prev_page_url'] === null) {
-            return false;
-        }
         return true;
     }
 
 
     /**
-     * Gets _2016_01_11
-     * @return \RadioManager\Model\BroadcastResult[]
+     * Gets href
+     * @return string
      */
-    public function get20160111()
+    public function getHref()
     {
-        return $this->container['_2016_01_11'];
+        return $this->container['href'];
     }
 
     /**
-     * Sets _2016_01_11
-     * @param \RadioManager\Model\BroadcastResult[] $_2016_01_11
+     * Sets href
+     * @param string $href
      * @return $this
      */
-    public function set20160111($_2016_01_11)
+    public function setHref($href)
     {
-        $this->container['_2016_01_11'] = $_2016_01_11;
+        $this->container['href'] = $href;
 
         return $this;
     }
 
     /**
-     * Gets next_page_url
+     * Gets model
      * @return string
      */
-    public function getNextPageUrl()
+    public function getModel()
     {
-        return $this->container['next_page_url'];
+        return $this->container['model'];
     }
 
     /**
-     * Sets next_page_url
-     * @param string $next_page_url
+     * Sets model
+     * @param string $model
      * @return $this
      */
-    public function setNextPageUrl($next_page_url)
+    public function setModel($model)
     {
-        $this->container['next_page_url'] = $next_page_url;
+        $this->container['model'] = $model;
 
         return $this;
     }
 
     /**
-     * Gets prev_page_url
+     * Gets operation
      * @return string
      */
-    public function getPrevPageUrl()
+    public function getOperation()
     {
-        return $this->container['prev_page_url'];
+        return $this->container['operation'];
     }
 
     /**
-     * Sets prev_page_url
-     * @param string $prev_page_url
+     * Sets operation
+     * @param string $operation
      * @return $this
      */
-    public function setPrevPageUrl($prev_page_url)
+    public function setOperation($operation)
     {
-        $this->container['prev_page_url'] = $prev_page_url;
+        $this->container['operation'] = $operation;
+
+        return $this;
+    }
+
+    /**
+     * Gets params
+     * @return int
+     */
+    public function getParams()
+    {
+        return $this->container['params'];
+    }
+
+    /**
+     * Sets params
+     * @param int $params
+     * @return $this
+     */
+    public function setParams($params)
+    {
+        $this->container['params'] = $params;
 
         return $this;
     }
