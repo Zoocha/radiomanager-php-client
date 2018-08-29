@@ -111,6 +111,7 @@ Class | Method | HTTP request | Description
 *ItemApi* | [**currentItemPostStructure**](docs/Api/ItemApi.md#currentitempoststructure) | **POST** /items/current/structure | Post a current playing item, keep structure
 *ItemApi* | [**currentItemPostTiming**](docs/Api/ItemApi.md#currentitemposttiming) | **POST** /items/current/timing | Post a current playing item
 *ItemApi* | [**deleteItemById**](docs/Api/ItemApi.md#deleteitembyid) | **DELETE** /items/{id} | Delete item by ID.
+*ItemApi* | [**getCurrentItem**](docs/Api/ItemApi.md#getcurrentitem) | **GET** /items/current | Get current Item
 *ItemApi* | [**getItemById**](docs/Api/ItemApi.md#getitembyid) | **GET** /items/{id} | Get extended item details by ID.
 *ItemApi* | [**listItems**](docs/Api/ItemApi.md#listitems) | **GET** /items | Get a list of all the items currently in your station.
 *ItemApi* | [**playlistPostStructure**](docs/Api/ItemApi.md#playlistpoststructure) | **POST** /items/playlist/structure | Post a playlist, keep current structure
