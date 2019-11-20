@@ -7,7 +7,7 @@ For more information, please visit [https://pluxbox.com](https://pluxbox.com)
 
 ## Requirements
 
-PHP 5.4.0 and later
+PHP 5.5 and later
 
 ## Installation & Usage
 ### Composer
@@ -35,7 +35,7 @@ Then run `composer install`
 Download the files and include `autoload.php`:
 
 ```php
-    require_once('/path/to/RadioManager/autoload.php');
+    require_once('/path/to/RadioManager/vendor/autoload.php');
 ```
 
 ## Tests
@@ -56,16 +56,21 @@ Please follow the [installation procedure](#installation--usage) and then run th
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\BlockApi();
+$apiInstance = new RadioManager\Api\BlockApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $id = 789; // int | ID of Block **(Required)**
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getBlockById($id, $_external_station_id);
+    $result = $apiInstance->getBlockById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling BlockApi->getBlockById: ', $e->getMessage(), PHP_EOL;
@@ -93,7 +98,7 @@ Class | Method | HTTP request | Description
 *BroadcastApi* | [**getNextBroadcast**](docs/Api/BroadcastApi.md#getnextbroadcast) | **GET** /broadcasts/next | Get next Broadcast
 *BroadcastApi* | [**getWeeklyEPG**](docs/Api/BroadcastApi.md#getweeklyepg) | **GET** /broadcasts/epg/weekly | Get weekly EPG
 *BroadcastApi* | [**listBroadcasts**](docs/Api/BroadcastApi.md#listbroadcasts) | **GET** /broadcasts | Get all broadcasts.
-*BroadcastApi* | [**printBroadcastById**](docs/Api/BroadcastApi.md#printbroadcastbyid) | **GET** /broadcasts/print/{id} | Print Broadcast by id
+*BroadcastApi* | [**printBroadcastById**](docs/Api/BroadcastApi.md#printbroadcastbyid) | **GET** /broadcasts/print/{id} | Print broadcast by id with template
 *BroadcastApi* | [**updateBroadcastByID**](docs/Api/BroadcastApi.md#updatebroadcastbyid) | **PATCH** /broadcasts/{id} | Update broadcast by id
 *CampaignApi* | [**createCampaign**](docs/Api/CampaignApi.md#createcampaign) | **POST** /campaigns | Create campaign.
 *CampaignApi* | [**deleteCampaignById**](docs/Api/CampaignApi.md#deletecampaignbyid) | **DELETE** /campaigns/{id} | Delete campaign by id
@@ -114,8 +119,10 @@ Class | Method | HTTP request | Description
 *ItemApi* | [**getCurrentItem**](docs/Api/ItemApi.md#getcurrentitem) | **GET** /items/current | Get current Item
 *ItemApi* | [**getItemById**](docs/Api/ItemApi.md#getitembyid) | **GET** /items/{id} | Get extended item details by ID.
 *ItemApi* | [**listItems**](docs/Api/ItemApi.md#listitems) | **GET** /items | Get a list of all the items currently in your station.
+*ItemApi* | [**playlistPostMerge**](docs/Api/ItemApi.md#playlistpostmerge) | **POST** /items/playlist/merge | Post a playlist, do not remove previously imported items
 *ItemApi* | [**playlistPostStructure**](docs/Api/ItemApi.md#playlistpoststructure) | **POST** /items/playlist/structure | Post a playlist, keep current structure
 *ItemApi* | [**playlistPostTiming**](docs/Api/ItemApi.md#playlistposttiming) | **POST** /items/playlist/timing | Post a playlist
+*ItemApi* | [**stopCurrentItem**](docs/Api/ItemApi.md#stopcurrentitem) | **POST** /items/stopcurrent | Stop an Item
 *ItemApi* | [**updateItemById**](docs/Api/ItemApi.md#updateitembyid) | **PATCH** /items/{id} | Update extended item details by ID.
 *ModelTypeApi* | [**getModelTypeById**](docs/Api/ModelTypeApi.md#getmodeltypebyid) | **GET** /model_types/{id} | Get modelType by id
 *ModelTypeApi* | [**listModelTypes**](docs/Api/ModelTypeApi.md#listmodeltypes) | **GET** /model_types | Get all modelTypes.
@@ -165,6 +172,7 @@ Class | Method | HTTP request | Description
  - [BroadcastOutputOnly](docs/Model/BroadcastOutputOnly.md)
  - [BroadcastRelations](docs/Model/BroadcastRelations.md)
  - [BroadcastRelationsBlocks](docs/Model/BroadcastRelationsBlocks.md)
+ - [BroadcastRelationsGenre](docs/Model/BroadcastRelationsGenre.md)
  - [BroadcastRelationsItems](docs/Model/BroadcastRelationsItems.md)
  - [BroadcastRelationsItemsParams](docs/Model/BroadcastRelationsItemsParams.md)
  - [BroadcastRelationsModelType](docs/Model/BroadcastRelationsModelType.md)
@@ -177,6 +185,7 @@ Class | Method | HTTP request | Description
  - [CampaignRelationsItems](docs/Model/CampaignRelationsItems.md)
  - [CampaignRelationsItemsParams](docs/Model/CampaignRelationsItemsParams.md)
  - [CampaignResults](docs/Model/CampaignResults.md)
+ - [CampaignTemplateItem](docs/Model/CampaignTemplateItem.md)
  - [Contact](docs/Model/Contact.md)
  - [ContactOutputOnly](docs/Model/ContactOutputOnly.md)
  - [ContactRelations](docs/Model/ContactRelations.md)
@@ -186,6 +195,8 @@ Class | Method | HTTP request | Description
  - [ContactResults](docs/Model/ContactResults.md)
  - [Data](docs/Model/Data.md)
  - [Data1](docs/Model/Data1.md)
+ - [Data2](docs/Model/Data2.md)
+ - [Data3](docs/Model/Data3.md)
  - [EPGResults](docs/Model/EPGResults.md)
  - [Forbidden](docs/Model/Forbidden.md)
  - [Genre](docs/Model/Genre.md)
@@ -247,6 +258,7 @@ Class | Method | HTTP request | Description
  - [RelationsPlaceholder](docs/Model/RelationsPlaceholder.md)
  - [StationResult](docs/Model/StationResult.md)
  - [StationResultStation](docs/Model/StationResultStation.md)
+ - [StationResultStationStartDays](docs/Model/StationResultStationStartDays.md)
  - [Story](docs/Model/Story.md)
  - [StoryInputOnly](docs/Model/StoryInputOnly.md)
  - [StoryOutputOnly](docs/Model/StoryOutputOnly.md)

@@ -11,8 +11,10 @@ Method | HTTP request | Description
 [**getCurrentItem**](ItemApi.md#getCurrentItem) | **GET** /items/current | Get current Item
 [**getItemById**](ItemApi.md#getItemById) | **GET** /items/{id} | Get extended item details by ID.
 [**listItems**](ItemApi.md#listItems) | **GET** /items | Get a list of all the items currently in your station.
+[**playlistPostMerge**](ItemApi.md#playlistPostMerge) | **POST** /items/playlist/merge | Post a playlist, do not remove previously imported items
 [**playlistPostStructure**](ItemApi.md#playlistPostStructure) | **POST** /items/playlist/structure | Post a playlist, keep current structure
 [**playlistPostTiming**](ItemApi.md#playlistPostTiming) | **POST** /items/playlist/timing | Post a playlist
+[**stopCurrentItem**](ItemApi.md#stopCurrentItem) | **POST** /items/stopcurrent | Stop an Item
 [**updateItemById**](ItemApi.md#updateItemById) | **PATCH** /items/{id} | Update extended item details by ID.
 
 
@@ -29,15 +31,20 @@ Create item.
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $data = new \RadioManager\Model\ItemDataInput(); // \RadioManager\Model\ItemDataInput | Data *(Optional)*
 
 try {
-    $result = $api_instance->createItem($data);
+    $result = $apiInstance->createItem($data);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->createItem: ', $e->getMessage(), PHP_EOL;
@@ -79,15 +86,20 @@ Post a current playing item, keep structure
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $data = new \RadioManager\Model\ImportItem(); // \RadioManager\Model\ImportItem | Data *(Optional)*
 
 try {
-    $result = $api_instance->currentItemPostStructure($data);
+    $result = $apiInstance->currentItemPostStructure($data);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->currentItemPostStructure: ', $e->getMessage(), PHP_EOL;
@@ -129,15 +141,20 @@ Post a current playing item
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $data = new \RadioManager\Model\ImportItem(); // \RadioManager\Model\ImportItem | Data *(Optional)*
 
 try {
-    $result = $api_instance->currentItemPostTiming($data);
+    $result = $apiInstance->currentItemPostTiming($data);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->currentItemPostTiming: ', $e->getMessage(), PHP_EOL;
@@ -179,15 +196,20 @@ Delete item by id.
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $id = 789; // int | ID of Item **(Required)**
 
 try {
-    $result = $api_instance->deleteItemById($id);
+    $result = $apiInstance->deleteItemById($id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->deleteItemById: ', $e->getMessage(), PHP_EOL;
@@ -229,15 +251,20 @@ Get current Item
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $lastplayed = true; // bool | Show last played item if there is no current item*(Optional)*
 
 try {
-    $result = $api_instance->getCurrentItem($lastplayed);
+    $result = $apiInstance->getCurrentItem($lastplayed);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->getCurrentItem: ', $e->getMessage(), PHP_EOL;
@@ -279,16 +306,21 @@ Read item by id.
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $id = 789; // int | ID of Item **(Required)**
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->getItemById($id, $_external_station_id);
+    $result = $apiInstance->getItemById($id, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->getItemById: ', $e->getMessage(), PHP_EOL;
@@ -331,11 +363,16 @@ Get a list of all the items currently in your station. This feature supports pag
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $page = 789; // int | Current page *(Optional)*
 $block_id = 789; // int | Search on Block ID *(Optional)* `(Relation)`
 $broadcast_id = 789; // int | Search on Broadcast ID *(Optional)* `(Relation)`
@@ -359,7 +396,7 @@ $order_direction = "order_direction_example"; // string | Direction of ordering 
 $_external_station_id = 789; // int | Query on a different (content providing) station *(Optional)*
 
 try {
-    $result = $api_instance->listItems($page, $block_id, $broadcast_id, $model_type_id, $tag_id, $campaign_id, $contact_id, $program_draft_id, $user_draft_id, $station_draft_id, $program_id, $external_id, $start_min, $start_max, $duration_min, $duration_max, $status, $limit, $order_by, $order_direction, $_external_station_id);
+    $result = $apiInstance->listItems($page, $block_id, $broadcast_id, $model_type_id, $tag_id, $campaign_id, $contact_id, $program_draft_id, $user_draft_id, $station_draft_id, $program_id, $external_id, $start_min, $start_max, $duration_min, $duration_max, $status, $limit, $order_by, $order_direction, $_external_station_id);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->listItems: ', $e->getMessage(), PHP_EOL;
@@ -408,6 +445,61 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
+# **playlistPostMerge**
+> \RadioManager\Model\InlineResponse202 playlistPostMerge($data)
+
+Post a playlist, do not remove previously imported items
+
+Post a playlist, do not remove previously imported items
+
+### Example
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: API Key
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$data = new \RadioManager\Model\Data2(); // \RadioManager\Model\Data2 | Data *(Optional)*
+
+try {
+    $result = $apiInstance->playlistPostMerge($data);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ItemApi->playlistPostMerge: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **data** | [**\RadioManager\Model\Data2**](../Model/Data2.md)| Data *(Optional)* | [optional]
+
+### Return type
+
+[**\RadioManager\Model\InlineResponse202**](../Model/InlineResponse202.md)
+
+### Authorization
+
+[API Key](../../README.md#API Key)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
 # **playlistPostStructure**
 > \RadioManager\Model\InlineResponse202 playlistPostStructure($data)
 
@@ -421,15 +513,20 @@ Post a playlist, keep current structure
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $data = new \RadioManager\Model\Data1(); // \RadioManager\Model\Data1 | Data *(Optional)*
 
 try {
-    $result = $api_instance->playlistPostStructure($data);
+    $result = $apiInstance->playlistPostStructure($data);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->playlistPostStructure: ', $e->getMessage(), PHP_EOL;
@@ -471,15 +568,20 @@ Post a playlist
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $data = new \RadioManager\Model\Data(); // \RadioManager\Model\Data | Data *(Optional)*
 
 try {
-    $result = $api_instance->playlistPostTiming($data);
+    $result = $apiInstance->playlistPostTiming($data);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->playlistPostTiming: ', $e->getMessage(), PHP_EOL;
@@ -508,6 +610,61 @@ Name | Type | Description  | Notes
 
 [[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
 
+# **stopCurrentItem**
+> \RadioManager\Model\Success stopCurrentItem($data)
+
+Stop an Item
+
+Set a current playing or specific item on played
+
+### Example
+```php
+<?php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+// Configure API key authorization: API Key
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+// Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
+$data = new \RadioManager\Model\Data3(); // \RadioManager\Model\Data3 | Data *(Optional)*
+
+try {
+    $result = $apiInstance->stopCurrentItem($data);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ItemApi->stopCurrentItem: ', $e->getMessage(), PHP_EOL;
+}
+?>
+```
+
+### Parameters
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **data** | [**\RadioManager\Model\Data3**](../Model/Data3.md)| Data *(Optional)* | [optional]
+
+### Return type
+
+[**\RadioManager\Model\Success**](../Model/Success.md)
+
+### Authorization
+
+[API Key](../../README.md#API Key)
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
+ - **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../../README.md#documentation-for-api-endpoints) [[Back to Model list]](../../README.md#documentation-for-models) [[Back to README]](../../README.md)
+
 # **updateItemById**
 > \RadioManager\Model\Success updateItemById($id, $data)
 
@@ -521,16 +678,21 @@ Update item by id.
 require_once(__DIR__ . '/vendor/autoload.php');
 
 // Configure API key authorization: API Key
-RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
+$config = RadioManager\Configuration::getDefaultConfiguration()->setApiKey('api-key', 'YOUR_API_KEY');
 // Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
-// RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
+// $config = RadioManager\Configuration::getDefaultConfiguration()->setApiKeyPrefix('api-key', 'Bearer');
 
-$api_instance = new RadioManager\Api\ItemApi();
+$apiInstance = new RadioManager\Api\ItemApi(
+    // If you want use custom http client, pass your client which implements `GuzzleHttp\ClientInterface`.
+    // This is optional, `GuzzleHttp\Client` will be used as default.
+    new GuzzleHttp\Client(),
+    $config
+);
 $id = 789; // int | ID of Item **(Required)**
 $data = new \RadioManager\Model\ItemDataInput(); // \RadioManager\Model\ItemDataInput | Data *(Optional)*
 
 try {
-    $result = $api_instance->updateItemById($id, $data);
+    $result = $apiInstance->updateItemById($id, $data);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ItemApi->updateItemById: ', $e->getMessage(), PHP_EOL;
