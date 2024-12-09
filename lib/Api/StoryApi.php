@@ -33,6 +33,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\RequestOptions;
 use RadioManager\ApiException;
 use RadioManager\Configuration;
@@ -338,7 +339,7 @@ class StoryApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = Query::build($formParams);
             }
         }
 
@@ -359,7 +360,7 @@ class StoryApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = Query::build($queryParams);
         return new Request(
             'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -633,7 +634,7 @@ class StoryApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = Query::build($formParams);
             }
         }
 
@@ -654,7 +655,7 @@ class StoryApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = Query::build($queryParams);
         return new Request(
             'DELETE',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -937,7 +938,7 @@ class StoryApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = Query::build($formParams);
             }
         }
 
@@ -958,7 +959,7 @@ class StoryApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = Query::build($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1292,7 +1293,7 @@ class StoryApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = Query::build($formParams);
             }
         }
 
@@ -1313,7 +1314,7 @@ class StoryApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = Query::build($queryParams);
         return new Request(
             'GET',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
@@ -1603,7 +1604,7 @@ class StoryApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = Query::build($formParams);
             }
         }
 
@@ -1624,7 +1625,7 @@ class StoryApi
             $headers
         );
 
-        $query = \GuzzleHttp\Psr7\build_query($queryParams);
+        $query = Query::build($queryParams);
         return new Request(
             'PATCH',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),

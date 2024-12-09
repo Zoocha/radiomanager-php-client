@@ -33,6 +33,7 @@ use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\MultipartStream;
 use GuzzleHttp\Psr7\Request;
+use GuzzleHttp\Psr7\Query;
 use GuzzleHttp\RequestOptions;
 use RadioManager\ApiException;
 use RadioManager\Configuration;
@@ -324,7 +325,7 @@ class ItemApi
 
             } else {
                 // for HTTP post (form)
-                $httpBody = \GuzzleHttp\Psr7\build_query($formParams);
+                $httpBody = Query::build($formParams);
             }
         }
 
